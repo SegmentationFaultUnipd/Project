@@ -53,6 +53,10 @@ void chess::Board::move(short from_file, short from_rank, short to_file, short t
     }
 }
 
+std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece* piece) {
+    return piece->legalMoves(board_);
+}
+
 //Print board, for every piece prints w/b based on the color.
 std::ostream& chess::operator<<(std::ostream& os, Board& board) {
 

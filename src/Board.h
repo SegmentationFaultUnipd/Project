@@ -19,6 +19,7 @@ namespace chess {
             Piece* at(short file, short rank);
             
             void move(short from_file, short from_rank, short to_file, short to_rank);
+            std::vector<Coordinates> legalMovesOf(Piece* piece);
             
         private:
             //at(char file, short rank)

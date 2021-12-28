@@ -491,7 +491,8 @@ CMakeFiles/Scacchiera.dir/src/main.cpp.obj: ../src/main.cpp \
   ../src/Coordinates.h \
   ../src/Pieces/Knight.h \
   ../src/Pieces/Piece.h \
-  ../src/Color.h
+  ../src/Color.h \
+  ../src/Coordinates.h
 
 
 ../src/Board.cpp:
