@@ -28,9 +28,9 @@ namespace chess {
             //returns the ascii character for that piece
             char virtual ascii() = 0;
 
-            bool color() { return color_;}
-            short file() { return position_.file; }
-            short rank() { return position_.rank; }
+            bool color() const { return color_;}
+            short file() const { return position_.file; }
+            short rank() const { return position_.rank; }
 
         protected:
             Piece(short file, short rank, Color color) : position_{file, rank}, color_{color} {};

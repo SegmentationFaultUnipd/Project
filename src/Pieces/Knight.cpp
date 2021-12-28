@@ -6,17 +6,54 @@ bool chess::Knight::canMove(short to_file, short to_rank, Piece* board[8][8]) {
 
     //Knight moves with 3 total steps, so the manahattan distance must be 3
     if (delta_file * delta_rank != 0 && abs(delta_file) + abs(delta_rank) == 3) {
-        Piece* landing_piece = board[to_file][to_rank];
+        const Piece* landing_piece = board[to_file][to_rank];
         return landing_piece == nullptr || landing_piece->color() != this->color();
     }
-    std::cout << "Impossible movement\n";
     return false;
 };
 
 bool chess::Knight::canMove(Piece* board[8][8]) {
-    return true;
+    short file, rank_upper, rank_lower;
+
+    for (short delta_file = -2; delta_file <= 2; delta_file++) {
+        if (delta_file == 0)
+            continue;
+
+        file = position_.file + delta_file;
+        rank_upper = position_.rank + abs(3 - abs(delta_file));
+        rank_lower = position_.rank - abs(3 - abs(delta_file));
+
+        if (file >= 0 && file < 8) {
+            if (rank_upper >= 0 && rank_upper < 8 && canMove(file, rank_upper, board))
+                return true;
+
+            if (rank_lower >= 0 && rank_lower < 8 && canMove(file, rank_lower, board))
+                return true;
+        }
+    }
+    return false;
 };
 
 std::vector<chess::Coordinates> chess::Knight::legalMoves(Piece* board[8][8]) {
-    return {};
+    std::vector<chess::Coordinates> moves = {};
+
+    short file, rank_upper, rank_lower;
+
+    for (short delta_file = -2; delta_file <= 2; delta_file++) {
+        if (delta_file == 0)
+            continue;
+
+        file = position_.file + delta_file;
+        rank_upper = position_.rank + abs(3 - abs(delta_file));
+        rank_lower = position_.rank - abs(3 - abs(delta_file));
+
+        if (file >= 0 && file < 8) {
+            if (rank_upper >= 0 && rank_upper < 8 && canMove(file, rank_upper, board))
+                moves.push_back(chess::Coordinates{file, rank_upper});
+
+            if (rank_lower >= 0 && rank_lower < 8 && canMove(file, rank_lower, board))
+                moves.push_back(chess::Coordinates{file, rank_lower});
+        }
+    }
+    return moves;
 }
