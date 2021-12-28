@@ -4,11 +4,11 @@ chess::Board::Board() {
 
     //Inserting test pieces
     for (short file = 0; file < 8; file++) {
-        white_pieces_.push_back(Piece{file, 0, true});
-        white_pieces_.push_back(Piece{file, 1, true});
+        white_pieces_.push_back(Piece{file, 0, Color::WHITE});
+        white_pieces_.push_back(Piece{file, 1, Color::WHITE});
 
-        black_pieces_.push_back(Piece{file, 6, false});
-        black_pieces_.push_back(Piece{file, 7, false});
+        black_pieces_.push_back(Piece{file, 6, Color::BLACK});
+        black_pieces_.push_back(Piece{file, 7, Color::BLACK});
     }
 
     //Constructing pointer matrix
@@ -47,7 +47,7 @@ std::ostream& chess::operator<<(std::ostream& os, const Board& board) {
             if (board.at(f, r-1) == nullptr)
                 os << " ";
             else
-                os << (board.at(f, r-1)->isWhite() ? "w" : "B");
+                os << (board.at(f, r-1)->color() == Color::WHITE ? "w" : "B");
         }
         os << "\n";
     }
