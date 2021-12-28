@@ -1,0 +1,3 @@
+C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles/Scacchiera.dir
+C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles/edit_cache.dir
+C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles/rebuild_cache.dir

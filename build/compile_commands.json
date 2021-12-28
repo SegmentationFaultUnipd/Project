@@ -1,0 +1,12 @@
+[
+{
+  "directory": "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build",
+  "command": "c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe   -g -o CMakeFiles/Scacchiera.dir/src/main.cpp.obj -c \"C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/main.cpp\"",
+  "file": "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/main.cpp"
+},
+{
+  "directory": "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build",
+  "command": "c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe   -g -o CMakeFiles/Scacchiera.dir/src/Board.cpp.obj -c \"C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Board.cpp\"",
+  "file": "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Board.cpp"
+}
+]
