@@ -1,6 +1,9 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include <vector>
+#include <iostream>
+
 #include "../Color.h"
 #include "../Coordinates.h"
 
@@ -8,21 +11,31 @@ namespace chess {
 
     class Piece {
         public:
-            Piece(short file, short rank, Color color) : position_{file, rank}, color_{color} {};
-            Piece(char file, short rank, Color color) : Piece{(short)(file - 'a'), rank + 1, color} {};
-
             void move (short file, short rank) {
                 position_.file = file;
                 position_.rank = rank;
             }
 
-            bool canMove(short to_file, short to_rank) { return true; }
+            //Check if the piece can move to a file and rank.
+            bool virtual canMove(short to_file, short to_rank, Piece* board[8][8]) = 0;
+
+            //Check if the piece has at least an avaible move
+            bool virtual canMove(Piece* board[8][8]) = 0;
+
+            //List all the avaible moves
+            std::vector<Coordinates> virtual legalMoves(Piece* board[8][8]) = 0;
+
+            //returns the ascii character for that piece
+            char virtual ascii() = 0;
 
             bool color() { return color_;}
             short file() { return position_.file; }
             short rank() { return position_.rank; }
 
         protected:
+            Piece(short file, short rank, Color color) : position_{file, rank}, color_{color} {};
+            Piece(char file, short rank, Color color) : Piece{(short)(file - 'a'), (short)(rank - 1), color} {};
+
             Coordinates position_;
             Color color_;
     };

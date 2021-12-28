@@ -153,6 +153,30 @@ src/Board.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Board.cpp.s
 .PHONY : src/Board.cpp.s
 
+src/Pieces/Knight.obj: src/Pieces/Knight.cpp.obj
+.PHONY : src/Pieces/Knight.obj
+
+# target to build an object file
+src/Pieces/Knight.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj
+.PHONY : src/Pieces/Knight.cpp.obj
+
+src/Pieces/Knight.i: src/Pieces/Knight.cpp.i
+.PHONY : src/Pieces/Knight.i
+
+# target to preprocess a source file
+src/Pieces/Knight.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.i
+.PHONY : src/Pieces/Knight.cpp.i
+
+src/Pieces/Knight.s: src/Pieces/Knight.cpp.s
+.PHONY : src/Pieces/Knight.s
+
+# target to generate assembly for a file
+src/Pieces/Knight.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.s
+.PHONY : src/Pieces/Knight.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -189,6 +213,9 @@ help:
 	@echo "... src/Board.obj"
 	@echo "... src/Board.i"
 	@echo "... src/Board.s"
+	@echo "... src/Pieces/Knight.obj"
+	@echo "... src/Pieces/Knight.i"
+	@echo "... src/Pieces/Knight.s"
 	@echo "... src/main.obj"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

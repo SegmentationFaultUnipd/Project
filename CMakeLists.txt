@@ -4,4 +4,4 @@ cmake_minimum_required(VERSION 3.10)
 project(VirtualChessboard)
 
 # add the executable
-add_executable(Scacchiera src/main.cpp src/Board.cpp)
+add_executable(Scacchiera src/main.cpp src/Board.cpp src/Pieces/Knight.cpp)
