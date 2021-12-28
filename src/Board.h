@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Pieces/Piece.h"
+#include "Color.h"
 
 namespace chess {
 
