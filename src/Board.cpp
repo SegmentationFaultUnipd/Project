@@ -3,12 +3,12 @@
 chess::Board::Board() {
 
     //Inserting test pieces
-    for (short file = 0; file < 8; file++) {
-        white_pieces_.push_back(Piece{file, 0, Color::WHITE});
+    for (char file = 'a'; file <= 'h'; file++) {
         white_pieces_.push_back(Piece{file, 1, Color::WHITE});
+        white_pieces_.push_back(Piece{file, 2, Color::WHITE});
 
-        black_pieces_.push_back(Piece{file, 6, Color::BLACK});
         black_pieces_.push_back(Piece{file, 7, Color::BLACK});
+        black_pieces_.push_back(Piece{file, 8, Color::BLACK});
     }
 
     //Constructing pointer matrix
