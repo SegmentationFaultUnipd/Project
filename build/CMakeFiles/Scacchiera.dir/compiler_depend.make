@@ -176,6 +176,7 @@ CMakeFiles/Scacchiera.dir/src/Board.cpp.obj: ../src/Board.cpp \
   ../src/Coordinates.h \
   ../src/Pieces/Knight.h \
   ../src/Pieces/Piece.h \
+  ../src/Board.h \
   ../src/Color.h
 
 CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj: ../src/Pieces/Knight.cpp \
@@ -671,6 +672,7 @@ CMakeFiles/Scacchiera.dir/src/main.cpp.obj: ../src/main.cpp \
   ../src/Coordinates.h \
   ../src/Pieces/Knight.h \
   ../src/Pieces/Piece.h \
+  ../src/Board.h \
   ../src/Color.h \
   ../src/Coordinates.h \
   ../src/Players/HumanPlayer.h \

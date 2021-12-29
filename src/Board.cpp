@@ -1,7 +1,6 @@
 #include "Board.h"
 
 chess::Board::Board() {
-	/*
     //Inserting test pieces
     for (short file = 0; file < 8; file++) {
         white_pieces_.push_back(Coordinates{file, 0});
