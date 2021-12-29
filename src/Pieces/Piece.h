@@ -25,10 +25,10 @@ namespace chess {
             //List all the avaible moves
             std::vector<Coordinates> virtual legalMoves(chess::Board& board) = 0;
 
-            //returns the ascii character for that piece
+            // returns the ascii character for that piece
             char virtual ascii() = 0;
 
-            bool color() const { return color_;}
+            Color color() const { return color_;}
             short file() const { return position_.file; }
             short rank() const { return position_.rank; }
 

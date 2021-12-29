@@ -111,11 +111,26 @@ CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.s"
 	c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Pieces/Knight.cpp" -o CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.s
 
+CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj: CMakeFiles/Scacchiera.dir/flags.make
+CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj: ../src/Players/HumanPlayer.cpp
+CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj: CMakeFiles/Scacchiera.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj"
+	c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj -MF CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj.d -o CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj -c "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Players/HumanPlayer.cpp"
+
+CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.i"
+	c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Players/HumanPlayer.cpp" > CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.i
+
+CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.s"
+	c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Players/HumanPlayer.cpp" -o CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.s
+
 # Object files for target Scacchiera
 Scacchiera_OBJECTS = \
 "CMakeFiles/Scacchiera.dir/src/main.cpp.obj" \
 "CMakeFiles/Scacchiera.dir/src/Board.cpp.obj" \
-"CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj"
+"CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj" \
+"CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj"
 
 # External object files for target Scacchiera
 Scacchiera_EXTERNAL_OBJECTS =
@@ -123,10 +138,11 @@ Scacchiera_EXTERNAL_OBJECTS =
 Scacchiera.exe: CMakeFiles/Scacchiera.dir/src/main.cpp.obj
 Scacchiera.exe: CMakeFiles/Scacchiera.dir/src/Board.cpp.obj
 Scacchiera.exe: CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj
+Scacchiera.exe: CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj
 Scacchiera.exe: CMakeFiles/Scacchiera.dir/build.make
 Scacchiera.exe: CMakeFiles/Scacchiera.dir/linklibs.rsp
 Scacchiera.exe: CMakeFiles/Scacchiera.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Scacchiera.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Scacchiera.exe"
 	"C:/Program Files/CMake/bin/cmake.exe" -E rm -f CMakeFiles/Scacchiera.dir/objects.a
 	C:/msys64/mingw64/bin/ar.exe qc CMakeFiles/Scacchiera.dir/objects.a @CMakeFiles/Scacchiera.dir/objects1.rsp
 	c:/msys64/mingw64/bin/x86_64-w64-mingw32-g++.exe -g -Wl,--whole-archive CMakeFiles/Scacchiera.dir/objects.a -Wl,--no-whole-archive -o Scacchiera.exe -Wl,--out-implib,libScacchiera.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/Scacchiera.dir/linklibs.rsp

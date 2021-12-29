@@ -1,6 +1,9 @@
 #ifndef CHESS_COORDINATE_H
 #define CHESS_COORDINATE_H
 
+#include <assert.h>
+#include <string>
+
 namespace chess {
 
     struct Coordinates
@@ -9,12 +12,19 @@ namespace chess {
         short rank; //row from 1 to 8, from white to black
 
         Coordinates(short _file, short _rank) {
-            if (_file >= 0 && _file <= 7 && _rank >= 0 && _rank <= 7) {
-                file = _file;
-                rank = _rank;
-            } else {
-                //IllegalArgument Exception
-            }
+            file = _file;
+            rank = _rank;
+        }
+
+        Coordinates(const std::string notation) {
+            file = tolower(notation[0]) - 'a';
+            rank = notation[1] - '0' - 1;
+        }
+
+        Coordinates() : Coordinates{0,0} {}
+
+        bool operator==(const Coordinates& c2) {
+            return file == c2.file && rank == c2.rank;
         }
     };
 

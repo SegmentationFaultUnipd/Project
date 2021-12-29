@@ -6,8 +6,7 @@ bool chess::Knight::canMove(short to_file, short to_rank, chess::Board& board) {
 
     //Knight moves with 3 total steps, so the manahattan distance must be 3
     if (delta_file * delta_rank != 0 && abs(delta_file) + abs(delta_rank) == 3) {
-        const Piece* landing_piece = board.at(to_file, to_rank);
-        return landing_piece == nullptr || landing_piece->color() != this->color();
+        return board[to_file][to_rank] == nullptr || board[to_file][to_rank]->color() != this->color();
     }
     return false;
 };
