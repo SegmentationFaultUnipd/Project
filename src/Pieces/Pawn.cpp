@@ -20,7 +20,7 @@ bool chess::Pawn::canMove(short to_file, short to_rank, const Board& board){
     
     // If it's a diagonal move that can eat it can move
     bool is_moving_diagonal = ((to_file == file() - 1) || (to_file == file() + 1)) && (to_rank == (rank() + 1));
-    if(is_moving_diagonal && (destination->isWhite() != isWhite()){
+    if(is_moving_diagonal && (destination->isWhite() != isWhite())){
         if(!has_moved_) { has_moved_ = true; }
         return true;
     }

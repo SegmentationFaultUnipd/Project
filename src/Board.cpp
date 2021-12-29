@@ -26,7 +26,7 @@ chess::Board::Board() {
 void chess::Board::move(short from_file, short from_rank, short to_file, short to_rank) {
     Piece* moving_piece = board_[from_file][from_rank];
 
-    if (moving_piece != nullptr && moving_piece->canMove(to_file, to_rank, this) ) {   
+    if (moving_piece != nullptr && moving_piece->canMove(to_file, to_rank, *this) ) {   
         //Moving in matrix
         board_[to_file][to_rank] = board_[from_file][from_rank];
         board_[from_file][from_rank] = nullptr;
