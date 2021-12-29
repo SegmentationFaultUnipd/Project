@@ -22,7 +22,7 @@ namespace chess {
             //Check if the piece has at least an avaible move
             bool virtual canMove(Piece* board[8][8]) = 0;
 
-            //List all the avaible moves
+            //List all the available moves
             std::vector<Coordinates> virtual legalMoves(Piece* board[8][8]) = 0;
 
             //returns the ascii character for that piece
