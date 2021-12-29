@@ -8,4 +8,4 @@ namespace chess {
     };
 }
 
-#endif //CHESS_COLOR_H
+#endif //COLOR_H

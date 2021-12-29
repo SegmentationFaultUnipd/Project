@@ -16,19 +16,19 @@ namespace chess {
                 position_.rank = rank;
             }
 
-            //Check if the piece can move to a file and rank.
-            bool virtual canMove(short to_file, short to_rank, Piece* board[8][8]) = 0;
+            // Check if the piece can move to a file and rank.
+            bool virtual canMove(short to_file, short to_rank, std::unique_ptr<Piece> board[8][8]) = 0;
 
-            //Check if the piece has at least an avaible move
-            bool virtual canMove(Piece* board[8][8]) = 0;
+            // Check if the piece has at least an avaible move
+            bool virtual canMove(std::unique_ptr<Piece> board[8][8]) = 0;
 
-            //List all the avaible moves
-            std::vector<Coordinates> virtual legalMoves(Piece* board[8][8]) = 0;
+            // List all the avaible moves
+            std::vector<Coordinates> virtual legalMoves(std::unique_ptr<Piece> board[8][8]) = 0;
 
-            //returns the ascii character for that piece
+            // returns the ascii character for that piece
             char virtual ascii() = 0;
 
-            bool color() const { return color_;}
+            Color color() const { return color_;}
             short file() const { return position_.file; }
             short rank() const { return position_.rank; }
 

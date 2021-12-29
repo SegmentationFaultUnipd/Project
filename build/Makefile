@@ -177,6 +177,30 @@ src/Pieces/Knight.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.s
 .PHONY : src/Pieces/Knight.cpp.s
 
+src/Players/HumanPlayer.obj: src/Players/HumanPlayer.cpp.obj
+.PHONY : src/Players/HumanPlayer.obj
+
+# target to build an object file
+src/Players/HumanPlayer.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj
+.PHONY : src/Players/HumanPlayer.cpp.obj
+
+src/Players/HumanPlayer.i: src/Players/HumanPlayer.cpp.i
+.PHONY : src/Players/HumanPlayer.i
+
+# target to preprocess a source file
+src/Players/HumanPlayer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.i
+.PHONY : src/Players/HumanPlayer.cpp.i
+
+src/Players/HumanPlayer.s: src/Players/HumanPlayer.cpp.s
+.PHONY : src/Players/HumanPlayer.s
+
+# target to generate assembly for a file
+src/Players/HumanPlayer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.s
+.PHONY : src/Players/HumanPlayer.cpp.s
+
 src/main.obj: src/main.cpp.obj
 .PHONY : src/main.obj
 
@@ -216,6 +240,9 @@ help:
 	@echo "... src/Pieces/Knight.obj"
 	@echo "... src/Pieces/Knight.i"
 	@echo "... src/Pieces/Knight.s"
+	@echo "... src/Players/HumanPlayer.obj"
+	@echo "... src/Players/HumanPlayer.i"
+	@echo "... src/Players/HumanPlayer.s"
 	@echo "... src/main.obj"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
