@@ -1,7 +1,7 @@
 #include "Board.h"
 
 chess::Board::Board() {
-
+	/*
     //Inserting test pieces
     for (short file = 0; file < 8; file++) {
         white_pieces_.push_back(new Knight{file, 0, Color::WHITE});
@@ -9,7 +9,7 @@ chess::Board::Board() {
 
         black_pieces_.push_back(new Knight{file, 6, Color::BLACK});
         black_pieces_.push_back(new Knight{file, 7, Color::BLACK});
-    }
+    }*/
 
     //Constructing pointer matrix
     for (size_t i = 0; i < 8; i++)
@@ -41,7 +41,7 @@ chess::Piece* chess::Board::at(short file, short rank) {
 void chess::Board::move(short from_file, short from_rank, short to_file, short to_rank) {
     Piece* moving_piece = board_[from_file][from_rank];
 
-    if (moving_piece != nullptr && moving_piece->canMove(to_file, to_rank, board_) ) {   
+    if (moving_piece != nullptr && moving_piece->canMove(to_file, to_rank, *this) ) {   
         //Moving in matrix
         board_[to_file][to_rank] = board_[from_file][from_rank];
         board_[from_file][from_rank] = nullptr;
@@ -54,7 +54,7 @@ void chess::Board::move(short from_file, short from_rank, short to_file, short t
 }
 
 std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece* piece) {
-    return piece->legalMoves(board_);
+    return piece->legalMoves(*this);
 }
 
 //Print board, for every piece prints w/b based on the color.
