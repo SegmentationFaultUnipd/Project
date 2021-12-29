@@ -1,6 +1,6 @@
 #include "Knight.h"
 
-bool chess::Knight::canMove(short to_file, short to_rank, std::unique_ptr<Piece> board[8][8]) {
+bool chess::Knight::canMove(short to_file, short to_rank, chess::Board& board) {
     short delta_file = to_file - file();
     short delta_rank = to_rank - rank();
 
@@ -11,7 +11,7 @@ bool chess::Knight::canMove(short to_file, short to_rank, std::unique_ptr<Piece>
     return false;
 };
 
-bool chess::Knight::canMove(std::unique_ptr<Piece> board[8][8]) {
+bool chess::Knight::canMove(chess::Board& board) {
     short file, rank_upper, rank_lower;
 
     for (short delta_file = -2; delta_file <= 2; delta_file++) {
@@ -33,7 +33,7 @@ bool chess::Knight::canMove(std::unique_ptr<Piece> board[8][8]) {
     return false;
 };
 
-std::vector<chess::Coordinates> chess::Knight::legalMoves(std::unique_ptr<Piece> board[8][8]) {
+std::vector<chess::Coordinates> chess::Knight::legalMoves(Board& board) {
     std::vector<chess::Coordinates> moves = {};
 
     short file, rank_upper, rank_lower;

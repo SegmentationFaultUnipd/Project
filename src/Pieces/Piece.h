@@ -6,8 +6,8 @@
 
 #include "../Color.h"
 #include "../Coordinates.h"
-
 namespace chess {
+	class Board;
 
     class Piece {
         public:
@@ -16,14 +16,14 @@ namespace chess {
                 position_.rank = rank;
             }
 
-            // Check if the piece can move to a file and rank.
-            bool virtual canMove(short to_file, short to_rank, std::unique_ptr<Piece> board[8][8]) = 0;
+            //Check if the piece can move to a file and rank.
+            bool virtual canMove(short to_file, short to_rank, chess::Board& board) = 0;
 
-            // Check if the piece has at least an avaible move
-            bool virtual canMove(std::unique_ptr<Piece> board[8][8]) = 0;
+            //Check if the piece has at least an avaible move
+            bool virtual canMove(chess::Board& board) = 0;
 
-            // List all the avaible moves
-            std::vector<Coordinates> virtual legalMoves(std::unique_ptr<Piece> board[8][8]) = 0;
+            //List all the avaible moves
+            std::vector<Coordinates> virtual legalMoves(chess::Board& board) = 0;
 
             // returns the ascii character for that piece
             char virtual ascii() = 0;

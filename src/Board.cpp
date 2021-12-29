@@ -1,14 +1,14 @@
 #include "Board.h"
 
 chess::Board::Board() {
-
+	/*
     //Inserting test pieces
     for (short file = 0; file < 8; file++) {
         white_pieces_.push_back(Coordinates{file, 0});
         white_pieces_.push_back(Coordinates{file, 1});
 
-        white_pieces_.push_back(Coordinates{file, 6});
-        white_pieces_.push_back(Coordinates{file, 7});
+        black_pieces_.push_back(Coordinates{file, 6});
+        black_pieces_.push_back(Coordinates{file, 7});
     }
 
     //Constructing pointer matrix
@@ -35,7 +35,7 @@ void chess::Board::move(short from_file, short from_rank, short to_file, short t
     
     Piece* moving_piece = board_[from_file][from_rank].get();
 
-    if (moving_piece != nullptr && moving_piece->canMove(to_file, to_rank, board_) ) {
+    if (moving_piece != nullptr && moving_piece->canMove(to_file, to_rank, *this) ) {
 
         // Eat piece
         if (board_[to_file][to_rank]->color() != board_[from_file][from_rank]->color()) {
@@ -54,7 +54,7 @@ void chess::Board::move(short from_file, short from_rank, short to_file, short t
 }
 
 std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece* piece) {
-    return piece->legalMoves(board_);
+    return piece->legalMoves(*this);
 }
 
 std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
