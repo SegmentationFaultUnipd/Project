@@ -2,6 +2,7 @@
 #define KING_H
 
 #include "Piece.h"
+#include "../Board.h"
 #include <vector>
 
 namespace chess {
@@ -15,11 +16,11 @@ namespace chess {
 
 			bool hasMoved() {return hasMoved;}
 			void firstMove() {hasMoved = true;}
-			bool canCastle(short to_file, short to_rank, Piece* board[8][8],std::vector<Coordinates> enemy_positions);
-			bool isInCheck(short to_file, short to_rank, Piece* board[8][8], std::vector<Coordinates> enemy_positions); //return true if the king would be in check in a particular position. Temporarily modifies the board before restoring it in 
-            bool canMove(short to_file, short to_rank, Piece* board[8][8]) override;
-            bool canMove(Piece* board[8][8]) override;
-            std::vector<Coordinates> legalMoves(Piece* board[8][8]) override;
+			bool canCastle(short to_file, short to_rank, Board& board);
+			bool isInCheck(short king_file, short king_rank, Board& board); //return true if the king would be in check in a particular position. Temporarily modifies the board before restoring it in 
+          	bool canMove(short to_file, short to_rank, Board& board) override;
+            bool canMove(Board& board) override;
+            std::vector<Coordinates> legalMoves(Board& board) override;
             char ascii() override { return 'R'; };
     };
 

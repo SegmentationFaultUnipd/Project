@@ -1,22 +1,20 @@
 #include "King.h"
-bool chess::King::canMove(short to_file, short to_rank, Piece* board[8][8]) {
-    
-	//FIXME: i need the position of the enemies to check if the king is in check (call isInCheck method)
-	//FIXME: If we want the check function to be inside gamemanager or in board, we would still need a reference  
-	short delta_file = abs(to_file - file());
+bool chess::King::canMove(short to_file, short to_rank, chess::Board& board) {
+    short delta_file = abs(to_file - file());
     short delta_rank = abs(to_rank - rank());
 
 	//King can move at maximum 1 square in all the directions
     if(delta_file > 1 || delta_rank > 1 || (to_file == file() && to_rank == rank())) {
 		return false;
 	}
-	const Piece* landing_piece = board[to_file][to_rank];
+	const Piece* landing_piece = board.at(to_file, to_rank);
 	
 	return landing_piece == nullptr || landing_piece->color() != this->color();
-	//TODO check that by moving the king in a particular spot, the king is not in check. If he is in check, then return false
 };
 
-bool chess::King::canMove(Piece* board[8][8]) {
+
+
+bool chess::King::canMove(chess::Board& board) {
     for (short d_file = -1; d_file <= 1; d_file++) {
        	for (short d_rank = -1; d_rank <= 1; d_rank++) {
 			if (d_file == 0 && d_rank == 0)
@@ -32,7 +30,7 @@ bool chess::King::canMove(Piece* board[8][8]) {
     return false;
 };
 
-std::vector<chess::Coordinates> chess::King::legalMoves(Piece* board[8][8]) {
+std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) {
     std::vector<chess::Coordinates> moves = {};
 
     for (short d_file = -1; d_file <= 1; d_file++) {
@@ -51,7 +49,7 @@ std::vector<chess::Coordinates> chess::King::legalMoves(Piece* board[8][8]) {
 }
 
 
-bool chess::King::canCastle(short to_file, short to_rank, Piece* board[8][8],std::vector<Coordinates> enemy_positions) {
+bool chess::King::canCastle(short to_file, short to_rank, chess::Board& board) {
 	if(hasMoved()) {
 		return false;
 	}
@@ -63,6 +61,20 @@ bool chess::King::canCastle(short to_file, short to_rank, Piece* board[8][8],std
 }
 
 
-bool chess::King::isInCheck(short to_file, short to_rank, Piece* board[8][8],std::vector<Coordinates> enemy_positions) {
+bool chess::King::isInCheck(short king_file, short king_rank, chess::Board& board) {
+	//For all the moves that the enemy can do, check if at least one move could capture the king at that position
+	Color enemy_color = (color() == WHITE) ? BLACK : WHITE;
+	std::list<Coordinates> enemy_coords = board.getPieces(enemy_color);
+	
+	for(auto coords : enemy_coords) {
+		std::vector<Coordinates> moves = board.at(coords)->legalMoves(board);
+		for(auto target: moves) {
+			if(target.file == king_file && target.rank == king_rank) {
+				return true;
+			}
+		} 
+	}
+	
+	return false;
 
 }

@@ -25,6 +25,11 @@ chess::Piece* chess::Board::at(short file, short rank) {
     return board_[file][rank].get();
 }
 
+chess::Piece* chess::Board::at(Coordinates coords) {
+    return at(coords.file, coords.rank);
+}
+
+
 // Move the piece 
 void chess::Board::move(short from_file, short from_rank, short to_file, short to_rank) {
     assert(from_file >= 0 && from_file < 8);
