@@ -33,8 +33,13 @@ namespace chess {
             short rank() const { return position_.rank; }
 
         protected:
-            Piece(short file, short rank, Color color) : position_{file, rank}, color_{color} {};
-            Piece(char file, short rank, Color color) : Piece{(short)(file - 'a'), (short)(rank - 1), color} {};
+            Piece(short file, short rank, Color color) {
+                position_ = Coordinates{file, rank};
+                color_ = color;
+            };
+            Piece(char file, short rank, Color color) : Piece{(short)(file - 'a'), (short)(rank - 1), color} {
+
+            };
 
             Coordinates position_;
             Color color_;

@@ -43,7 +43,7 @@ void chess::Board::move(short from_file, short from_rank, short to_file, short t
 
         // Eat piece
         if (board_[to_file][to_rank]->color() != board_[from_file][from_rank]->color()) {
-            getPieces(board_[to_file][to_rank]->color()).remove({to_file, to_rank});
+            getPieces(board_[to_file][to_rank]->color()).remove(Coordinates{to_file, to_rank});
         }
 
         // Moving in matrix
