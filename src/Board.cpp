@@ -24,7 +24,6 @@ chess::Board::Board() {
 bool chess::Board::isEmpty(short file, short rank) {
     return board_[file][rank] == nullptr;
 }
-
 bool chess::Board::isEmpty(chess::Coordinates coords) {
     return board_[coords.file][coords.rank] == nullptr;
 }
@@ -33,7 +32,6 @@ chess::Piece& chess::Board::at(short file, short rank) {
     assert(!isEmpty(file, rank));
     return *board_[file][rank];
 }
-
 chess::Piece& chess::Board::at(Coordinates coords) {
     assert(!isEmpty(coords.file, coords.rank));
     return *board_[coords.file][coords.rank];
@@ -81,17 +79,23 @@ std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
     return black_pieces_;
 }
 
-// Check if there is a piece of color attacking the square
+// Check if there is a piece attacking the square
+// color is the color of the square
 bool chess::Board::isInCheck(chess::Coordinates coords, chess::Color color) {
+    //King king{coords.file, coords.rank, color};
+    //Queen queen{coords.file, coords.rank, color};
+    //Rook rook{coords.file, coords.rank, color};
+    //Bishop bishop{coords.file, coords.rank, color};
     Knight knight{coords.file, coords.rank, color};
+    //Pawn pawn{coords.file, coords.rank, color};
 
     const Piece* possiblePieces[] = {
+        //&king,
+        //&queen
+        //&rook
+        //&bishop
         &knight
-        //Rook
-        //Bishop
-        //King
-        //Queen
-        //Pawn
+        //%pawn
     };
 
     for (const Piece* piece : possiblePieces) {
@@ -99,7 +103,7 @@ bool chess::Board::isInCheck(chess::Coordinates coords, chess::Color color) {
 
         for (chess::Coordinates move : moves) {
             if (at(move.file, move.rank).ascii() == piece->ascii() &&
-                at(move.file, move.rank).color() == piece->color())
+                at(move.file, move.rank).color() != piece->color())
                 return true;
         }
     }

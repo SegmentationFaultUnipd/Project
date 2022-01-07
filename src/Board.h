@@ -6,8 +6,7 @@
 #include <memory>
 #include <assert.h>
 
-#include "Pieces/Piece.h"
-#include "Pieces/Knight.h"
+#include "Pieces/Pieces.h"
 #include "Color.h"
 
 namespace chess {
