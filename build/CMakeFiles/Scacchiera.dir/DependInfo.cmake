@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Board.cpp" "CMakeFiles/Scacchiera.dir/src/Board.cpp.obj" "gcc" "CMakeFiles/Scacchiera.dir/src/Board.cpp.obj.d"
   "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Pieces/Knight.cpp" "CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj" "gcc" "CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj.d"
+  "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/Players/HumanPlayer.cpp" "CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj" "gcc" "CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj.d"
   "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/src/main.cpp" "CMakeFiles/Scacchiera.dir/src/main.cpp.obj" "gcc" "CMakeFiles/Scacchiera.dir/src/main.cpp.obj.d"
   )
 

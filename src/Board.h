@@ -2,8 +2,9 @@
 #define BOARD_H
 
 #include <iostream>
-#include <vector>
+#include <list>
 #include <memory>
+#include <assert.h>
 
 #include "Pieces/Piece.h"
 #include "Pieces/Knight.h"
@@ -14,18 +15,19 @@ namespace chess {
     class Board {
         public:
             Board();
-            ~Board();
 
             Piece* at(short file, short rank);
             
             void move(short from_file, short from_rank, short to_file, short to_rank);
             std::vector<Coordinates> legalMovesOf(Piece* piece);
             
+            std::list<Coordinates>& getPieces(Color color);
+
         private:
-            //at(char file, short rank)
-            std::vector<Piece*> white_pieces_;
-            std::vector<Piece*> black_pieces_;
-            Piece* board_[8][8];
+            std::list<Coordinates> white_pieces_;
+            std::list<Coordinates> black_pieces_;
+
+            std::unique_ptr<Piece> board_[8][8];
     };
 
     std::ostream& operator<<(std::ostream& os, Board& board);

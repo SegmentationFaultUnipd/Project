@@ -81,12 +81,12 @@ clean: CMakeFiles/Scacchiera.dir/clean
 CMakeFiles/Scacchiera.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Scacchiera.dir/build.make CMakeFiles/Scacchiera.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" --progress-num=1,2,3,4 "Built target Scacchiera"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" --progress-num=1,2,3,4,5 "Built target Scacchiera"
 .PHONY : CMakeFiles/Scacchiera.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Scacchiera.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" 4
+	$(CMAKE_COMMAND) -E cmake_progress_start "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Scacchiera.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "C:/Users/filip/Google Drive/uni/Anno II/Laboratorio di Programmazione/Progetto/Chess/Project/build/CMakeFiles" 0
 .PHONY : CMakeFiles/Scacchiera.dir/rule
