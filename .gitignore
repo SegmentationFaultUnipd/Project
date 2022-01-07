@@ -56,3 +56,7 @@ build/CMakeFiles/CMakeDirectoryInformation.cmake
 build/CMakeFiles/3.22.0/CMakeDetermineCompilerABI_CXX.bin
 build/CMakeCache.txt
 build/cmake_install.cmake
+
+#
+build/
+.vscode/

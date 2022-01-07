@@ -16,12 +16,18 @@ namespace chess {
         public:
             Board();
 
-            Piece* at(short file, short rank);
+            bool isEmpty(short file, short rank);
+            bool isEmpty(Coordinates coords);
+            Piece& at(short file, short rank);
+            Piece& at(Coordinates coords);
             
             void move(short from_file, short from_rank, short to_file, short to_rank);
-            std::vector<Coordinates> legalMovesOf(Piece* piece);
+            std::vector<Coordinates> legalMovesOf(Piece& piece);
             
             std::list<Coordinates>& getPieces(Color color);
+
+            bool isInCheck(Coordinates coord, Color color);
+            bool isKingInCheck(Color color);
 
         private:
             std::list<Coordinates> white_pieces_;

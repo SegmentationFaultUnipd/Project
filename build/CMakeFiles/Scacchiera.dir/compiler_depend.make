@@ -181,7 +181,7 @@ CMakeFiles/Scacchiera.dir/src/Board.cpp.obj: ../src/Board.cpp \
 
 CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj: ../src/Pieces/Knight.cpp \
   ../src/Pieces/Knight.h \
-  C:/msys64/mingw64/include/c++/11.2.0/memory \
+  C:/msys64/mingw64/include/c++/11.2.0/vector \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stl_algobase.h \
   C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/c++config.h \
   C:/msys64/mingw64/include/c++/11.2.0/x86_64-w64-mingw32/bits/os_defines.h \
@@ -213,6 +213,14 @@ CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj: ../src/Pieces/Knight.cpp \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stl_uninitialized.h \
   C:/msys64/mingw64/include/c++/11.2.0/ext/alloc_traits.h \
   C:/msys64/mingw64/include/c++/11.2.0/bits/alloc_traits.h \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/stl_vector.h \
+  C:/msys64/mingw64/include/c++/11.2.0/initializer_list \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/stl_bvector.h \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/functional_hash.h \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/hash_bytes.h \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/range_access.h \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/vector.tcc \
+  C:/msys64/mingw64/include/c++/11.2.0/memory \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stl_tempbuf.h \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stl_raw_storage_iter.h \
   C:/msys64/mingw64/include/c++/11.2.0/bits/align.h \
@@ -232,15 +240,11 @@ CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj: ../src/Pieces/Knight.cpp \
   C:/msys64/mingw64/include/c++/11.2.0/bits/unique_ptr.h \
   C:/msys64/mingw64/include/c++/11.2.0/utility \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stl_relops.h \
-  C:/msys64/mingw64/include/c++/11.2.0/initializer_list \
   C:/msys64/mingw64/include/c++/11.2.0/tuple \
   C:/msys64/mingw64/include/c++/11.2.0/array \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/range_access.h \
   C:/msys64/mingw64/include/c++/11.2.0/bits/invoke.h \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stl_function.h \
   C:/msys64/mingw64/include/c++/11.2.0/backward/binders.h \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/functional_hash.h \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/hash_bytes.h \
   C:/msys64/mingw64/include/c++/11.2.0/bits/shared_ptr.h \
   C:/msys64/mingw64/include/c++/11.2.0/iosfwd \
   C:/msys64/mingw64/include/c++/11.2.0/bits/stringfwd.h \
@@ -291,10 +295,6 @@ CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj: ../src/Pieces/Knight.cpp \
   C:/msys64/mingw64/include/c++/11.2.0/pstl/glue_memory_defs.h \
   C:/msys64/mingw64/include/c++/11.2.0/pstl/execution_defs.h \
   ../src/Pieces/Piece.h \
-  C:/msys64/mingw64/include/c++/11.2.0/vector \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/stl_vector.h \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/stl_bvector.h \
-  C:/msys64/mingw64/include/c++/11.2.0/bits/vector.tcc \
   C:/msys64/mingw64/include/c++/11.2.0/iostream \
   C:/msys64/mingw64/include/c++/11.2.0/ostream \
   C:/msys64/mingw64/include/c++/11.2.0/ios \
@@ -348,7 +348,14 @@ CMakeFiles/Scacchiera.dir/src/Pieces/Knight.cpp.obj: ../src/Pieces/Knight.cpp \
   C:/msys64/mingw64/include/c++/11.2.0/bits/istream.tcc \
   ../src/Color.h \
   ../src/Coordinates.h \
-  C:/msys64/mingw64/x86_64-w64-mingw32/include/assert.h
+  C:/msys64/mingw64/x86_64-w64-mingw32/include/assert.h \
+  ../src/Board.h \
+  C:/msys64/mingw64/include/c++/11.2.0/list \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/stl_list.h \
+  C:/msys64/mingw64/include/c++/11.2.0/bits/list.tcc \
+  ../src/Pieces/Piece.h \
+  ../src/Pieces/Knight.h \
+  ../src/Color.h
 
 CMakeFiles/Scacchiera.dir/src/Players/HumanPlayer.cpp.obj: ../src/Players/HumanPlayer.cpp \
   ../src/Players/HumanPlayer.h \

@@ -9,6 +9,7 @@
 int main() {
     chess::Board board;
 
+    /*
     chess::HumanPlayer hp{board.getPieces(chess::Color::WHITE), chess::Color::WHITE};
     chess::Coordinates from, to;
     bool showBoard = false;
@@ -19,17 +20,15 @@ int main() {
               << (char)(to.file + 'a')   << to.rank + 1   << "\n";
 
 
-    /*
-    chess::Board board;
+    */
     
-    board.move(4,6, 4,7); //Impossible movement
     board.move(4,6, 6,5);
+
     std::vector<chess::Coordinates> legalMoves = board.legalMovesOf(board.at(6,5));
 
     for (chess::Coordinates c : legalMoves)
-        std::cout << (char)('a' + c.file) << c.rank + 1 << "\n";
+        std::cout << c.file << "," << c.rank << "\n";
 
     std::cout << board << std::endl;
     return 0;
-    */
 }

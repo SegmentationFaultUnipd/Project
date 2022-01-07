@@ -23,7 +23,7 @@ namespace chess {
 
         Coordinates() : Coordinates{0,0} {}
 
-        bool operator==(const Coordinates& c2) {
+        bool operator==(const Coordinates& c2) const {
             return file == c2.file && rank == c2.rank;
         }
     };
