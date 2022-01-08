@@ -1,6 +1,10 @@
 #include "Pawn.h"
 
 bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) const {
+    //Can't stay stationary
+    if(position_.file == to_file && position_.rank == to_rank) {
+        return false;
+    }
 
     //The pawn can make 3 different moves, 1 only if it hasn't yet moved
     //THE PAWN IS WHITE
@@ -8,14 +12,12 @@ bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) const {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = to_file == position_.file && to_rank == (position_.rank - 2);
         if(two_up && !hasMoved && board.isEmpty(to_file, to_rank)) {
-            hasMoved = true;
             return true;
         }
         
         //The pawn moves one step forward (if the tile is free)
         bool one_up = to_file == position_.file && to_rank == (position_.rank - 1);
         if(one_up && board.isEmpty(to_file, to_rank)) {
-            if(!hasMoved) hasMoved = true;
             return true;
         }
 
@@ -23,7 +25,6 @@ bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) const {
         bool diag_1 = to_file == (position_.file + 1) && to_rank == (position_.rank - 1);
         bool diag_2 = to_file == (position_.file - 1) && to_rank == (position_.rank - 1);
         if((diag_1 || diag_2) && board.at(to_file, to_rank).color() == chess::BLACK) {
-            if(!hasMoved) hasMoved = true;
             return true;
         }
 
@@ -34,14 +35,12 @@ bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) const {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = to_file == position_.file && to_rank == (position_.rank + 2);
         if(two_up && !hasMoved && board.isEmpty(to_file, to_rank)) {
-            hasMoved = true;
             return true;
         }
         
         //The pawn moves one step forward (if the tile is free)
         bool one_up = to_file == position_.file && to_rank == (position_.rank + 1);
         if(one_up && board.isEmpty(to_file, to_rank)) {
-            if(!hasMoved) hasMoved = true;
             return true;
         }
 
@@ -49,7 +48,6 @@ bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) const {
         bool diag_1 = to_file == (position_.file + 1) && to_rank == (position_.rank + 1);
         bool diag_2 = to_file == (position_.file - 1) && to_rank == (position_.rank + 1);
         if((diag_1 || diag_2) && board.at(to_file, to_rank).color() == chess::WHITE) {
-            if(!hasMoved) hasMoved = true;
             return true;
         }
 

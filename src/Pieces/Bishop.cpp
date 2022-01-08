@@ -43,12 +43,70 @@ bool chess::Bishop::canMove(short to_file, short to_rank, Board& board) const {
         }
         //Moving up-left
         if(delta_rank > 0 && delta_file > 0) {
-
+            while(x > to_file && y > to_rank) {
+                if(!board.isEmpty(x, y)) {
+                    return false;
+                }
+                x--;
+                y--;
+            }
+            return true;
         }
         //Moving up-right
         if(delta_rank > 0 && delta_file < 0) {
-
+            while(x < to_file && y > to_rank) {
+                if(!board.isEmpty(x, y)) {
+                    return false;
+                }
+                x++;
+                y--;
+            }
+            return true;
         }
     }
+}
+
+std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
+    std::vector<chess::Coordinates> moves = {};
+
+    short to_file, to_rank;
+
+    //UPPER VERTICALS
+    //left
+    to_file = position_.file - 1;
+    to_rank = position_.rank - 1;
+    while(to_file >= 0 && to_rank >= 0) {
+        //Can't move past an obstacle
+        if(!board.isEmpty(to_file, to_rank)) {
+            //Can move to eat a piece of different color
+            if(board.at(to_file, to_rank).color() != this->color()) {
+                moves.push_back(chess::Coordinates{to_file, to_rank});
+            }
+            break;
+        }
+        moves.push_back(chess::Coordinates{to_file, to_rank});
+        to_file--;
+        to_rank--;
+    }
+    //right
+    to_file = position_.file + 1;
+    to_rank = position_.rank - 1;
+    while(to_file < 8 && to_rank >= 0) {
+        //Can't move past an obstacle
+        if(!board.isEmpty(to_file, to_rank)) {
+            //Can move to eat a piece of different color
+            if(board.at(to_file, to_rank).color() != this->color()) {
+                moves.push_back(chess::Coordinates{to_file, to_rank});
+            }
+            break;
+        }
+        moves.push_back(chess::Coordinates{to_file, to_rank});
+        to_file++;
+        to_rank--;
+    }
+    //LOWER VERTICALS
+    //left
+    
+
 
 }
