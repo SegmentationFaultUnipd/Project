@@ -1,5 +1,5 @@
-#ifndef HUMANPLAYER_H
-#define HUMANPLAYER_H
+#ifndef COMPUTERPLAYER_H
+#define COMPUTERPLAYER_H
 
 #include <iostream>
 
@@ -8,14 +8,14 @@
 #include "../Color.h"
 
 namespace chess {
-    class HumanPlayer : public Player {
+    class ComputerPlayer : public Player {
         public:
-            HumanPlayer(Color color) : Player{color} {};
+            ComputerPlayer(unsigned int seed, Color color) : Player{color} {};
             void nextTurn(Board &board, Coordinates &from, Coordinates &to) override;
 			char choosePromotion() override;
         private:
-            bool verifyNotation(std::string coordinate);
+
     };
 }
 
-#endif //HUMANPLAYER_H
+#endif //COMPUTERPLAYER_H

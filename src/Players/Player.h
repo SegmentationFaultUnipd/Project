@@ -5,17 +5,16 @@
 
 #include "../Coordinates.h"
 #include "../Color.h"
-
+#include "../Board.h"
 namespace chess {
 
     class Player {
         public:
-            virtual void nextTurn(Coordinates *from, Coordinates *to) = 0;
+            virtual void nextTurn(Board &board, Coordinates &from, Coordinates &to) = 0;
+			virtual char choosePromotion() = 0;
         protected:
-            Player(std::list<Coordinates>& pieces, Color color) : pieces_{pieces}, color_{color} {};
+            Player(Color color) : color_{color} {};
             Color color_;
-            std::list<Coordinates>& pieces_;
-
     };
 
 }
