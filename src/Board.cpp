@@ -33,28 +33,26 @@ chess::Piece& chess::Board::at(short file, short rank) {
     return *board_[file][rank];
 }
 chess::Piece& chess::Board::at(Coordinates coords) {
-    assert(!isEmpty(coords.file, coords.rank));
-    return *board_[coords.file][coords.rank];
+    return at(coords.file, coords.rank);
 }
 
 
 // Move the piece 
-void chess::Board::move(short from_file, short from_rank, short to_file, short to_rank) {
+bool chess::Board::move(short from_file, short from_rank, short to_file, short to_rank) {
     assert(from_file >= 0 && from_file < 8);
     assert(from_rank >= 0 && from_rank < 8);
     assert(to_file >= 0 && to_file < 8);
     assert(to_rank >= 0 && to_rank < 8);
     
     if (isEmpty(from_file, from_rank))
-        return; //Illegal Movement
+        return false; //Illegal Movement
 
     Piece& moving_piece = at(from_file, from_rank);
     if (moving_piece.canMove(to_file, to_rank, *this) ) {
 
         // Eat piece
         if (!isEmpty(to_file, to_rank)
-            && at(to_file, to_rank).color() != at(from_file, from_rank).color())
-        {
+            && at(to_file, to_rank).color() != at(from_file, from_rank).color()) {
             getPieces(board_[to_file][to_rank]->color()).remove({to_file, to_rank});
         }
 
@@ -65,8 +63,12 @@ void chess::Board::move(short from_file, short from_rank, short to_file, short t
         // Update piece position
         moving_piece.move(to_file, to_rank);
     } else {
-        //ILLEGAL MOVEMENT, exception?
+		return false;
     }
+}
+
+bool chess::Board::move(Coordinates from, Coordinates to) {
+	return move(from.file, from.rank, to.file, to.rank);
 }
 
 std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece& piece) {
