@@ -6,6 +6,7 @@
 
 #include "../Color.h"
 #include "../Coordinates.h"
+#include "../Board.h"
 namespace chess {
 	class Board;
 
@@ -25,8 +26,8 @@ namespace chess {
             //List all the avaible moves
             std::vector<Coordinates> virtual legalMoves(chess::Board& board) const = 0;
 
-            //List all the moves that 
-            std::vector<Coordinates> virtual takeablePieces(chess::Board& board) const = 0;
+            //List all the moves that capture an enemy piece
+            std::vector<Coordinates> virtual takeablePieces(chess::Board& board) const;
 
             // returns the ascii character for that piece
             char virtual ascii() const = 0;

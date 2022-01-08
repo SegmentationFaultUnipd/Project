@@ -20,10 +20,12 @@ namespace chess {
             Piece& at(short file, short rank);
             Piece& at(Coordinates coords);
            
-            void move(short from_file, short from_rank, short to_file, short to_rank);
+            bool move(short from_file, short from_rank, short to_file, short to_rank);
+            bool move(Coordinates from, Coordinates to);
             std::vector<Coordinates> legalMovesOf(Piece& piece);
             
             std::list<Coordinates>& getPieces(Color color);
+			void promote(Coordinates coords, char chosen_piece);
 
             bool isInCheck(Coordinates coord, Color color);
             bool isKingInCheck(Color color);
