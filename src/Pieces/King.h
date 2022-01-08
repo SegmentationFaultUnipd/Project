@@ -17,11 +17,10 @@ namespace chess {
 			bool hasMoved() {return hasMoved;}
 			void firstMove() {hasMoved = true;}
 			bool canCastle(short to_file, short to_rank, Board& board);
-			bool isInCheck(short king_file, short king_rank, Board& board); //return true if the king would be in check in a particular position. Temporarily modifies the board before restoring it in 
-          	bool canMove(short to_file, short to_rank, Board& board) override;
-            bool canMove(Board& board) override;
-            std::vector<Coordinates> legalMoves(Board& board) override;
-            char ascii() override { return 'R'; };
+          	bool canMove(short to_file, short to_rank, Board& board) const override;
+            bool canMove(Board& board) const override;
+            std::vector<Coordinates> legalMoves(Board& board) const override;
+            char ascii() const override { return 'R'; };
     };
 
 } //namespace chess
