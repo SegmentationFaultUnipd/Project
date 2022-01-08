@@ -1,6 +1,6 @@
 #include "Pawn.h"
 
-bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) {
+bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) const {
 
     //The pawn can make 3 different moves, 1 only if it hasn't yet moved
     //THE PAWN IS WHITE
@@ -57,7 +57,7 @@ bool chess::Pawn::canMove(short to_file, short to_rank, Board& board) {
     }
 }
 
-bool chess::Pawn::canMove(Board& board) {
+bool chess::Pawn::canMove(Board& board) const {
     //THE PAWN IS WHITE
     if(this->color() == chess::WHITE) {      
         if(position_.rank - 2 >= 0 && !hasMoved && board.isEmpty(position_.file, position_.rank - 2)) {
@@ -99,7 +99,7 @@ bool chess::Pawn::canMove(Board& board) {
 }
 
 
-std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) {
+std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
 
     //THE PAWN IS WHITE

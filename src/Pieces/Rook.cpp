@@ -1,11 +1,15 @@
 #include "Rook.h"
 
-bool chess::Rook::canMove(short to_file, short to_rank, Board& board) {
+bool chess::Rook::canMove(short to_file, short to_rank, Board& board) const {
     //Rook will only move horizontally or vertically
     //If it's moving vertically it will keep a fixed rank while changing the file and viceversa
     
     //Can't land on a piece of the same color
     if(board.at(to_file, position_.rank).color() == this->color()) {
+        return false;
+    }
+    //Can't stay stationary
+    if(position_.file == to_file && position_.rank == to_rank) {
         return false;
     }
 
@@ -56,7 +60,7 @@ bool chess::Rook::canMove(short to_file, short to_rank, Board& board) {
     return false;
 }
 
-bool chess::Rook::canMove(Board& board) {
+bool chess::Rook::canMove(Board& board) const {
     short to_file, to_rank;
 
     //HORIZONTAL MOVEMENT
@@ -116,7 +120,7 @@ bool chess::Rook::canMove(Board& board) {
     return false;
 }
 
-std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) {
+std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
     short to_file, to_rank;
 
