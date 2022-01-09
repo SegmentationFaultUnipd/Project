@@ -11,13 +11,13 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
     if(this->color() == chess::WHITE) {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank - 2);
-        if(two_up && !hasMoved && board.isEmpty(to_file, to_rank)) {
+        if(two_up && !hasMoved && board.isEmpty(coords)) {
             return true;
         }
         
         //The pawn moves one step forward (if the tile is free)
         bool one_up = coords.file == position_.file && coords.rank == (position_.rank - 1);
-        if(one_up && board.isEmpty(to_file, to_rank)) {
+        if(one_up && board.isEmpty(coords)) {
             return true;
         }
 
@@ -58,25 +58,25 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
 bool chess::Pawn::canMove(Board& board) const {
     //THE PAWN IS WHITE
     if(this->color() == chess::WHITE) {
-        if(position_.rank - 2 >= 0 && !hasMoved && board.isEmpty(position_.file, position_.rank - 2)) {
+        if(position_.rank - 2 >= 0 && !hasMoved && board.isEmpty({position_.file, position_.rank - 2})) {
             return true;
         }
 
         if(position_.rank - 1 >= 0) {
-            if(board.isEmpty(position_.file, position_.rank - 1)) {
+            if(board.isEmpty({position_.file, position_.rank - 1})) {
                 return true;
             }
-            if(position_.file + 1 < 8 && board.at(position_.file + 1, position_.rank - 1).color() == chess::BLACK) {
+            if(position_.file + 1 < 8 && board.at({position_.file + 1, position_.rank - 1}).color() == chess::BLACK) {
                 return true;
             }
-            if(position_.file - 1 >= 0 && board.at(position_.file - 1, position_.rank - 1).color() == chess::BLACK) {
+            if(position_.file - 1 >= 0 && board.at({position_.file - 1, position_.rank - 1}).color() == chess::BLACK) {
                 return true;
             }
         }
     }
     //THE PAWN IS BLACK
     if(this->color() == chess::BLACK) {
-        if(position_.rank + 2 >= 0 && !hasMoved && board.isEmpty(position_.file, position_.rank + 2)) {
+        if(position_.rank + 2 >= 0 && !hasMoved && board.isEmpty({position_.file, position_.rank + 2})) {
             return true;
         }
 
@@ -103,38 +103,38 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     //THE PAWN IS WHITE
     if(this->color() == chess::WHITE) {
         //Double move up
-        if(position_.rank - 2 >= 0 && !hasMoved && board.isEmpty(position_.file, position_.rank - 2)) {
+        if(position_.rank - 2 >= 0 && !hasMoved && board.isEmpty({position_.file, position_.rank - 2})) {
             moves.push_back(chess::Coordinates{position_.file, position_.rank - 2});
         }
 
         if(position_.rank - 1 >= 0) {
             //Single move up
-            if(board.isEmpty(position_.file, position_.rank - 1)) {
+            if(board.isEmpty({position_.file, position_.rank - 1})) {
                 moves.push_back(chess::Coordinates{position_.file, position_.rank - 1});
             }
             //Diagonal eating moves
-            if(position_.file + 1 < 8 && board.at(position_.file + 1, position_.rank - 1).color() == chess::BLACK) {
+            if(position_.file + 1 < 8 && board.at({position_.file + 1, position_.rank - 1}).color() == chess::BLACK) {
                 moves.push_back(chess::Coordinates{position_.file + 1, position_.rank - 1});
             }
-            if(position_.file - 1 >= 0 && board.at(position_.file - 1, position_.rank - 1).color() == chess::BLACK) {
+            if(position_.file - 1 >= 0 && board.at({position_.file - 1, position_.rank - 1}).color() == chess::BLACK) {
                 moves.push_back(chess::Coordinates{position_.file - 1, position_.rank - 1});
             }
         }
     }
     //THE PAWN IS BLACK
     if(this->color() == chess::BLACK) {
-        if(position_.rank + 2 >= 0 && !hasMoved && board.isEmpty(position_.file, position_.rank + 2)) {
+        if(position_.rank + 2 >= 0 && !hasMoved && board.isEmpty({position_.file, position_.rank + 2})) {
             moves.push_back(chess::Coordinates{position_.file, position_.rank + 2});
         }
 
         if(position_.rank + 1 >= 0) {
-            if(board.isEmpty(position_.file, position_.rank + 1)) {
+            if(board.isEmpty({position_.file, position_.rank + 1})) {
                 moves.push_back(chess::Coordinates{position_.file, position_.rank + 1});
             }
-            if(position_.file + 1 < 8 && board.at(position_.file + 1, position_.rank + 1).color() == chess::WHITE) {
+            if(position_.file + 1 < 8 && board.at({position_.file + 1, position_.rank + 1}).color() == chess::WHITE) {
                 moves.push_back(chess::Coordinates{position_.file + 1, position_.rank + 1});
             }
-            if(position_.file - 1 >= 0 && board.at(position_.file - 1, position_.rank + 1).color() == chess::WHITE) {
+            if(position_.file - 1 >= 0 && board.at({position_.file - 1, position_.rank + 1}).color() == chess::WHITE) {
                 moves.push_back(chess::Coordinates{position_.file - 1, position_.rank + 1});
             }
         }

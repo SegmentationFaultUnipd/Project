@@ -122,19 +122,19 @@ std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
 // Check if there is a piece attacking the square
 bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceColor) {
     King king{coords, pieceColor};
-    //Queen queen{coords.file, coords.rank, pieceColor};
+    //Queen queen{coords, pieceColor};
     Rook rook{coords, pieceColor};
-    //Bishop bishop{coords.file, coords.rank, pieceColor};
+    //Bishop bishop{coords, pieceColor};
     Knight knight{coords, pieceColor};
-    //Pawn pawn{coords.file, coords.rank, pieceColor};
+    Pawn pawn{coords, pieceColor};
 
     const Piece* possiblePieces[] = {
         &king,
         //&queen,
         &rook,
         //&bishop,
-        &knight
-        //&pawn
+        &knight,
+        &pawn
     };
 
     for (const Piece* piece : possiblePieces) {
@@ -173,8 +173,7 @@ std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords
     case 'C':
         return std::make_unique<Knight>(coords, pieceColor);
     case 'P':
-        // Pedone
-        break;
+        return std::make_unique<Pawn>(coords, pieceColor);
     default:
         return nullptr;
     }

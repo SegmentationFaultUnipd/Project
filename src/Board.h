@@ -10,6 +10,7 @@
 #include "Pieces/Knight.h"
 #include "Pieces/King.h"
 #include "Pieces/Rook.h"
+#include "Pieces/Pawn.h"
 
 #include "Color.h"
 
