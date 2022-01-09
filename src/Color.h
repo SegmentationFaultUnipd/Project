@@ -7,7 +7,7 @@ namespace chess {
         BLACK
     };
 
-    Color opposite(Color color) {
+    inline Color opposite(Color color) {
         return color == WHITE ? BLACK : WHITE;
     }
 }

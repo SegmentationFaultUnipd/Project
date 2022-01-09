@@ -50,7 +50,7 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 
 
 bool chess::King::canCastle(short to_file, short to_rank, chess::Board& board) {
-	if(hasMoved()) {
+	if(hasMoved) {
 		return false;
 	}
 	//TODO Check that the to_file and to_rank are actually the positions of the towers, based also on the right color
