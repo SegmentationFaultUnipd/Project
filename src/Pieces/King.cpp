@@ -1,15 +1,27 @@
 #include "King.h"
-bool chess::King::canMove(short to_file, short to_rank, chess::Board& board) const {
-    short delta_file = abs(to_file - file());
-    short delta_rank = abs(to_rank - rank());
+bool chess::King::canMove(Coordinates coords, chess::Board& board) const {
+    short delta_file = abs(coords.file - file());
+    short delta_rank = abs(coords.rank - rank());
 
 	//King can move at maximum 1 square in all the directions
-    if(delta_file > 1 || delta_rank > 1 || (to_file == file() && to_rank == rank())) {
+    if(delta_file > 1 || delta_rank > 1 || (coords.rank == file() && coords.file == rank())) {
 		return false;
 	}
+
+	/* OLD CODE
 	const Piece& landing_piece = board.at(to_file, to_rank);
-	
+
 	return board.isEmpty(to_file, to_rank) || landing_piece.color() != this->color();
+	*/
+
+	// NEW CODE
+	if (board.isEmpty(coords))
+		return true;
+	
+	const Piece& landing_piece = board.at(coords);
+
+	return landing_piece.color() != this->color();
+	////////////
 };
 
 
