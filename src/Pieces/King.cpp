@@ -7,9 +7,20 @@ bool chess::King::canMove(short to_file, short to_rank, chess::Board& board) con
     if(delta_file > 1 || delta_rank > 1 || (to_file == file() && to_rank == rank())) {
 		return false;
 	}
+	/* OLD CODE
 	const Piece& landing_piece = board.at(to_file, to_rank);
-	
+
 	return board.isEmpty(to_file, to_rank) || landing_piece.color() != this->color();
+	*/
+
+	// NEW CODE
+	if (board.isEmpty(to_file, to_rank))
+		return true;
+	
+	const Piece& landing_piece = board.at(to_file, to_rank);
+
+	return landing_piece.color() != this->color();
+	////////////
 };
 
 

@@ -103,16 +103,16 @@ std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
 // Check if there is a piece attacking the square
 bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceColor) {
     King king{coords.file, coords.rank, pieceColor};
-    //Queen queen{coords.file, coords.rank, opposite(attackerColor)};
-    //Rook rook{coords.file, coords.rank, opposite(attackerColor)};
-    //Bishop bishop{coords.file, coords.rank, opposite(attackerColor)};
+    //Queen queen{coords.file, coords.rank, pieceColor};
+    Rook rook{coords.file, coords.rank, pieceColor};
+    //Bishop bishop{coords.file, coords.rank, pieceColor};
     Knight knight{coords.file, coords.rank, pieceColor};
-    //Pawn pawn{coords.file, coords.rank, opposite(attackerColor)};
+    //Pawn pawn{coords.file, coords.rank, pieceColor};
 
     const Piece* possiblePieces[] = {
         &king,
         //&queen,
-        //&rook,
+        &rook,
         //&bishop,
         &knight
         //&pawn
@@ -121,9 +121,10 @@ bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceCol
     for (const Piece* piece : possiblePieces) {
         std::vector<chess::Coordinates> moves = piece->legalMoves(*this);
 
-        for (chess::Coordinates move : moves) {
-            if (at(move.file, move.rank).ascii() == piece->ascii()
-                && at(move.file, move.rank).color() != piece->color())
+        for (chess::Coordinates move : moves) { 
+            if (!isEmpty(move)
+                && at(move).ascii() == piece->ascii()
+                && at(move).color() != piece->color())
             {
                 return true;
             }
