@@ -27,8 +27,8 @@ int main() {
         std::cout << c.file << "," << c.rank << "\n";
     */
 
-    board.move(1,0, 0,2);
-    board.move(0,2, 0,0);
+    board.move({1,0}, {0,2});
+    board.move({0,2}, {0,0});
     std::cout << board.isThreatenBy({0,6}, chess::Color::WHITE) << "\n";
 
     std::cout << board << std::endl;
