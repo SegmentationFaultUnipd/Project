@@ -9,7 +9,20 @@ chess::GameManager::GameManager(Player* player1, Player* player2, int max_moves)
 
 
 void chess::GameManager::createLogFile() {
-	std::string name = "chesslog_";
+	time_t now = time(0);
+	tm *now_localtime = localtime(&now);
+	std::string year =  "" + (1900 + now_localtime->tm_year);
+	//Formato: chesslog_DDMMYYYY_HHmm.txt
+	file_name = "chesslog_" + padTime(now_localtime->tm_mday) + padTime(now_localtime->tm_mon) + year + "_" + padTime(now_localtime->tm_hour) + padTime(now_localtime->tm_min);
+	//Save stream, overwrite file if it already exists
+	log_stream.open(file_name, std::ofstream::trunc);
+}
+
+std::string chess::GameManager::padTime(int x) {
+	if(x < 10) {
+		return "0" + x;
+	}
+	return "" + x;
 }
 
 void chess::GameManager::nextPlayer() {
@@ -25,7 +38,11 @@ void chess::GameManager::play() {
 	current_player = (player1->getColor() == WHITE)? player1:player2; 
 	bool infinite_game = (max_moves == -1);
 	bool isGameEnded = false;
-	while(!isGameEnded && infinite_game && current_move < max_moves) {
+
+
+
+	
+	/*while(!isGameEnded && infinite_game && current_move < max_moves) {
 		Coordinates from, to;
 		bool isValid = false;
 		if(current_player == player1) {
@@ -86,7 +103,7 @@ void chess::GameManager::play() {
 				char chosen_piece = player2->choosePromotion();
 				board.promote(to, chosen_piece);
 			} 
-		}
+		}*/
 
 		//TODO log the move
 		
@@ -100,7 +117,7 @@ void chess::GameManager::play() {
 		std::cout << "Number of moves reached. " << std::endl;
 	}
 	//TODO close everything, free up memory etc
-
+	cleanUp();
 }
 
 void chess::GameManager::win(Player* winner) {
@@ -110,4 +127,8 @@ void chess::GameManager::win(Player* winner) {
 		std::string win_message_part = (winner == player1)? "PLAYER 1": "PLAYER 2";
 		std::cout << "The winner is "<<win_message_part<<"!!!"<<std::endl;
 	}
+}
+
+void chess::GameManager::cleanUp() {
+	log_stream.close();
 }

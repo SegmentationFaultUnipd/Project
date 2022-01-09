@@ -4,6 +4,8 @@
 #include "Players/Player.h"
 #include "Board.h"
 #include "Color.h"
+#include <ctime>
+#include <fstream>
 namespace chess {
 
     class GameManager {
@@ -19,11 +21,15 @@ namespace chess {
 			int current_move = 0;
 			Player* current_player;
 			std::string file_name;
+			std::ofstream log_stream;
 
 			void nextPlayer();
 			void win(Player* winner);
 			void createLogFile();
-			
+			std::string padTime(int x);
+			void cleanUp();
+
+		
     };
 
 } //namespace chess
