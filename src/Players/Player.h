@@ -10,8 +10,10 @@ namespace chess {
 
     class Player {
         public:
-            virtual void nextTurn(Coordinates& from, Coordinates& to) const = 0;
-            virtual bool hasLegalMoves() const = 0;
+            virtual void nextTurn(Board& board, Coordinates& from, Coordinates& to) const = 0;
+            virtual char choosePromotion() = 0;
+
+            Color getColor() { return color_; }
             
         protected:
             Player(Color color) : color_{color} {};

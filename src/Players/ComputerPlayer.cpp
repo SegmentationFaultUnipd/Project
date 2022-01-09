@@ -1,7 +1,7 @@
 #include "ComputerPlayer.h"
 #include <list>
 
-void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, chess::Coordinates &to) {
+void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, chess::Coordinates &to) const {
 	std::list<Coordinates> my_pieces = board.getPieces(color_);
 
 	bool chosen = false;

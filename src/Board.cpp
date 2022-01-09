@@ -1,25 +1,45 @@
 #include "Board.h"
 
 chess::Board::Board() {
-    
-    //Inserting test pieces
-    for (short file = 0; file < 8; file++) {
-        white_pieces_.push_back(Coordinates{file, 0});
-        white_pieces_.push_back(Coordinates{file, 1});
+    char setup[8][8] = {
+        't', 'c', 'a', 'd', 'r', 'a', 'c', 't',
+        'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 
+        'T', 'C', 'A', 'D', 'R', 'A', 'C', 'T'
+    };
 
-        black_pieces_.push_back(Coordinates{file, 6});
-        black_pieces_.push_back(Coordinates{file, 7});
-    }
-
-    //Constructing pointer matrix
+    // Initialize pointer matrix
     for (size_t i = 0; i < 8; i++)
         for (size_t j = 0; j < 8; j++)
             board_[i][j] = nullptr;
 
-    for (Coordinates coord : white_pieces_)
-        board_[coord.file][coord.rank] = std::make_unique<Knight>(coord.file, coord.rank, Color::WHITE);
-    for (Coordinates coord : black_pieces_)
-        board_[coord.file][coord.rank] = std::make_unique<Knight>(coord.file, coord.rank, Color::BLACK);
+    // Insert pieces from setup, white (lower char) with lower rank
+    for (short r = 7; r >= 0; r--) {
+        for (short f = 0; f < 8; f++) {
+            char piece = setup[r][f];
+
+            // Adding in matrix
+            board_[f][r] = std::move(makePiece(f, r, piece));
+            
+            // Adding coordinates in color-specific vectors, with king always at front
+            if (islower(piece)) {
+                if (piece == 'r')
+                    white_pieces_.push_front({f,r});
+                else
+                    white_pieces_.push_back({f,r});
+            } else  {
+                if (piece == 'R')
+                    black_pieces_.push_front({f,r});
+                else
+                    black_pieces_.push_back({f,r});
+            }
+
+        }
+    }
 }
 
 bool chess::Board::isEmpty(short file, short rank) const {
@@ -81,33 +101,59 @@ std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
 }
 
 // Check if there is a piece attacking the square
-bool chess::Board::threatenBy(chess::Coordinates coords, chess::Color attackerColor) {
-    //King king{coords.file, coords.rank, opposite(attackerColor)};
+bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceColor) {
+    King king{coords.file, coords.rank, pieceColor};
     //Queen queen{coords.file, coords.rank, opposite(attackerColor)};
     //Rook rook{coords.file, coords.rank, opposite(attackerColor)};
     //Bishop bishop{coords.file, coords.rank, opposite(attackerColor)};
-    Knight knight{coords.file, coords.rank, opposite(attackerColor)};
+    Knight knight{coords.file, coords.rank, pieceColor};
     //Pawn pawn{coords.file, coords.rank, opposite(attackerColor)};
 
     const Piece* possiblePieces[] = {
-        //&king,
+        &king,
         //&queen,
         //&rook,
         //&bishop,
         &knight
-        //%pawn
+        //&pawn
     };
 
     for (const Piece* piece : possiblePieces) {
-        std::vector<chess::Coordinates> moves = piece->takeablePieces(*this);
+        std::vector<chess::Coordinates> moves = piece->legalMoves(*this);
 
         for (chess::Coordinates move : moves) {
-            if (at(move.file, move.rank).ascii() == piece->ascii() &&
-                at(move.file, move.rank).color() != piece->color())
+            if (at(move.file, move.rank).ascii() == piece->ascii()
+                && at(move.file, move.rank).color() != piece->color())
+            {
                 return true;
+            }
         }
     }
     return false;
+}
+
+std::unique_ptr<chess::Piece> chess::Board::makePiece(short file, short rank, char c) {
+    Color pieceColor = islower(c) ? WHITE : BLACK;
+    switch (toupper(c))
+    {
+    case 'R':
+        return std::make_unique<King>(file, rank, pieceColor);
+    case 'D':
+        // Donna
+        break;
+    case 'T':
+        return std::make_unique<Rook>(file, rank, pieceColor);
+    case 'A':
+        // Alfiere
+        break;
+    case 'C':
+        return std::make_unique<Knight>(file, rank, pieceColor);
+    case 'P':
+        // Pedone
+        break;
+    default:
+        return nullptr;
+    }
 }
 
 // Print the board. For every piece it prints its ascii character, lower if white,
@@ -115,14 +161,14 @@ bool chess::Board::threatenBy(chess::Coordinates coords, chess::Color attackerCo
 // It also prints the files and ranks coordinates.
 std::ostream& chess::operator<<(std::ostream& os, Board& board) {
 
-    for (size_t r = 8; r > 0; r--) {
-        os << r << " ";
-        for (size_t f = 0; f < 8; f++) {
-            if (board.isEmpty(f, r-1))
+    for (short r = 7; r >= 0; r--) {
+        os << r+1 << " ";
+        for (short f = 0; f < 8; f++) {
+            if (board.isEmpty(f, r))
                 os << " ";
             else {
-                char c = board.at(f, r-1).ascii();
-                os << (board.at(f, r-1).color() == Color::WHITE ? (char)tolower(c) : (char)toupper(c));
+                char c = board.at(f, r).ascii();
+                os << (board.at(f, r).color() == Color::WHITE ? (char)tolower(c) : (char)toupper(c));
             };
         }
         os << "\n";
