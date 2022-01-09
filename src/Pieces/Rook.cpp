@@ -151,7 +151,7 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     //VERTICAL MOVEMENT
     //Down
     to_rank = position_.rank + 1;
-    while(to_file < 8) {
+    while(to_rank < 8) {
         if(!board.isEmpty(position_.file, to_rank)) {
             if(board.at(position_.file, to_rank).color() != this->color()) {
                 moves.push_back(chess::Coordinates{position_.file, to_rank});
@@ -163,7 +163,7 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     }
     //Up
     to_rank = position_.rank - 1;
-    while(to_file >= 0) {
+    while(to_rank >= 0) {
         if(!board.isEmpty(position_.file, to_rank)) {
             if(board.at(position_.file, to_rank).color() != this->color()) {
                 moves.push_back(chess::Coordinates{position_.file, to_rank});
