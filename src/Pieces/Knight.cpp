@@ -62,6 +62,7 @@ std::vector<chess::Coordinates> chess::Knight::legalMoves(Board& board) const {
     }
     return moves;
 }
+
 /*
 std::vector<chess::Coordinates> chess::Knight::takeablePieces(Board& board) const {
     std::vector<chess::Coordinates> pieces = {};

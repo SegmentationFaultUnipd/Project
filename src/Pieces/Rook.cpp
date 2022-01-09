@@ -8,10 +8,6 @@ bool chess::Rook::canMove(short to_file, short to_rank, Board& board) const {
     if(board.at(to_file, position_.rank).color() == this->color()) {
         return false;
     }
-    //Can't stay stationary
-    if(position_.file == to_file && position_.rank == to_rank) {
-        return false;
-    }
 
     //VERTICAL MOVEMENT
     if(to_rank == position_.rank) {
@@ -95,7 +91,7 @@ bool chess::Rook::canMove(Board& board) const {
     //Down
     to_rank = position_.rank + 1;
     while(to_file < 8) {
-        if(board.isEmpty(position_.file, to_rank)) {
+        if(!board.isEmpty(position_.file, to_rank)) {
             if(board.at(position_.file, to_rank).color() != this->color()) {
                 return true;
             }
@@ -107,7 +103,7 @@ bool chess::Rook::canMove(Board& board) const {
     //Up
     to_rank = position_.rank - 1;
     while(to_file >= 0) {
-        if(board.isEmpty(position_.file, to_rank)) {
+        if(!board.isEmpty(position_.file, to_rank)) {
             if(board.at(position_.file, to_rank).color() != this->color()) {
                 return true;
             }

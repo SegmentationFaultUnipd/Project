@@ -1,4 +1,3 @@
-
 #include <iostream>
 
 #include "Board.h"
@@ -14,20 +13,22 @@ int main() {
     chess::Coordinates from, to;
     bool showBoard = false;
     
-    hp.nextTurn(&from, &to);
+    hp.nextTurn(from, to);
 
     std::cout << (char)(from.file + 'a') << from.rank + 1 << " "
               << (char)(to.file + 'a')   << to.rank + 1   << "\n";
 
 
-    */
     
-    board.move(4,6, 6,5);
 
     std::vector<chess::Coordinates> legalMoves = board.legalMovesOf(board.at(6,5));
 
     for (chess::Coordinates c : legalMoves)
         std::cout << c.file << "," << c.rank << "\n";
+    */
+
+    board.move(1,0, 0,2);
+    board.move(0,2, 0,0);
 
     std::cout << board << std::endl;
     return 0;

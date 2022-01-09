@@ -11,10 +11,9 @@ namespace chess {
     class HumanPlayer : public Player {
         public:
             HumanPlayer(Color color) : Player{color} {};
-            void nextTurn(Board &board, Coordinates &from, Coordinates &to) override;
-			char choosePromotion() override;
+            void nextTurn(Board& board, Coordinates& from, Coordinates& to) const override;
         private:
-            bool verifyNotation(std::string coordinate);
+            bool verifyNotation(std::string coords) const;
     };
 }
 

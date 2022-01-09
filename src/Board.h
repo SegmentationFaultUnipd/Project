@@ -6,7 +6,11 @@
 #include <memory>
 #include <assert.h>
 
-#include "Pieces/Pieces.h"
+#include "Pieces/Piece.h"
+#include "Pieces/Knight.h"
+#include "Pieces/King.h"
+#include "Pieces/Rook.h"
+
 #include "Color.h"
 
 namespace chess {
@@ -15,22 +19,24 @@ namespace chess {
         public:
             Board();
 
-            bool isEmpty(short file, short rank);
-            bool isEmpty(Coordinates coords);
+            bool isEmpty(short file, short rank) const;
+            bool isEmpty(Coordinates coords) const;
             Piece& at(short file, short rank);
             Piece& at(Coordinates coords);
            
-            bool move(short from_file, short from_rank, short to_file, short to_rank);
-            bool move(Coordinates from, Coordinates to);
+            void move(short from_file, short from_rank, short to_file, short to_rank);
+            void move(Coordinates from, Coordinates to);
             std::vector<Coordinates> legalMovesOf(Piece& piece);
             
             std::list<Coordinates>& getPieces(Color color);
 			void promote(Coordinates coords, char chosen_piece);
 
-            bool isInCheck(Coordinates coord, Color color);
-            bool isKingInCheck(Color color);
+            bool isThreatenBy(Coordinates coords, Color pieceColor);
+            bool isKingInCheck(Color kingColor) const;
 
         private:
+            std::unique_ptr<Piece> makePiece(short file, short rank, char c);
+
             std::list<Coordinates> white_pieces_;
             std::list<Coordinates> black_pieces_;
 

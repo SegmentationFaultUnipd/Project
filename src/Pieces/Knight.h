@@ -6,6 +6,7 @@
 
 #include "Piece.h"
 #include "../Board.h"
+
 namespace chess {
 	class Board;
     class Knight : public Piece {
