@@ -44,7 +44,7 @@ void chess::GameManager::play() {
 	while(!isGameEnded && (infinite_game || current_move < max_moves)) {
 		Coordinates from, to;
 		bool isValid = false;
-		Coordinates from, to;
+		// Coordinates from, to; Doppia dichiarazione.
 		while(!isValid){
 			current_player->nextTurn(board, from, to);
 			if(board.isEmpty(from)) {

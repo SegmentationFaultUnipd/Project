@@ -10,7 +10,7 @@ namespace chess {
 
     class GameManager {
         public:
-            GameManager(Player* player1, Player* player2, int max_moves) : player1(player1), player2(player2), max_moves(max_moves) {}
+            GameManager(Player* player1, Player* player2, int max_moves);
            	void play();
 			void logMove(Coordinates from, Coordinates to);
 			void logPromotion(char piece, Coordinates position);

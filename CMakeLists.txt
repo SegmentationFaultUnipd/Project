@@ -10,7 +10,7 @@ add_library(Pieces src/Pieces/Knight.cpp src/Pieces/King.cpp src/Pieces/Rook.cpp
 add_library(Players src/Players/HumanPlayer.cpp src/Players/ComputerPlayer.cpp)
 
 # add the executable
-add_executable(Scacchiera src/main.cpp src/Board.cpp)
+add_executable(Scacchiera src/main.cpp src/Board.cpp src/GameManager.cpp)
 
 target_link_libraries(Scacchiera PUBLIC Pieces)
 target_link_libraries(Scacchiera PUBLIC Players)
