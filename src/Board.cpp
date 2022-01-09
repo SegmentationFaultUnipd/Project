@@ -23,7 +23,8 @@ chess::Board::Board() {
             char piece = setup[r][f];
 
             // Adding in matrix
-            board_[f][r] = std::move(makePiece(f, r, piece));
+            Color pieceColor = islower(piece) ? WHITE : BLACK;
+            board_[f][r] = std::move(makePiece(piece, {f,r}, pieceColor));
             
             // Adding coordinates in color-specific vectors, with king always at front
             if (islower(piece)) {
@@ -42,52 +43,70 @@ chess::Board::Board() {
     }
 }
 
-bool chess::Board::isEmpty(short file, short rank) const {
-    return board_[file][rank] == nullptr;
-}
 bool chess::Board::isEmpty(chess::Coordinates coords) const {
     return board_[coords.file][coords.rank] == nullptr;
 }
 
-chess::Piece& chess::Board::at(short file, short rank) {
-    assert(!isEmpty(file, rank));
-    return *board_[file][rank];
-}
 chess::Piece& chess::Board::at(Coordinates coords) {
-    assert(!isEmpty(coords.file, coords.rank));
+    assert(!isEmpty(coords));
     return *board_[coords.file][coords.rank];
 }
 
-
 // Move the piece 
-void chess::Board::move(short from_file, short from_rank, short to_file, short to_rank) {
-    assert(from_file >= 0 && from_file < 8);
-    assert(from_rank >= 0 && from_rank < 8);
-    assert(to_file >= 0 && to_file < 8);
-    assert(to_rank >= 0 && to_rank < 8);
+void chess::Board::move(Coordinates from, Coordinates to) {
+    assert(from.file >= 0 && from.file < 8);
+    assert(from.rank >= 0 && from.rank < 8);
+    assert(to.file >= 0 && to.file < 8);
+    assert(to.rank >= 0 && to.rank < 8);
     
-    if (isEmpty(from_file, from_rank))
+    if (isEmpty(from))
         return; //Illegal Movement
 
-    Piece& moving_piece = at(from_file, from_rank);
-    if (moving_piece.canMove(to_file, to_rank, *this) ) {
-
+    Piece& moving_piece = at(from);
+    if (moving_piece.canMove(to, *this) ) {
         // Eat piece
-        if (!isEmpty(to_file, to_rank)
-            && at(to_file, to_rank).color() != at(from_file, from_rank).color())
+        if (!isEmpty(to)
+            && at(to).color() != at(from).color())
         {
-            getPieces(board_[to_file][to_rank]->color()).remove({to_file, to_rank});
+            getPieces(board_[to.file][to.rank]->color()).remove({to.file, to.rank});
         }
 
         // Moving in matrix
-        board_[to_file][to_rank] = std::move(board_[from_file][from_rank]);
-        board_[from_file][from_rank] = nullptr;
+        board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
+        board_[from.file][from.rank] = nullptr;
 
         // Update piece position
-        moving_piece.move(to_file, to_rank);
+        moving_piece.move(to);
     } else {
         //ILLEGAL MOVEMENT, exception?
     }
+}
+
+bool chess::Board::tryMove(Coordinates from, Coordinates to) {
+    bool kingInCheck, atePiece;
+    std::unique_ptr<Piece> movingPiece, landingPiece;
+
+    if (isEmpty(from))
+        return false;
+    
+    atePiece = !isEmpty(to);
+
+    // Save old state
+    movingPiece = copyPiece(at(from));
+    if (atePiece)
+        landingPiece = copyPiece(at(to));
+
+    // Move
+    board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
+    board_[from.file][from.rank] = nullptr;
+    
+    kingInCheck = isKingInCheck(movingPiece->color());
+
+    // Reset
+    board_[from.file][from.rank] = std::move(movingPiece);
+    board_[to.file][to.rank] = std::move(landingPiece);
+
+    return !kingInCheck; // Move is correct if king is not in check
 }
 
 std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece& piece) {
@@ -102,17 +121,17 @@ std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
 
 // Check if there is a piece attacking the square
 bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceColor) {
-    King king{coords.file, coords.rank, pieceColor};
-    //Queen queen{coords.file, coords.rank, opposite(attackerColor)};
-    //Rook rook{coords.file, coords.rank, opposite(attackerColor)};
-    //Bishop bishop{coords.file, coords.rank, opposite(attackerColor)};
-    Knight knight{coords.file, coords.rank, pieceColor};
-    //Pawn pawn{coords.file, coords.rank, opposite(attackerColor)};
+    King king{coords, pieceColor};
+    //Queen queen{coords.file, coords.rank, pieceColor};
+    Rook rook{coords, pieceColor};
+    //Bishop bishop{coords.file, coords.rank, pieceColor};
+    Knight knight{coords, pieceColor};
+    //Pawn pawn{coords.file, coords.rank, pieceColor};
 
     const Piece* possiblePieces[] = {
         &king,
         //&queen,
-        //&rook,
+        &rook,
         //&bishop,
         &knight
         //&pawn
@@ -121,9 +140,10 @@ bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceCol
     for (const Piece* piece : possiblePieces) {
         std::vector<chess::Coordinates> moves = piece->legalMoves(*this);
 
-        for (chess::Coordinates move : moves) {
-            if (at(move.file, move.rank).ascii() == piece->ascii()
-                && at(move.file, move.rank).color() != piece->color())
+        for (chess::Coordinates move : moves) { 
+            if (!isEmpty(move)
+                && at(move).ascii() == piece->ascii()
+                && at(move).color() != piece->color())
             {
                 return true;
             }
@@ -132,28 +152,36 @@ bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceCol
     return false;
 }
 
-std::unique_ptr<chess::Piece> chess::Board::makePiece(short file, short rank, char c) {
-    Color pieceColor = islower(c) ? WHITE : BLACK;
+bool chess::Board::isKingInCheck(chess::Color kingColor) {
+    // King coords always at front
+    return isThreatenBy(getPieces(kingColor).front(), kingColor);
+}
+
+std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords, Color pieceColor) {
     switch (toupper(c))
     {
     case 'R':
-        return std::make_unique<King>(file, rank, pieceColor);
+        return std::make_unique<King>(coords, pieceColor);
     case 'D':
         // Donna
         break;
     case 'T':
-        return std::make_unique<Rook>(file, rank, pieceColor);
+        return std::make_unique<Rook>(coords, pieceColor);
     case 'A':
         // Alfiere
         break;
     case 'C':
-        return std::make_unique<Knight>(file, rank, pieceColor);
+        return std::make_unique<Knight>(coords, pieceColor);
     case 'P':
         // Pedone
         break;
     default:
         return nullptr;
     }
+}
+
+std::unique_ptr<chess::Piece> chess::Board::copyPiece(Piece& piece) {
+    return makePiece(piece.ascii(), {piece.file(), piece.rank()}, piece.color());
 }
 
 // Print the board. For every piece it prints its ascii character, lower if white,
@@ -164,11 +192,11 @@ std::ostream& chess::operator<<(std::ostream& os, Board& board) {
     for (short r = 7; r >= 0; r--) {
         os << r+1 << " ";
         for (short f = 0; f < 8; f++) {
-            if (board.isEmpty(f, r))
+            if (board.isEmpty({f,r}))
                 os << " ";
             else {
-                char c = board.at(f, r).ascii();
-                os << (board.at(f, r).color() == Color::WHITE ? (char)tolower(c) : (char)toupper(c));
+                char c = board.at({f,r}).ascii();
+                os << (board.at({f,r}).color() == Color::WHITE ? (char)tolower(c) : (char)toupper(c));
             };
         }
         os << "\n";

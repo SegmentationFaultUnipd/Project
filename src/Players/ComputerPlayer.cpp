@@ -10,7 +10,7 @@ void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, che
 		std::list<Coordinates>::const_iterator it = my_pieces.cbegin();
 		std::advance(it, index_piece);
 
-		Piece& my_piece = board.at(it->file, it->rank);
+		Piece& my_piece = board.at(*it);
 		std::vector<Coordinates> moves = my_piece.legalMoves(board);
 		if(moves.size() > 0) {
 			int index_move = rand() % moves.size();

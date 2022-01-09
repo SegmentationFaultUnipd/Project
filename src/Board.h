@@ -19,23 +19,25 @@ namespace chess {
         public:
             Board();
 
-            bool isEmpty(short file, short rank) const;
             bool isEmpty(Coordinates coords) const;
-            Piece& at(short file, short rank);
+
             Piece& at(Coordinates coords);
            
-            void move(short from_file, short from_rank, short to_file, short to_rank);
             void move(Coordinates from, Coordinates to);
-            std::vector<Coordinates> legalMovesOf(Piece& piece);
-            
-            std::list<Coordinates>& getPieces(Color color);
-			void promote(Coordinates coords, char chosen_piece);
+            bool tryMove(Coordinates from, Coordinates to);
 
             bool isThreatenBy(Coordinates coords, Color pieceColor);
-            bool isKingInCheck(Color kingColor) const;
+            bool isKingInCheck(Color kingColor);
+
+            // DA IMPLEMENTARE
+			//void promote(Coordinates coords, char chosen_piece);
+
+            std::vector<Coordinates> legalMovesOf(Piece& piece);
+            std::list<Coordinates>& getPieces(Color color);
 
         private:
-            std::unique_ptr<Piece> makePiece(short file, short rank, char c);
+            std::unique_ptr<Piece> makePiece(char c, Coordinates coords, Color pieceColor);
+            std::unique_ptr<Piece> copyPiece(Piece& p);
 
             std::list<Coordinates> white_pieces_;
             std::list<Coordinates> black_pieces_;

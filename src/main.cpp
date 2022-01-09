@@ -6,7 +6,22 @@
 #include "Players/HumanPlayer.h"
 
 int main() {
+
     chess::Board board;
+
+    chess::Piece& p = board.at({7,7});
+    std::vector<chess::Coordinates> moves = p.legalMoves(board);
+    std::cout << p.ascii() << (char)(p.file() + 'a') << p.rank()+1 << " {";
+    for (chess::Coordinates move : moves)
+        std::cout << (char)(move.file + 'a') << move.rank + 1 << ", ";
+    std::cout << "}" << std::endl;
+
+    chess::Piece& p2 = board.at({4,7});
+    std::vector<chess::Coordinates> moves2 = p2.legalMoves(board);
+    std::cout << p2.ascii() << (char)(p2.file() + 'a') << p2.rank()+1 << " {";
+    for (chess::Coordinates move : moves2)
+        std::cout << (char)(move.file + 'a') << move.rank + 1 << ", ";
+    std::cout << "}" << std::endl;
 
     /*
     chess::HumanPlayer hp{board.getPieces(chess::Color::WHITE), chess::Color::WHITE};
@@ -27,9 +42,7 @@ int main() {
         std::cout << c.file << "," << c.rank << "\n";
     */
 
-    board.move(1,0, 0,2);
-    board.move(0,2, 0,0);
-
     std::cout << board << std::endl;
+
     return 0;
 }
