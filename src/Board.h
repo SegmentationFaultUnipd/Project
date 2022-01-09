@@ -24,10 +24,10 @@ namespace chess {
             Piece& at(Coordinates coords);
            
             void move(Coordinates from, Coordinates to);
-            void tryMove(Coordinates from, Coordinates to);
+            bool tryMove(Coordinates from, Coordinates to);
 
             bool isThreatenBy(Coordinates coords, Color pieceColor);
-            bool isKingInCheck(Color kingColor) const;
+            bool isKingInCheck(Color kingColor);
 
             // DA IMPLEMENTARE
 			//void promote(Coordinates coords, char chosen_piece);
@@ -36,7 +36,8 @@ namespace chess {
             std::list<Coordinates>& getPieces(Color color);
 
         private:
-            std::unique_ptr<Piece> makePiece(Coordinates coords, char c);
+            std::unique_ptr<Piece> makePiece(char c, Coordinates coords, Color pieceColor);
+            std::unique_ptr<Piece> copyPiece(Piece& p);
 
             std::list<Coordinates> white_pieces_;
             std::list<Coordinates> black_pieces_;

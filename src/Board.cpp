@@ -23,7 +23,8 @@ chess::Board::Board() {
             char piece = setup[r][f];
 
             // Adding in matrix
-            board_[f][r] = std::move(makePiece({f,r}, piece));
+            Color pieceColor = islower(piece) ? WHITE : BLACK;
+            board_[f][r] = std::move(makePiece(piece, {f,r}, pieceColor));
             
             // Adding coordinates in color-specific vectors, with king always at front
             if (islower(piece)) {
@@ -63,7 +64,6 @@ void chess::Board::move(Coordinates from, Coordinates to) {
 
     Piece& moving_piece = at(from);
     if (moving_piece.canMove(to, *this) ) {
-
         // Eat piece
         if (!isEmpty(to)
             && at(to).color() != at(from).color())
@@ -80,6 +80,33 @@ void chess::Board::move(Coordinates from, Coordinates to) {
     } else {
         //ILLEGAL MOVEMENT, exception?
     }
+}
+
+bool chess::Board::tryMove(Coordinates from, Coordinates to) {
+    bool kingInCheck, atePiece;
+    std::unique_ptr<Piece> movingPiece, landingPiece;
+
+    if (isEmpty(from))
+        return false;
+    
+    atePiece = !isEmpty(to);
+
+    // Save old state
+    movingPiece = copyPiece(at(from));
+    if (atePiece)
+        landingPiece = copyPiece(at(to));
+
+    // Move
+    board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
+    board_[from.file][from.rank] = nullptr;
+    
+    kingInCheck = isKingInCheck(movingPiece->color());
+
+    // Reset
+    board_[from.file][from.rank] = std::move(movingPiece);
+    board_[to.file][to.rank] = std::move(landingPiece);
+
+    return !kingInCheck; // Move is correct if king is not in check
 }
 
 std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece& piece) {
@@ -125,8 +152,12 @@ bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceCol
     return false;
 }
 
-std::unique_ptr<chess::Piece> chess::Board::makePiece(Coordinates coords, char c) {
-    Color pieceColor = islower(c) ? WHITE : BLACK;
+bool chess::Board::isKingInCheck(chess::Color kingColor) {
+    // King coords always at front
+    return isThreatenBy(getPieces(kingColor).front(), kingColor);
+}
+
+std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords, Color pieceColor) {
     switch (toupper(c))
     {
     case 'R':
@@ -147,6 +178,10 @@ std::unique_ptr<chess::Piece> chess::Board::makePiece(Coordinates coords, char c
     default:
         return nullptr;
     }
+}
+
+std::unique_ptr<chess::Piece> chess::Board::copyPiece(Piece& piece) {
+    return makePiece(piece.ascii(), {piece.file(), piece.rank()}, piece.color());
 }
 
 // Print the board. For every piece it prints its ascii character, lower if white,
