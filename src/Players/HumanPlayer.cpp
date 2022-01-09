@@ -1,22 +1,19 @@
 #include "HumanPlayer.h"
 
-void chess::HumanPlayer::nextTurn(Board &board, chess::Coordinates &from, chess::Coordinates &to) {
+void chess::HumanPlayer::nextTurn(chess::Coordinates& from, chess::Coordinates& to) const {
     bool correct_notation = false;
     std::string input_from, input_to;
     do {
         std::cout << "Prossima mossa: ";
         std::cin >> input_from >> input_to;
         correct_notation = verifyNotation(input_from) && verifyNotation(input_to);
-		if(input_from == "XX" && input_to == "XX") { //Print current state of the board
-			std::cout << board;
-		}
     } while (!correct_notation);
 
     from = Coordinates{input_from};
-	to = Coordinates{input_to};
+    to = Coordinates{input_to};
 }
 
-bool chess::HumanPlayer::verifyNotation(std::string coords) {
+bool chess::HumanPlayer::verifyNotation(std::string coords) const {
     if (coords.size() != 2)
         return false;
 

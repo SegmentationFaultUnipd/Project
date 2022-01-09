@@ -15,8 +15,8 @@ namespace chess {
         public:
             Board();
 
-            bool isEmpty(short file, short rank);
-            bool isEmpty(Coordinates coords);
+            bool isEmpty(short file, short rank) const;
+            bool isEmpty(Coordinates coords) const;
             Piece& at(short file, short rank);
             Piece& at(Coordinates coords);
            
@@ -27,8 +27,8 @@ namespace chess {
             std::list<Coordinates>& getPieces(Color color);
 			void promote(Coordinates coords, char chosen_piece);
 
-            bool isInCheck(Coordinates coord, Color color);
-            bool isKingInCheck(Color color);
+            bool threatenBy(Coordinates coords, Color attackerColor);
+            bool isKingInCheck(Color kingColor) const;
 
         private:
             std::list<Coordinates> white_pieces_;
@@ -37,7 +37,7 @@ namespace chess {
             std::unique_ptr<Piece> board_[8][8];
     };
 
-    std::ostream& operator<<(std::ostream& os, Board& board);
+    std::ostream& operator<<(std::ostream& os, const Board& board);
 
 } //namespace chess
 

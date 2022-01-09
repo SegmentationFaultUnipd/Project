@@ -10,11 +10,11 @@
 namespace chess {
     class HumanPlayer : public Player {
         public:
-            HumanPlayer(Color color) : Player{color} {};
-            void nextTurn(Board &board, Coordinates &from, Coordinates &to) override;
-			char choosePromotion() override;
+            HumanPlayer(std::list<Coordinates> pieces, Color color) : Player{pieces, color} {};
+            void nextTurn(Coordinates& from, Coordinates& to) const override;
+            bool hasLegalMoves() const override;
         private:
-            bool verifyNotation(std::string coordinate);
+            bool verifyNotation(std::string coords) const;
     };
 }
 

@@ -14,7 +14,7 @@ int main() {
     chess::Coordinates from, to;
     bool showBoard = false;
     
-    hp.nextTurn(&from, &to);
+    hp.nextTurn(from, to);
 
     std::cout << (char)(from.file + 'a') << from.rank + 1 << " "
               << (char)(to.file + 'a')   << to.rank + 1   << "\n";

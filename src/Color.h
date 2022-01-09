@@ -6,6 +6,10 @@ namespace chess {
         WHITE,
         BLACK
     };
+
+    Color opposite(Color color) {
+        return color == WHITE ? BLACK : WHITE;
+    }
 }
 
 #endif //COLOR_H
