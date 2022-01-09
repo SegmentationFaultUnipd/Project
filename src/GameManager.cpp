@@ -2,9 +2,14 @@
 
 chess::GameManager::GameManager(Player* player1, Player* player2, int max_moves) {
 	board = Board();
+	createLogFile();
+}
 
-	//TODO generate log file
 
+
+
+void chess::GameManager::createLogFile() {
+	std::string name = "chesslog_";
 }
 
 void chess::GameManager::nextPlayer() {

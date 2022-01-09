@@ -18,9 +18,11 @@ namespace chess {
 			int max_moves;//If max_moves is -1, go on forever
 			int current_move = 0;
 			Player* current_player;
+			std::string file_name;
 
 			void nextPlayer();
 			void win(Player* winner);
+			void createLogFile();
 			
     };
 

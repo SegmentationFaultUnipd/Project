@@ -40,7 +40,7 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 
 			if(d_file + file() >= 0 && d_file + file() < 8 && d_rank + rank() >= 0 && d_rank + rank() < 8) {//file, rank in valid range
 				if(canMove(d_file + file(), d_rank + rank(), board)) {
-					moves.push_back(chess::Coordinates{d_file + file(),  d_rank + rank()});
+					moves.push_back({d_file + file(),  d_rank + rank()});
 				}
 			} 
     	}
