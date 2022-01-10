@@ -24,10 +24,10 @@ namespace chess {
 
             Piece& at(Coordinates coords);
            
-            void move(Coordinates from, Coordinates to);
+            bool move(Coordinates from, Coordinates to);
             bool tryMove(Coordinates from, Coordinates to);
 
-            bool isThreatenBy(Coordinates coords, Color pieceColor);
+            bool isThreaten(Coordinates coords, Color pieceColor);
             bool isKingInCheck(Color kingColor);
 
             // DA IMPLEMENTARE

@@ -21,12 +21,12 @@ void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, che
 	}
 }
 
-
+/*
 char chess::ComputerPlayer::choosePromotion() {
 	char available[] = {'T','D', 'C', 'A'};
 	return available[rand()%4];
 }
-
+*/
 
 chess::ComputerPlayer::ComputerPlayer(unsigned int seed, Color color) :  Player{color} {
 	srand(seed);
