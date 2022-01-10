@@ -15,7 +15,7 @@ namespace chess {
             bool canMove(Coordinates coords, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
-
+            void move(Coordinates new_position) override;
             char ascii() const override { return 'P'; };
 
         protected:

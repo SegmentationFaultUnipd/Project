@@ -5,7 +5,7 @@ bool chess::Bishop::canMove(Coordinates coords, Board& board) const {
     //To move diagonally it should move the same amount vertically and horizontally
 
     //Can't land on a piece of the same color
-    if(!board.isEmpty({coords.file, position_.rank}) && board.at({coords.file, position_.rank}).color() == this->color()) {
+    if(!board.isEmpty({coords.file, coords.rank}) && board.at({coords.file, coords.rank}).color() == this->color()) {
         return false;
     }
     //Can' stay stationary
