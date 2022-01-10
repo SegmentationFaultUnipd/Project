@@ -9,7 +9,7 @@ bool chess::Rook::canMove(Coordinates coords, Board& board) const {
         return false;
     }
     //Can't land on a piece of the same color
-    if (!board.isEmpty({coords.file, position_.rank}) && board.at({coords.file, position_.rank}).color() == this->color()) {
+    if (!board.isEmpty({coords.file, coords.rank}) && board.at({coords.file, coords.rank}).color() == this->color()) {
         return false;
     }
 
