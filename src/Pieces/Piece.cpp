@@ -1,5 +1,5 @@
 #include "Piece.h"
-
+#include "../Board.h"
 /**
  * @brief Metodo che ritorna i pezzi che sono catturabili da this
  * @note Sarebbe più efficiente riscrivere il metodo per ogni pezzo, così da salvarsi un "doppio controllo" sulla board. Il codice risulterebbe molto simile a 
