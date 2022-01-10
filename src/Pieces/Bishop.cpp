@@ -22,44 +22,44 @@ bool chess::Bishop::canMove(Coordinates coords, Board& board) const {
         //Moving down-left
         if(delta_rank < 0 && delta_file > 0) {
             while(x > coords.file && y < coords.rank) {
+                x--;
+                y++;
                 if(!board.isEmpty({x, y})) {
                     return false;
                 }
-                x--;
-                y++;
             }
             return true;
         }
         //Moving down-right
         if(delta_rank < 0 && delta_file < 0) {
             while(x < coords.file && y < coords.rank) {
+                x++;
+                y++;
                 if(!board.isEmpty({x, y})) {
                     return false;
                 }
-                x++;
-                y++;
             }
             return true;
         }
         //Moving up-left
         if(delta_rank > 0 && delta_file > 0) {
             while(x > coords.file && y > coords.rank) {
+                x--;
+                y--;
                 if(!board.isEmpty({x, y})) {
                     return false;
                 }
-                x--;
-                y--;
             }
             return true;
         }
         //Moving up-right
         if(delta_rank > 0 && delta_file < 0) {
             while(x < coords.file && y > coords.rank) {
+                x++;
+                y--;
                 if(!board.isEmpty({x, y})) {
                     return false;
                 }
-                x++;
-                y--;
             }
             return true;
         }
