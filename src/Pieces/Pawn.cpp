@@ -1,12 +1,17 @@
 #include "Pawn.h"
 
 bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
+    //The pawn can make 3 different moves, 1 only if it hasn't yet moved
+
     //Can't stay stationary
     if(position_.file == coords.file && position_.rank == coords.rank) {
         return false;
     }
+    //Can't land on a piece of the same color
+    if (!board.isEmpty({coords.file, position_.rank}) && board.at({coords.file, position_.rank}).color() == this->color()) {
+        return false;
+    }
 
-    //The pawn can make 3 different moves, 1 only if it hasn't yet moved
     //THE PAWN IS WHITE
     if(this->color() == chess::WHITE) {
         //The pawn moves two steps forward (if it hasn't yet moved)
@@ -104,38 +109,38 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     if(this->color() == chess::WHITE) {
         //Double move up
         if(position_.rank - 2 >= 0 && canMove({position_.file, position_.rank - 2}, board)) {
-            moves.push_back(chess::Coordinates{position_.file, position_.rank - 2});
+            moves.push_back(Coordinates{position_.file, position_.rank - 2});
         }
 
         if(position_.rank - 1 >= 0) {
             //Single move up
             if(canMove({position_.file, position_.rank - 1}, board)) {
-                moves.push_back(chess::Coordinates{position_.file, position_.rank - 1});
+                moves.push_back(Coordinates{position_.file, position_.rank - 1});
             }
             //Diagonal eating moves
             if(position_.file + 1 < 8 && canMove({position_.file + 1, position_.rank - 1}, board)) {
-                moves.push_back(chess::Coordinates{position_.file + 1, position_.rank - 1});
+                moves.push_back(Coordinates{position_.file + 1, position_.rank - 1});
             }
             if(position_.file - 1 >= 0 && canMove({position_.file - 1, position_.rank - 1}, board)) {
-                moves.push_back(chess::Coordinates{position_.file - 1, position_.rank - 1});
+                moves.push_back(Coordinates{position_.file - 1, position_.rank - 1});
             }
         }
     }
     //THE PAWN IS BLACK
     if(this->color() == chess::BLACK) {
         if(position_.rank + 2 < 8 && canMove({position_.file, position_.rank + 2}, board)) {
-            moves.push_back(chess::Coordinates{position_.file, position_.rank + 2});
+            moves.push_back(Coordinates{position_.file, position_.rank + 2});
         }
 
         if(position_.rank + 1 >= 0) {
             if(canMove({position_.file, position_.rank + 1}, board)) {
-                moves.push_back(chess::Coordinates{position_.file, position_.rank + 1});
+                moves.push_back(Coordinates{position_.file, position_.rank + 1});
             }
             if(position_.file + 1 < 8 && canMove({position_.file + 1, position_.rank + 1}, board)) {
-                moves.push_back(chess::Coordinates{position_.file + 1, position_.rank + 1});
+                moves.push_back(Coordinates{position_.file + 1, position_.rank + 1});
             }
             if(position_.file - 1 >= 0 && canMove({position_.file - 1, position_.rank + 1}, board)) {
-                moves.push_back(chess::Coordinates{position_.file - 1, position_.rank + 1});
+                moves.push_back(Coordinates{position_.file - 1, position_.rank + 1});
             }
         }
     }
