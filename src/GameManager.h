@@ -16,7 +16,7 @@ namespace chess {
 			void logPromotion(char piece, Coordinates position);
 			
         private:
-			Player *player1, *player2;
+			Player *player1_, *player2_;
 			Board board;
 			int max_moves;//If max_moves is -1, go on forever
 			int current_move = 0;

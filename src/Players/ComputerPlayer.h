@@ -12,7 +12,7 @@ namespace chess {
         public:
             ComputerPlayer(unsigned int seed, Color color);
             void nextTurn(Board &board, Coordinates &from, Coordinates &to) const override;
-			char choosePromotion() override;
+			//char choosePromotion() override;
         private:
 
     };

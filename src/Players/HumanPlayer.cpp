@@ -8,11 +8,11 @@ void chess::HumanPlayer::nextTurn(Board& board, chess::Coordinates& from, chess:
         std::cin >> input_from >> input_to;
 
         for(char& c : input_from)
-            c = toupper(c);
+            c = tolower(c);
         for(char& c : input_to)
-            c = toupper(c);
+            c = tolower(c);
 
-        if (input_from == "XX" && input_to == "XX") {
+        if (input_from == "xx" && input_to == "xx") {
             std::cout << board << "\n";
             correct_notation = false;
         } else {

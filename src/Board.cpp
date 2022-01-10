@@ -53,33 +53,28 @@ chess::Piece& chess::Board::at(Coordinates coords) {
 }
 
 // Move the piece 
-void chess::Board::move(Coordinates from, Coordinates to) {
+bool chess::Board::move(Coordinates from, Coordinates to) {
     assert(from.file >= 0 && from.file < 8);
     assert(from.rank >= 0 && from.rank < 8);
     assert(to.file >= 0 && to.file < 8);
     assert(to.rank >= 0 && to.rank < 8);
-    
-    if (isEmpty(from))
-        return; //Illegal Movement
 
-    Piece& moving_piece = at(from);
-    if (moving_piece.canMove(to, *this) ) {
+    if (!isEmpty(from) && at(from).canMove(to, *this) ) {
+        // Update piece position
+        at(from).move(to);
+
         // Eat piece
-        if (!isEmpty(to)
-            && at(to).color() != at(from).color())
-        {
-            getPieces(board_[to.file][to.rank]->color()).remove({to.file, to.rank});
+        if (!isEmpty(to)) {
+            getPieces(at(to).color()).remove(to);
         }
 
-        // Moving in matrix
+        // Update matrix
         board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
         board_[from.file][from.rank] = nullptr;
-
-        // Update piece position
-        moving_piece.move(to);
-    } else {
-        //ILLEGAL MOVEMENT, exception?
+        
+        return true;
     }
+    return false;
 }
 
 bool chess::Board::tryMove(Coordinates from, Coordinates to) {
@@ -88,15 +83,13 @@ bool chess::Board::tryMove(Coordinates from, Coordinates to) {
 
     if (isEmpty(from))
         return false;
-    
-    atePiece = !isEmpty(to);
 
     // Save old state
     movingPiece = copyPiece(at(from));
-    if (atePiece)
-        landingPiece = copyPiece(at(to));
+    if (!isEmpty(to)) 
+        landingPiece = copyPiece(at(to)); // ate a piece
 
-    // Move
+    // Movement in matrix
     board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
     board_[from.file][from.rank] = nullptr;
     
@@ -120,7 +113,7 @@ std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
 }
 
 // Check if there is a piece attacking the square
-bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceColor) {
+bool chess::Board::isThreaten(chess::Coordinates coords, chess::Color pieceColor) {
     King king{coords, pieceColor};
     //Queen queen{coords, pieceColor};
     Rook rook{coords, pieceColor};
@@ -153,8 +146,8 @@ bool chess::Board::isThreatenBy(chess::Coordinates coords, chess::Color pieceCol
 }
 
 bool chess::Board::isKingInCheck(chess::Color kingColor) {
-    // King coords always at front
-    return isThreatenBy(getPieces(kingColor).front(), kingColor);
+    // King always at front
+    return isThreaten(getPieces(kingColor).front(), kingColor);
 }
 
 std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords, Color pieceColor) {
