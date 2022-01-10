@@ -4,9 +4,12 @@ bool chess::Rook::canMove(Coordinates coords, Board& board) const {
     //Rook will only move horizontally or vertically
     //If it's moving vertically it will keep a fixed rank while changing the file and viceversa
     
+    //Can't stay stationary
+    if(position_.file == coords.file && position_.rank == coords.rank) {
+        return false;
+    }
     //Can't land on a piece of the same color
-    if (!board.isEmpty({coords.file, position_.rank})
-        && board.at({coords.file, position_.rank}).color() == this->color()) {
+    if (!board.isEmpty({coords.file, position_.rank}) && board.at({coords.file, position_.rank}).color() == this->color()) {
         return false;
     }
 
