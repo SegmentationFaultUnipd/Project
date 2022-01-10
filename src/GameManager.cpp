@@ -52,7 +52,7 @@ void chess::GameManager::play() {
 
 		do {
 			current_player->nextTurn(board, from, to);
-			isValid = board.move(from, to) && board.at(to).color() == current_player->getColor();
+			isValid = board.move(from, to) && (board.at(to).color() == current_player->getColor());
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);

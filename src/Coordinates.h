@@ -11,9 +11,9 @@ namespace chess {
         short file; //column index 0-7, means a-h, from queenside to kingside
         short rank; //row index 0-7, means 1-8, from whiteside to blackside
 
-        Coordinates(short _file, short _rank) {
-            file = _file;
-            rank = _rank;
+        Coordinates(int _file, int _rank) {
+            file = (short)_file;
+            rank = (short)_rank;
         }
 
         Coordinates(const std::string notation) {
