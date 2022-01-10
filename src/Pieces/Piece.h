@@ -11,7 +11,7 @@ namespace chess {
 
     class Piece {
         public:
-            void move (Coordinates new_position) {
+            void virtual move (Coordinates new_position) {
                 position_ = new_position;
             }
 

@@ -31,8 +31,8 @@ bool chess::HumanPlayer::verifyNotation(std::string coords) const {
     if (coords.size() != 2)
         return false;
 
-    short f = (char)tolower(coords[0]) - 'a' + 1;
-    short r = coords[1] - '0';
+    short f = (char)tolower(coords[0]) - 'a';
+    short r = coords[1] - '1';
 
-    return f >= 1 && f <= 8 && r >= 1 && r <= 8;
+    return f >= 0 && f < 8 && r >= 0 && r < 8;
 }

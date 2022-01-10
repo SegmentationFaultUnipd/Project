@@ -18,7 +18,7 @@ namespace chess {
         private:
 			Player *player1_, *player2_;
 			Board board;
-			int max_moves;//If max_moves is -1, go on forever
+			int max_moves_;//If max_moves is -1, go on forever
 			int current_move = 0;
 			Player* current_player;
 			std::string file_name;

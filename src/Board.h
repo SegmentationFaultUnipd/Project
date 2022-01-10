@@ -11,6 +11,8 @@
 #include "Pieces/King.h"
 #include "Pieces/Rook.h"
 #include "Pieces/Pawn.h"
+#include "Pieces/Queen.h"
+#include "Pieces/Bishop.h"
 
 #include "Color.h"
 

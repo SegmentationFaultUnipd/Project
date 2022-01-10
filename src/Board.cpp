@@ -78,7 +78,7 @@ bool chess::Board::move(Coordinates from, Coordinates to) {
 }
 
 bool chess::Board::tryMove(Coordinates from, Coordinates to) {
-    bool kingInCheck, atePiece;
+    bool kingInCheck;
     std::unique_ptr<Piece> movingPiece, landingPiece;
 
     if (isEmpty(from))
@@ -117,18 +117,11 @@ bool chess::Board::isThreaten(chess::Coordinates coords, chess::Color pieceColor
     King king{coords, pieceColor};
     //Queen queen{coords, pieceColor};
     Rook rook{coords, pieceColor};
-    //Bishop bishop{coords, pieceColor};
+    Bishop bishop{coords, pieceColor};
     Knight knight{coords, pieceColor};
     Pawn pawn{coords, pieceColor};
 
-    const Piece* possiblePieces[] = {
-        &king,
-        //&queen,
-        &rook,
-        //&bishop,
-        &knight,
-        &pawn
-    };
+    const Piece* possiblePieces[] = { &king, /*&queen,*/ &rook, &bishop, &knight, &pawn };
 
     for (const Piece* piece : possiblePieces) {
         std::vector<chess::Coordinates> moves = piece->legalMoves(*this);
@@ -156,17 +149,17 @@ std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords
     case 'R':
         return std::make_unique<King>(coords, pieceColor);
     case 'D':
-        // Donna
+        //return std::make_unique<Queen>(coords, pieceColor);
         break;
     case 'T':
         return std::make_unique<Rook>(coords, pieceColor);
     case 'A':
-        // Alfiere
-        break;
+        return std::make_unique<Bishop>(coords, pieceColor);
     case 'C':
         return std::make_unique<Knight>(coords, pieceColor);
     case 'P':
         return std::make_unique<Pawn>(coords, pieceColor);
+
     default:
         return nullptr;
     }
