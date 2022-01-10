@@ -2,11 +2,14 @@
 
 chess::GameManager::GameManager(Player* player1, Player* player2, int max_moves) {
 	board = Board();
+
+	player1_ = player1;
+	player2_ = player2;
+	
+	max_moves_ = max_moves;
+
 	createLogFile();
 }
-
-
-
 
 void chess::GameManager::createLogFile() {
 	time_t now = time(0);
@@ -16,8 +19,8 @@ void chess::GameManager::createLogFile() {
 	file_name = "chesslog_" + padTime(now_localtime->tm_mday) + padTime(now_localtime->tm_mon) + year + "_" + padTime(now_localtime->tm_hour) + padTime(now_localtime->tm_min);
 	//Save stream, overwrite file if it already exists
 	log_stream.open(file_name, std::ofstream::trunc);
-	log_stream<<"PLAYER1:"<<player1->getColor()<<std::endl;
-	log_stream<<"PLAYER2:"<<player2->getColor()<<std::endl;
+	log_stream<<"PLAYER1:"<<player1_->getColor()<<std::endl;
+	log_stream<<"PLAYER2:"<<player2_->getColor()<<std::endl;
 }
 
 std::string chess::GameManager::padTime(int x) {
@@ -28,23 +31,36 @@ std::string chess::GameManager::padTime(int x) {
 }
 
 void chess::GameManager::nextPlayer() {
-	if(current_player == player1) {
-		current_player = player2;
+	if(current_player == player1_) {
+		current_player = player2_;
 	} else {
-		current_player = player1;
+		current_player = player1_;
 	}
 }
 
 void chess::GameManager::play() {
 	current_move = 0;//Contatore delle mosse: serve per le partite tra due PC, perché devono finire dopo max_moves mosse
-	current_player = (player1->getColor() == WHITE)? player1:player2; //Seleziona il giocatore iniziale
-	bool infinite_game = (max_moves == -1);
+	current_player = (player1_->getColor() == WHITE)? player1_:player2_; //Seleziona il giocatore iniziale
+	bool infinite_game = (max_moves_ == -1);
 	bool isGameEnded = false;
 
-	while(!isGameEnded && (infinite_game || current_move < max_moves)) {
+	while(!isGameEnded && (infinite_game || current_move < max_moves_)) {
 		Coordinates from, to;
 		bool isValid = false;
+
+		std::cout << "Tocca al " << (current_player->getColor() == Color::WHITE ? "bianco\n" : "nero\n");
+
+		do {
+			current_player->nextTurn(board, from, to);
+			isValid = board.move(from, to) && board.at(to).color() == current_player->getColor();
+			if (!isValid)
+				std::cout << "Mossa non consentita\n";
+		} while (!isValid);
+		
+		/*
 		Coordinates from, to;
+		bool isValid = false;
+		// Coordinates from, to; Doppia dichiarazione.
 		while(!isValid){
 			current_player->nextTurn(board, from, to);
 			if(board.isEmpty(from)) {
@@ -56,13 +72,19 @@ void chess::GameManager::play() {
 			}
 		}
 		board.move(from, to);
+		*/
+
+		//TODO log the move
+		logMove(from, to);
+
+		/*
 		//Promozione
 		if(board.at(to).ascii()=='P'&&(to.rank == 0 || to.rank == 7) ) {
 			char chosen = current_player->choosePromotion();
 			logPromotion(chosen, to);
 		}
-		logMove(from, to);
-		//TODO log the move
+		*/
+
 		nextPlayer();
 		
 		//Check if player has available moves
@@ -78,13 +100,13 @@ void chess::GameManager::play() {
 			if(board.isKingInCheck(current_player->getColor())) {
 				//Scacco matto
 				log_stream<<"---"<<std::endl;
-				log_stream<<((current_player == player1)?"Player1":"Player2")<<" has no valid moves and his king is in check";
+				log_stream<<((current_player == player1_)?"Player1":"Player2")<<" has no valid moves and his king is in check";
 				nextPlayer();
 				win(current_player);
 			}else {
 				//Parità
 				log_stream<<"---"<<std::endl;
-				log_stream<<((current_player == player1)?"Player1":"Player2")<<" has no valid moves but his king is not in check";
+				log_stream<<((current_player == player1_)?"Player1":"Player2")<<" has no valid moves but his king is not in check";
 				win(nullptr);
 			}
 		}
@@ -94,7 +116,7 @@ void chess::GameManager::play() {
 	}
 	log_stream<<"---"<<std::endl;
 
-	if(current_move >= max_moves) {
+	if(current_move >= max_moves_) {
 		std::cout << "Number of moves reached. " << std::endl;
 		win(nullptr);
 	}
@@ -107,7 +129,7 @@ void chess::GameManager::win(Player* winner) {
 		std::cout << "Draw! " <<std::endl;
 		log_stream<<"Draw! "<<std::endl;
 	} else {
-		std::string win_message_part = (winner == player1)? "PLAYER 1": "PLAYER 2";
+		std::string win_message_part = (winner == player1_)? "PLAYER 1": "PLAYER 2";
 		std::cout << "The winner is "<<win_message_part<<"!!!"<<std::endl;
 		log_stream<<"The winner is "<<win_message_part<<"!!!"<<std::endl;
 	}

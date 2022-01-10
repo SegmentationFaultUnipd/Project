@@ -10,15 +10,15 @@ namespace chess {
 
     class GameManager {
         public:
-            GameManager(Player* player1, Player* player2, int max_moves) : player1(player1), player2(player2), max_moves(max_moves) {}
+            GameManager(Player* player1, Player* player2, int max_moves);
            	void play();
 			void logMove(Coordinates from, Coordinates to);
 			void logPromotion(char piece, Coordinates position);
 			
         private:
-			Player *player1, *player2;
+			Player *player1_, *player2_;
 			Board board;
-			int max_moves;//If max_moves is -1, go on forever
+			int max_moves_;//If max_moves is -1, go on forever
 			int current_move = 0;
 			Player* current_player;
 			std::string file_name;
