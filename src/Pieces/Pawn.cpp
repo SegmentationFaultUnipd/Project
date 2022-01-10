@@ -9,11 +9,11 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
     //The pawn can make 3 different moves, 1 only if it hasn't yet moved
 
     //Can't stay stationary
-    if(position_.file == coords.file && position_.rank == coords.rank) {
+    if(position_ == coords) {
         return false;
     }
     //Can't land on a piece of the same color
-    if (!board.isEmpty({coords.file, coords.rank}) && board.at({coords.file, coords.rank}).color() == this->color()) {
+    if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
 
@@ -21,7 +21,7 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
     if(this->color() == chess::WHITE) {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank + 2);
-        if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coord.file, position_.rank + 1})) {
+        if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + 1})) {
             return true;
         }
         
@@ -34,7 +34,7 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
         //The pawn moves diagonally (if there's a opponent piece to eat)
         bool diag_right = coords.file == (position_.file + 1) && coords.rank == (position_.rank + 1);
         bool diag_left = coords.file == (position_.file - 1) && coords.rank == (position_.rank + 1);
-        if((diag_right || diag_left) && board.at(coords).color() == chess::BLACK) {
+        if((diag_right || diag_left) && !board.isEmpty(coords) && board.at(coords).color() == chess::BLACK) {
             return true;
         }
 
@@ -44,7 +44,7 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
     else {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank - 2);
-        if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coord.file, position_.rank - 1}) {
+        if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank - 1})) {
             return true;
         }
         
@@ -57,7 +57,7 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
         //The pawn moves diagonally (if there's a opponent piece to eat)
         bool diag_right = coords.file == (position_.file + 1) && coords.rank == (position_.rank - 1);
         bool diag_left = coords.file == (position_.file - 1) && coords.rank == (position_.rank - 1);
-        if((diag_right || diag_left) && board.at(coords).color() == chess::WHITE) {
+        if((diag_right || diag_left) && !board.isEmpty(coords) && board.at(coords).color() == chess::WHITE) {
             return true;
         }
     }
@@ -104,7 +104,6 @@ bool chess::Pawn::canMove(Board& board) const {
 
     return false;
 }
-
 
 std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
