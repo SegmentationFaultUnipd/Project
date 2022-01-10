@@ -8,8 +8,7 @@
 namespace chess {
     class Bishop : public Piece {
         public:
-            Bishop(short file, short rank, Color color) : Piece{file, rank, color} {};
-            Bishop(char file, short rank, Color color) : Piece{file, rank, color} {};
+            Bishop(Coordinates coords, Color color) : Piece{coords, color} {};
 
             bool canMove(Coordinates pos, Board& board) const override;
             bool canMove(Board& board) const override;

@@ -8,8 +8,7 @@
 namespace chess {
     class Queen : public Piece {
         public:
-            Queen(short file, short rank, Color color) : Piece{file, rank, color} {};
-            Queen(char file, short rank, Color color) : Piece{file, rank, color} {};
+            Queen(Coordinates coords, Color color) : Piece{coords, color} {};
 
             bool canMove(Coordinates pos, Board& board) const override;
             bool canMove(Board& board) const override;

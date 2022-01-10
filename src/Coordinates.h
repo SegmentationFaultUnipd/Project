@@ -8,8 +8,8 @@ namespace chess {
 
     struct Coordinates
     {
-        short file; //column from 'a' to 'h', from queenside to kingside
-        short rank; //row from 1 to 8, from white to black
+        short file; //column index 0-7, means a-h, from queenside to kingside
+        short rank; //row index 0-7, means 1-8, from whiteside to blackside
 
         Coordinates(short _file, short _rank) {
             file = _file;
@@ -18,10 +18,14 @@ namespace chess {
 
         Coordinates(const std::string notation) {
             file = tolower(notation[0]) - 'a';
-            rank = notation[1] - '0' - 1;
+            rank = notation[1] - '1';
         }
 
         Coordinates() : Coordinates{0,0} {}
+
+        std::string toNotation() {
+            return "" + (char)(file + 'a') + (char)(rank + '1');
+        }
 
         bool operator==(const Coordinates& c2) const {
             return file == c2.file && rank == c2.rank;

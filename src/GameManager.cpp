@@ -6,11 +6,10 @@ chess::GameManager::GameManager(Player* player1, Player* player2, int max_moves)
 	player1_ = player1;
 	player2_ = player2;
 	
+	max_moves_ = max_moves;
+
 	createLogFile();
 }
-
-
-
 
 void chess::GameManager::createLogFile() {
 	time_t now = time(0);
@@ -42,10 +41,23 @@ void chess::GameManager::nextPlayer() {
 void chess::GameManager::play() {
 	current_move = 0;//Contatore delle mosse: serve per le partite tra due PC, perché devono finire dopo max_moves mosse
 	current_player = (player1_->getColor() == WHITE)? player1_:player2_; //Seleziona il giocatore iniziale
-	bool infinite_game = (max_moves == -1);
+	bool infinite_game = (max_moves_ == -1);
 	bool isGameEnded = false;
 
-	while(!isGameEnded && (infinite_game || current_move < max_moves)) {
+	while(!isGameEnded && (infinite_game || current_move < max_moves_)) {
+		Coordinates from, to;
+		bool isValid = false;
+
+		std::cout << "Tocca al " << (current_player->getColor() == Color::WHITE ? "bianco\n" : "nero\n");
+
+		do {
+			current_player->nextTurn(board, from, to);
+			isValid = board.move(from, to) && board.at(to).color() == current_player->getColor();
+			if (!isValid)
+				std::cout << "Mossa non consentita\n";
+		} while (!isValid);
+		
+		/*
 		Coordinates from, to;
 		bool isValid = false;
 		// Coordinates from, to; Doppia dichiarazione.
@@ -60,6 +72,9 @@ void chess::GameManager::play() {
 			}
 		}
 		board.move(from, to);
+		*/
+
+		//TODO log the move
 		logMove(from, to);
 
 		/*
@@ -70,7 +85,6 @@ void chess::GameManager::play() {
 		}
 		*/
 
-		//TODO log the move
 		nextPlayer();
 		
 		//Check if player has available moves
@@ -102,7 +116,7 @@ void chess::GameManager::play() {
 	}
 	log_stream<<"---"<<std::endl;
 
-	if(current_move >= max_moves) {
+	if(current_move >= max_moves_) {
 		std::cout << "Number of moves reached. " << std::endl;
 		win(nullptr);
 	}

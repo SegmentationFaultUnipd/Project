@@ -16,9 +16,10 @@ bool chess::Pawn::canMove(Coordinates coords, Board& board) const {
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
-
+    
     //THE PAWN IS WHITE
     if(this->color() == chess::WHITE) {
+
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank + 2);
         if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + 1})) {
