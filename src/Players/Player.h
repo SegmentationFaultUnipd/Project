@@ -11,7 +11,7 @@ namespace chess {
     class Player {
         public:
             virtual void nextTurn(Board& board, Coordinates& from, Coordinates& to) const = 0;
-            //virtual char choosePromotion() = 0;
+            virtual char choosePromotion() const = 0;
 
             Color getColor() { return color_; }
             

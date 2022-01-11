@@ -2,6 +2,18 @@
 
 chess::Board::Board() {
     char setup[8][8] = {
+        ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ',
+        'P', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        'R', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+    };
+
+    /*
+    char setup[8][8] = {
         't', 'c', 'a', 'd', 'r', 'a', 'c', 't',
         'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -11,7 +23,7 @@ chess::Board::Board() {
         'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 
         'T', 'C', 'A', 'D', 'R', 'A', 'C', 'T'
     };
-
+    */
     // Initialize pointer matrix
     for (size_t i = 0; i < 8; i++)
         for (size_t j = 0; j < 8; j++)
@@ -20,25 +32,20 @@ chess::Board::Board() {
     // Insert pieces from setup, white (lower char) with lower rank
     for (short r = 7; r >= 0; r--) {
         for (short f = 0; f < 8; f++) {
-            char piece = setup[r][f];
+            if (isalnum(setup[r][f])) {
+                char piece = setup[r][f];
+                Coordinates pieceCoords{f,r};
+                Color pieceColor = islower(piece) ? WHITE : BLACK;
 
-            // Adding in matrix
-            Color pieceColor = islower(piece) ? WHITE : BLACK;
-            board_[f][r] = std::move(makePiece(piece, {f,r}, pieceColor));
-            
-            // Adding coordinates in color-specific vectors, with king always at front
-            if (islower(piece)) {
-                if (piece == 'r')
-                    white_pieces_.push_front({f,r});
+                // Adding in matrix
+                board_[f][r] = std::move(makePiece(piece, pieceCoords, pieceColor));
+
+                // Adding coordinates in color-specific vectors, with king always at front
+                if (at(pieceCoords).ascii() == 'R')
+                    getPieces(pieceColor).push_front(pieceCoords);
                 else
-                    white_pieces_.push_back({f,r});
-            } else  {
-                if (piece == 'R')
-                    black_pieces_.push_front({f,r});
-                else
-                    black_pieces_.push_back({f,r});
+                    getPieces(pieceColor).push_back(pieceCoords);
             }
-
         }
     }
 }
@@ -62,8 +69,15 @@ bool chess::Board::move(Coordinates from, Coordinates to) {
     if (!isEmpty(from) && at(from).canMove(to, *this) ) {
         // Update piece position
         at(from).move(to);
+        
+        // Update lists 
+        for (Coordinates& piece : getPieces(at(from).color())) {
+            if (piece == from) {
+                piece = to;
+                break;
+            }
+        }
 
-        // Eat piece
         if (!isEmpty(to)) {
             getPieces(at(to).color()).remove(to);
         }
@@ -141,6 +155,11 @@ bool chess::Board::isThreaten(chess::Coordinates coords, chess::Color pieceColor
 bool chess::Board::isKingInCheck(chess::Color kingColor) {
     // King always at front
     return isThreaten(getPieces(kingColor).front(), kingColor);
+}
+
+void chess::Board::promote(Coordinates pawnCoords, char piece) {
+    Color pieceColor = at(pawnCoords).color();
+    board_[pawnCoords.file][pawnCoords.rank] = std::move(makePiece(piece, pawnCoords, pieceColor));
 }
 
 std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords, Color pieceColor) {

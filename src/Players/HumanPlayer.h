@@ -12,6 +12,7 @@ namespace chess {
         public:
             HumanPlayer(Color color) : Player{color} {};
             void nextTurn(Board& board, Coordinates& from, Coordinates& to) const override;
+            char choosePromotion() const override;
         private:
             bool verifyNotation(std::string coords) const;
     };

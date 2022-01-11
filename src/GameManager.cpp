@@ -1,8 +1,6 @@
 #include "GameManager.h"
 
 chess::GameManager::GameManager(Player* player1, Player* player2, int max_moves) {
-	board = Board();
-
 	player1_ = player1;
 	player2_ = player2;
 	
@@ -56,7 +54,7 @@ void chess::GameManager::play() {
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);
-		
+
 		/*
 		Coordinates from, to;
 		bool isValid = false;
@@ -77,13 +75,12 @@ void chess::GameManager::play() {
 		//TODO log the move
 		logMove(from, to);
 
-		/*
-		//Promozione
-		if(board.at(to).ascii()=='P'&&(to.rank == 0 || to.rank == 7) ) {
+		// Promozione
+		if(board.at(to).ascii()=='P' && (to.rank == 0 || to.rank == 7) ) {
 			char chosen = current_player->choosePromotion();
+			board.promote(to, chosen);
 			logPromotion(chosen, to);
 		}
-		*/
 
 		nextPlayer();
 		
