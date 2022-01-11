@@ -60,21 +60,35 @@ bool chess::Board::move(Coordinates from, Coordinates to) {
     assert(to.rank >= 0 && to.rank < 8);
 
     if (!isEmpty(from) && at(from).canMove(to, *this) ) {
-        // Update piece position
-        at(from).move(to);
-
-        // Eat piece
-        if (!isEmpty(to)) {
-            getPieces(at(to).color()).remove(to);
-        }
-
-        // Update matrix
-        board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
-        board_[from.file][from.rank] = nullptr;
-        
-        return true;
+        if (at(from).ascii() == 'R' && abs(from.file - to.file) > 1)
+            return castle(from, to);
+        else
+            return updatePosition(from, to);
     }
     return false;
+}
+
+bool chess::Board::updatePosition(Coordinates from, Coordinates to) {
+    // Update piece position in members
+    at(from).move(to);
+
+    // Update piece position
+    for (Coordinates& piece : getPieces(at(from).color())) {
+        if (piece == from) {
+            piece = to;
+            break;
+        }
+    }
+
+    // Eat piece
+    if (!isEmpty(to))
+        getPieces(at(to).color()).remove(to);
+
+    // Update matrix
+    board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
+    board_[from.file][from.rank] = nullptr;
+
+    return true;
 }
 
 bool chess::Board::tryMove(Coordinates from, Coordinates to) {
@@ -163,6 +177,16 @@ std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords
     default:
         return nullptr;
     }
+}
+
+bool chess::Board::castle(Coordinates from, Coordinates to) {
+    //FILIPPO NIERO
+    // Ricorda che l'arrocco è una mossa del re e le coordinate 'to' non sono quelle della torre
+    // ma sono le coordinate della casa in cui andrà il Re.
+
+    // Puoi usare updatePosition
+
+    return false;
 }
 
 std::unique_ptr<chess::Piece> chess::Board::copyPiece(Piece& piece) {

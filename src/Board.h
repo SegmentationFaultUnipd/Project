@@ -34,6 +34,7 @@ namespace chess {
 
             // DA IMPLEMENTARE
 			//void promote(Coordinates coords, char chosen_piece);
+            bool castle(Coordinates from, Coordinates to);
 
             std::vector<Coordinates> legalMovesOf(Piece& piece);
             std::list<Coordinates>& getPieces(Color color);
@@ -41,6 +42,8 @@ namespace chess {
         private:
             std::unique_ptr<Piece> makePiece(char c, Coordinates coords, Color pieceColor);
             std::unique_ptr<Piece> copyPiece(Piece& p);
+
+            bool updatePosition(Coordinates from, Coordinates to);
 
             std::list<Coordinates> white_pieces_;
             std::list<Coordinates> black_pieces_;
