@@ -32,6 +32,7 @@ namespace chess {
             bool isThreaten(Coordinates coords, Color pieceColor);
             bool isKingInCheck(Color kingColor);
 
+            bool castle(Coordinates from, Coordinates to);
 			void promote(Coordinates pawn, char piece);
 
             std::vector<Coordinates> legalMovesOf(Piece& piece);
@@ -40,6 +41,8 @@ namespace chess {
         private:
             std::unique_ptr<Piece> makePiece(char c, Coordinates coords, Color pieceColor);
             std::unique_ptr<Piece> copyPiece(Piece& p);
+
+            bool updatePosition(Coordinates from, Coordinates to);
 
             std::list<Coordinates> white_pieces_;
             std::list<Coordinates> black_pieces_;
