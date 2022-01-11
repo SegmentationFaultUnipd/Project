@@ -1,8 +1,10 @@
-#ifndef CHESS_COORDINATE_H
-#define CHESS_COORDINATE_H
+#ifndef CHESS_COORDINATES_H
+#define CHESS_COORDINATES_H
 
 #include <assert.h>
 #include <string>
+#include <ostream>
+#include <sstream>
 
 namespace chess {
 
@@ -23,14 +25,21 @@ namespace chess {
 
         Coordinates() : Coordinates{0,0} {}
 
-        std::string toNotation() {
-            return "" + (char)(file + 'a') + (char)(rank + '1');
+        std::string toNotation() const {
+            std::ostringstream oss;
+            oss << (char)(file + 'a') << (char)(rank + '1');
+            return oss.str();
         }
 
         bool operator==(const Coordinates& c2) const {
-            return file == c2.file && rank == c2.rank;
+            return (file == c2.file && rank == c2.rank);
         }
     };
+
+    inline std::ostream& operator<<(std::ostream& os, const Coordinates& coords) {
+        os << coords.toNotation();
+        return os;
+    }
 
 }
 

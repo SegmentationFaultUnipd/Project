@@ -32,9 +32,8 @@ namespace chess {
             bool isThreaten(Coordinates coords, Color pieceColor);
             bool isKingInCheck(Color kingColor);
 
-            // DA IMPLEMENTARE
-			//void promote(Coordinates coords, char chosen_piece);
             bool castle(Coordinates from, Coordinates to);
+			void promote(Coordinates pawn, char piece);
 
             std::vector<Coordinates> legalMovesOf(Piece& piece);
             std::list<Coordinates>& getPieces(Color color);

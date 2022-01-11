@@ -2,6 +2,18 @@
 
 chess::Board::Board() {
     char setup[8][8] = {
+        ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ',
+        'P', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        'R', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+    };
+
+    /*
+    char setup[8][8] = {
         't', 'c', 'a', 'd', 'r', 'a', 'c', 't',
         'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
@@ -11,7 +23,7 @@ chess::Board::Board() {
         'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 
         'T', 'C', 'A', 'D', 'R', 'A', 'C', 'T'
     };
-
+    */
     // Initialize pointer matrix
     for (size_t i = 0; i < 8; i++)
         for (size_t j = 0; j < 8; j++)
@@ -155,6 +167,11 @@ bool chess::Board::isThreaten(chess::Coordinates coords, chess::Color pieceColor
 bool chess::Board::isKingInCheck(chess::Color kingColor) {
     // King always at front
     return isThreaten(getPieces(kingColor).front(), kingColor);
+}
+
+void chess::Board::promote(Coordinates pawnCoords, char piece) {
+    Color pieceColor = at(pawnCoords).color();
+    board_[pawnCoords.file][pawnCoords.rank] = std::move(makePiece(piece, pawnCoords, pieceColor));
 }
 
 std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords, Color pieceColor) {

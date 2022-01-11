@@ -36,3 +36,17 @@ bool chess::HumanPlayer::verifyNotation(std::string coords) const {
 
     return f >= 0 && f < 8 && r >= 0 && r < 8;
 }
+
+char chess::HumanPlayer::choosePromotion() const {
+    char piece;
+    bool correctInput;
+    std::cout << "Promuovi in [D|T|A|C]: ";
+    do {
+        std::cin >> piece;
+        piece = toupper(piece);
+        correctInput = piece == 'D' || piece == 'T' || piece == 'A' || piece == 'C';
+        if (!correctInput)
+            std::cout << "Inserire un carattere tra [D|T|A|C]: ";
+    } while (!correctInput);
+    return piece;
+}
