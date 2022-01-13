@@ -2,14 +2,14 @@
 
 chess::Board::Board() {
     char setup[8][8] = {
-        ' ', ' ', ' ', 'r', ' ', ' ', ' ', ' ',
-        'P', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        'T', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        'C', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', 'C', ' ', ' ', ' ', ' ', 
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        'R', ' ', ' ', ' ', ' ', ' ', ' ', ' '
+        ' ', ' ', ' ', ' ', ' ', ' ', 'C', ' ', 
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
     };
 
     /*
@@ -140,6 +140,7 @@ bool chess::Board::updatePosition(Coordinates from, Coordinates to) {
     return true;
 }
 
+// Refactor to "causeSelfCheck"
 bool chess::Board::tryMove(Coordinates from, Coordinates to) {
     bool kingInCheck;
     std::unique_ptr<Piece> movingPiece, landingPiece;

@@ -19,6 +19,8 @@ namespace chess {
             //std::vector<Coordinates> takeablePieces(Board& board) const override;
       
             char ascii() const override { return 'C'; };
+        private:
+            const std::vector<Coordinates> candidateMoves_() const;
     };
 
 } //namespace chess
