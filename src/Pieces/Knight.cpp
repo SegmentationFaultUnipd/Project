@@ -5,96 +5,44 @@ bool chess::Knight::canMove(Coordinates coords, chess::Board& board) const {
     short delta_rank = coords.rank - rank();
 
     //Knight moves with 3 total steps, so the manahattan distance must be 3
-    if (delta_file * delta_rank != 0 && abs(delta_file) + abs(delta_rank) == 3) {
+    if (abs(delta_file) + abs(delta_rank) == 3 && delta_file != 0 && delta_rank != 0) {
         return board.isEmpty(coords) || board.at(coords).color() != this->color();
     }
     return false;
 };
 
 bool chess::Knight::canMove(chess::Board& board) const {
-    short file, rank_upper, rank_lower;
-
-    for (short delta_file = -2; delta_file <= 2; delta_file++) {
-        if (delta_file == 0)
-            continue;
-
-        file = position_.file + delta_file;
-        rank_upper = position_.rank + abs(3 - abs(delta_file));
-        rank_lower = position_.rank - abs(3 - abs(delta_file));
-
-        if (file >= 0 && file < 8) {
-            if (rank_upper >= 0 && rank_upper < 8 && canMove({file, rank_upper}, board))
-                return true;
-
-            if (rank_lower >= 0 && rank_lower < 8 && canMove({file, rank_lower}, board))
-                return true;
-        }
-    }
+    for(const Coordinates& candidate : candidateMoves_())
+        if (candidate.inBounderies(0,7,0,7) && canMove(candidate, board))
+            return true;
     return false;
 };
 
 std::vector<chess::Coordinates> chess::Knight::legalMoves(Board& board) const {
-    std::vector<chess::Coordinates> moves = {};
+    std::vector<Coordinates> moves;
 
-    short file, rank_upper, rank_lower;
-
-    for (short delta_file = -2; delta_file <= 2; delta_file++) {
-        if (delta_file == 0)
-            continue;
-
-        file = position_.file + delta_file;
-        rank_upper = position_.rank + abs(3 - abs(delta_file));
-        rank_lower = position_.rank - abs(3 - abs(delta_file));
-
-        if (file >= 0 && file < 8) {
-            if (rank_upper >= 0 && rank_upper < 8
-                && canMove({file, rank_upper}, board))
-            {
-                moves.push_back(chess::Coordinates{file, rank_upper});
-            }
-
-            if (rank_lower >= 0 && rank_lower < 8
-                && canMove({file, rank_lower}, board))
-            {
-                moves.push_back(chess::Coordinates{file, rank_lower});
-            }
-        }
-    }
+    for(const Coordinates& candidate : candidateMoves_())
+        if (candidate.inBounderies(0,7,0,7) && canMove(candidate, board))
+            moves.push_back(candidate);
     return moves;
 }
 
 /*
 std::vector<chess::Coordinates> chess::Knight::takeablePieces(Board& board) const {
-    std::vector<chess::Coordinates> pieces = {};
-    short file, rank_upper, rank_lower;
+    std::vector<Coordinates> pieces;
 
-    for (short delta_file = -2; delta_file <= 2; delta_file++) {
-        if (delta_file == 0)
-            continue;
-
-        // Calculate movements in the same file.
-        // The movement must be made with manhattan distance = 3
-        file = position_.file + delta_file;
-        rank_upper = position_.rank + abs(3 - abs(delta_file));
-        rank_lower = position_.rank - abs(3 - abs(delta_file));
-
-        // Check if the movements are possible and if take a piece
-        if (file >= 0 && file < 8) {
-            if (rank_upper >= 0 && rank_upper < 8
-                && canMove(file, rank_upper, board)
-                && !board.isEmpty(file, rank_upper))
-            {
-                pieces.push_back(chess::Coordinates{file, rank_upper});
-            }
-
-            if (rank_lower >= 0 && rank_lower < 8
-                && canMove(file, rank_lower, board)
-                && !board.isEmpty(file, rank_lower))
-            {
-                pieces.push_back(chess::Coordinates{file, rank_lower});
-            }
-        }
-    }
-
+    for(Coordinates& candidate : candidateMoves_())
+        if (candidate.inBounderies(0,7,0,7) && canMove(candidate, board) && !board.at(candidate).isEmpty())
+            pieces.push_back(candidate);
     return pieces;
 }*/
+
+// Constant time
+const std::vector<chess::Coordinates> chess::Knight::candidateMoves_() const{
+    return {
+      {file() + 1, rank() + 2}, {file() + 2, rank() + 1}, //Up-right
+      {file() + 1, rank() - 2}, {file() + 2, rank() - 1}, //Down-right
+      {file() - 1, rank() + 2}, {file() - 2, rank() + 1}, //Up-left
+      {file() - 1, rank() - 2}, {file() - 2, rank() - 1}, //Down-left
+    };
+}

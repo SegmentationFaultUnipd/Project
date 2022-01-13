@@ -31,6 +31,10 @@ namespace chess {
             return oss.str();
         }
 
+        bool inBounderies(const int inf_file, const int sup_file, const int inf_rank, const int sup_rank) const {
+            return file >= inf_file && file <= sup_file && rank >= inf_rank && rank <= sup_rank;
+        }
+
         bool operator==(const Coordinates& c2) const {
             return (file == c2.file && rank == c2.rank);
         }
