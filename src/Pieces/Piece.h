@@ -6,6 +6,7 @@
 
 #include "../Color.h"
 #include "../Coordinates.h"
+
 namespace chess {
 	class Board;
 
@@ -16,16 +17,16 @@ namespace chess {
             }
 
             //Check if the piece can move to a file and rank.
-            bool virtual canMove(Coordinates pos, chess::Board& board) const = 0;
+            virtual bool canMoveAt(Coordinates pos, chess::Board& board) const = 0;
 
             //Check if the piece has at least an avaible move
-            bool virtual canMove(chess::Board& board) const = 0;
+            virtual bool canMove(chess::Board& board) const = 0;
 
             //List all the avaible moves
-            std::vector<Coordinates> virtual legalMoves(chess::Board& board) const = 0;
+            virtual std::vector<Coordinates> legalMoves(chess::Board& board) const = 0;
 
             //List all the moves that capture an enemy piece
-            std::vector<Coordinates> takeablePieces(chess::Board& board) const;
+            virtual std::vector<Piece*> takeablePieces(chess::Board& board) const;
 
             // returns the ascii character for that piece
             char virtual ascii() const = 0;
@@ -33,6 +34,7 @@ namespace chess {
             Color color() const { return color_;}
             short file() const { return position_.file; }
             short rank() const { return position_.rank; }
+            Coordinates coordinates() const { return position_; }
 
         protected:
             Piece(Coordinates pos, Color color) {

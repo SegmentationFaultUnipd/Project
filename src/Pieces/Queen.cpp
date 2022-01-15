@@ -1,6 +1,6 @@
 #include "Queen.h"
 
-bool chess::Queen::canMove(Coordinates coords, Board& board) const {
+bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
     //Queen can move as much as she wants both horizontally, vertically or diagonally
     //It mixes the movement of a Bishop with the move of a Rook
 
@@ -109,6 +109,7 @@ bool chess::Queen::canMove(Coordinates coords, Board& board) const {
             return true;
         }
     }
+    return false;
 }
 
 bool chess::Queen::canMove(Board& board) const {

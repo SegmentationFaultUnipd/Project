@@ -46,7 +46,7 @@ void chess::GameManager::play() {
 		Coordinates from, to;
 		bool isValid = false;
 
-		std::cout << "Tocca al " << (current_player->getColor() == Color::WHITE ? "bianco\n" : "nero\n");
+		std::cout << "Tocca al " << (current_player->getColor() == WHITE ? "bianco\n" : "nero\n");
 
 		do {
 			current_player->nextTurn(board, from, to);
@@ -64,8 +64,8 @@ void chess::GameManager::play() {
 			if(board.isEmpty(from)) {
 				continue;
 			}
-			if(board.at(from).canMove(to, board)) {
-				//TODO canMove fa il controllo che il re di current_player non sia sotto scacco?
+			if(board.at(from).canMoveAt(to, board)) {
+				//TODO canMoveAt fa il controllo che il re di current_player non sia sotto scacco?
 				isValid = true;
 			}
 		}
@@ -85,7 +85,7 @@ void chess::GameManager::play() {
 		nextPlayer();
 		
 		//Check if player has available moves
-		std::list<Coordinates> pieces = board.getPieces(current_player->getColor());
+		std::list<Coordinates> pieces = board.getPieceCoords(current_player->getColor());
 		bool player_has_at_least_1_move = false;
 		for(auto coords: pieces) {
 			if(board.legalMovesOf(board.at(coords)).size() > 0) {

@@ -15,6 +15,7 @@ namespace chess {
             char choosePromotion() const override;
         private:
             bool verifyNotation(std::string coords) const;
+            bool isValidPromotionPiece(const char piece) const;
     };
 }
 
