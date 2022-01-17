@@ -40,26 +40,29 @@ namespace chess {
             bool isTakingAPiece(Coordinates landing_square, const Piece& piece) const;
 
             // Special moves ---------------------------------------------
+            void addAvailableEnPassant(Coordinates from, Coordinates to);
+            
 			void promote(Coordinates pawn, char piece);
 
             bool isCastlingMove(Coordinates from, Coordinates to);
-            bool doCastlingMove(Coordinates from, Coordinates to);
+            void doCastlingMove(Coordinates from, Coordinates to);
 
             bool isEnPassantMove(Coordinates from, Coordinates to);
-            bool doEnPassantMove(Coordinates from, Coordinates to);
-
-            void addAvailableEnPassant(Coordinates from, Coordinates to);
-            void clearEnPassants();
+            void doEnPassantMove(Coordinates from, Coordinates to);
 
         private:
             void addPiece_(char pieceAscii, Coordinates coords, Color color);
             void addPieceToMatrix_(std::unique_ptr<Piece>& pieceToAdd, Coordinates coords);
             void addPieceCoords_(Coordinates coords);
 
+            void clearEnPassants_();
+
+            void removePiece_(Coordinates coords);
+
             std::unique_ptr<Piece> makePiece_(char c, Coordinates coords, Color color) const;
             std::unique_ptr<Piece> copyPiece_(Piece& p) const;
 
-            bool updatePosition_(Coordinates from, Coordinates to);
+            void updatePosition_(Coordinates from, Coordinates to);
 
             std::list<Coordinates> white_coords_;
             std::list<Coordinates> black_coords_;
