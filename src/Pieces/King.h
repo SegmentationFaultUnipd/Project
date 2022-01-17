@@ -16,7 +16,7 @@ namespace chess {
 			//bool hasMoved() {return hasMoved;}
 			void firstMove() {hasMoved = true;}
 			bool canCastle(short to_file, short to_rank, Board& board);
-          	bool canMove(Coordinates coords, Board& board) const override;
+          	bool canMoveAt(Coordinates coords, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
             char ascii() const override { return 'R'; };

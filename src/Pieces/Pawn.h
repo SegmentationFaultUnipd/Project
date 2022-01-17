@@ -12,7 +12,7 @@ namespace chess {
         public:
             Pawn(Coordinates pos, Color color) : Piece{pos, color}, hasMoved{false} {};
 
-            bool canMove(Coordinates coords, Board& board) const override;
+            bool canMoveAt(Coordinates coords, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
             void move(Coordinates new_position) override;

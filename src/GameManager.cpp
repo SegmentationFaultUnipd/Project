@@ -1,8 +1,6 @@
 #include "GameManager.h"
 
 chess::GameManager::GameManager(Player* player1, Player* player2, int max_moves) {
-	board = Board();
-
 	player1_ = player1;
 	player2_ = player2;
 	
@@ -48,7 +46,7 @@ void chess::GameManager::play() {
 		Coordinates from, to;
 		bool isValid = false;
 
-		std::cout << "Tocca al " << (current_player->getColor() == Color::WHITE ? "bianco\n" : "nero\n");
+		std::cout << "Tocca al " << (current_player->getColor() == WHITE ? "bianco\n" : "nero\n");
 
 		do {
 			current_player->nextTurn(board, from, to);
@@ -60,19 +58,17 @@ void chess::GameManager::play() {
 		//TODO log the move
 		logMove(from, to);
 
-		/*
-		//Promozione
-		if(board.at(to).ascii()=='P'&&(to.rank == 0 || to.rank == 7) ) {
+		// Promozione
+		if(board.at(to).ascii()=='P' && (to.rank == 0 || to.rank == 7) ) {
 			char chosen = current_player->choosePromotion();
-			board.promote(coords, 'R');
+			board.promote(to, chosen);
 			logPromotion(chosen, to);
 		}
-		*/
 
 		nextPlayer();
 		
 		//Check if player has available moves
-		std::list<Coordinates> pieces = board.getPieces(current_player->getColor());
+		std::list<Coordinates> pieces = board.getPiecesCoords(current_player->getColor());
 		bool player_has_at_least_1_move = false;
 		for(auto coords: pieces) {
 			if(board.legalMovesOf(board.at(coords)).size() > 0) {

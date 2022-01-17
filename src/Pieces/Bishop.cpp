@@ -1,6 +1,6 @@
 #include "Bishop.h"
 
-bool chess::Bishop::canMove(Coordinates coords, Board& board) const {
+bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
     //Bishop can only move diagonally
     //To move diagonally it should move the same amount vertically and horizontally
 
@@ -64,76 +64,77 @@ bool chess::Bishop::canMove(Coordinates coords, Board& board) const {
             return true;
         }
     }
+    return false;
 }
 
 bool chess::Bishop::canMove(Board& board) const {
-    short to_file, to_rank;
+    Coordinates coords;
 
     //UPPER VERTICALS
     //left
-    to_file = position_.file - 1;
-    to_rank = position_.rank - 1;
-    while(to_file >= 0 && to_rank >= 0) {
+    coords.file = position_.file - 1;
+    coords.rank = position_.rank - 1;
+    while(coords.file >= 0 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
                 return true;
             }
             break;
         }
         return true;
-        to_file--;
-        to_rank--;
+        coords.file--;
+        coords.rank--;
     }
     //right
-    to_file = position_.file + 1;
-    to_rank = position_.rank - 1;
-    while(to_file < 8 && to_rank >= 0) {
+    coords.file = position_.file + 1;
+    coords.rank = position_.rank - 1;
+    while(coords.file < 8 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
                 return true;
             }
             break;
         }
         return true;
-        to_file++;
-        to_rank--;
+        coords.file++;
+        coords.rank--;
     }
     //LOWER VERTICALS
     //left
-    to_file = position_.file - 1;
-    to_rank = position_.rank + 1;
-    while(to_file >= 0 && to_rank < 8) {
+    coords.file = position_.file - 1;
+    coords.rank = position_.rank + 1;
+    while(coords.file >= 0 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
                 return true;
             }
             break;
         }
         return true;
-        to_file--;
-        to_rank++;
+        coords.file--;
+        coords.rank++;
     }
     //right
-    to_file = position_.file + 1;
-    to_rank = position_.rank + 1;
-    while(to_file < 8 && to_rank < 8) {
+    coords.file = position_.file + 1;
+    coords.rank = position_.rank + 1;
+    while(coords.file < 8 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
                 return true;
             }
             break;
         }
         return true;
-        to_file++;
-        to_rank++;
+        coords.file++;
+        coords.rank++;
     }
 
     return false;
@@ -142,73 +143,73 @@ bool chess::Bishop::canMove(Board& board) const {
 std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
 
-    short to_file, to_rank;
+    Coordinates coords;
 
     //UPPER VERTICALS
     //left
-    to_file = position_.file - 1;
-    to_rank = position_.rank - 1;
-    while(to_file >= 0 && to_rank >= 0) {
+    coords.file = position_.file - 1;
+    coords.rank = position_.rank - 1;
+    while(coords.file >= 0 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{to_file, to_rank});
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+                moves.push_back(chess::Coordinates{coords.file, coords.rank});
             }
             break;
         }
-        moves.push_back(chess::Coordinates{to_file, to_rank});
-        to_file--;
-        to_rank--;
+        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        coords.file--;
+        coords.rank--;
     }
     //right
-    to_file = position_.file + 1;
-    to_rank = position_.rank - 1;
-    while(to_file < 8 && to_rank >= 0) {
+    coords.file = position_.file + 1;
+    coords.rank = position_.rank - 1;
+    while(coords.file < 8 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{to_file, to_rank});
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+                moves.push_back(chess::Coordinates{coords.file, coords.rank});
             }
             break;
         }
-        moves.push_back(chess::Coordinates{to_file, to_rank});
-        to_file++;
-        to_rank--;
+        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        coords.file++;
+        coords.rank--;
     }
     //LOWER VERTICALS
     //left
-    to_file = position_.file - 1;
-    to_rank = position_.rank + 1;
-    while(to_file >= 0 && to_rank < 8) {
+    coords.file = position_.file - 1;
+    coords.rank = position_.rank + 1;
+    while(coords.file >= 0 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{to_file, to_rank});
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+                moves.push_back(chess::Coordinates{coords.file, coords.rank});
             }
             break;
         }
-        moves.push_back(chess::Coordinates{to_file, to_rank});
-        to_file--;
-        to_rank++;
+        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        coords.file--;
+        coords.rank++;
     }
     //right
-    to_file = position_.file + 1;
-    to_rank = position_.rank + 1;
-    while(to_file < 8 && to_rank < 8) {
+    coords.file = position_.file + 1;
+    coords.rank = position_.rank + 1;
+    while(coords.file < 8 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({to_file, to_rank})) {
+        if(!board.isEmpty({coords.file, coords.rank})) {
             //Can move to eat a piece of different color
-            if(board.at({to_file, to_rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{to_file, to_rank});
+            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+                moves.push_back(chess::Coordinates{coords.file, coords.rank});
             }
             break;
         }
-        moves.push_back(chess::Coordinates{to_file, to_rank});
-        to_file++;
-        to_rank++;
+        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        coords.file++;
+        coords.rank++;
     }
 
     return moves;

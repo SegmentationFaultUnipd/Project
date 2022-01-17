@@ -1,187 +1,279 @@
 #include "Board.h"
 
-chess::Board::Board() {
-    char setup[8][8] = {
-        't', 'c', 'a', 'd', 'r', 'a', 'c', 't',
-        'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 
-        'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 
-        'T', 'C', 'A', 'D', 'R', 'A', 'C', 'T'
+chess::Board::Board()
+{
+    char asciiSetup[8][8] = {
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
+        'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R',
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
     };
 
-    // Initialize pointer matrix
-    for (size_t i = 0; i < 8; i++)
-        for (size_t j = 0; j < 8; j++)
-            board_[i][j] = nullptr;
-
-    // Insert pieces from setup, white (lower char) with lower rank
-    for (short r = 7; r >= 0; r--) {
+    for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
-            char piece = setup[r][f];
+            char asciiPiece{asciiSetup[f][r]};
+            Coordinates coords{f, r};
+            Color color = islower(asciiPiece) ? WHITE : BLACK;
 
-            // Adding in matrix
-            Color pieceColor = islower(piece) ? WHITE : BLACK;
-            board_[f][r] = std::move(makePiece(piece, {f,r}, pieceColor));
-            
-            // Adding coordinates in color-specific vectors, with king always at front
-            if (islower(piece)) {
-                if (piece == 'r')
-                    white_pieces_.push_front({f,r});
-                else
-                    white_pieces_.push_back({f,r});
-            } else  {
-                if (piece == 'R')
-                    black_pieces_.push_front({f,r});
-                else
-                    black_pieces_.push_back({f,r});
-            }
-
+            addPiece_(asciiPiece, coords, color);
         }
     }
 }
 
-bool chess::Board::isEmpty(chess::Coordinates coords) const {
+void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
+    std::unique_ptr<Piece> pieceToAdd = makePiece_(asciiPiece, coords, color);
+    
+    addPieceToMatrix_(pieceToAdd, coords);
+    if (!isEmpty(coords))
+        addPieceCoords_(coords);
+}
+
+void chess::Board::addPieceToMatrix_(std::unique_ptr<Piece>& pieceToAdd, Coordinates coords) {
+    if (pieceToAdd == nullptr)
+        board_[coords.file][coords.rank] = nullptr;
+    else
+        board_[coords.file][coords.rank] = std::move(pieceToAdd);
+}
+
+void chess::Board::addPieceCoords_(Coordinates coords) {
+    Color pieceColor = at(coords).color();
+
+    if (at(coords).ascii() == 'R')
+        getPiecesCoords(pieceColor).push_front(coords);
+    else
+        getPiecesCoords(pieceColor).push_back(coords);
+}
+
+
+bool chess::Board::isEmpty(chess::Coordinates coords) const
+{
     return board_[coords.file][coords.rank] == nullptr;
 }
 
-chess::Piece& chess::Board::at(Coordinates coords) {
+chess::Piece &chess::Board::at(Coordinates coords) const
+{
     assert(!isEmpty(coords));
     return *board_[coords.file][coords.rank];
 }
 
-// Move the piece 
-bool chess::Board::move(Coordinates from, Coordinates to) {
+// Move the piece
+bool chess::Board::move(Coordinates from, Coordinates to)
+{
     assert(from.file >= 0 && from.file < 8);
     assert(from.rank >= 0 && from.rank < 8);
     assert(to.file >= 0 && to.file < 8);
     assert(to.rank >= 0 && to.rank < 8);
 
-    if (!isEmpty(from) && at(from).canMove(to, *this) ) {
-        // Update piece position
-        at(from).move(to);
-
-        // Eat piece
-        if (!isEmpty(to)) {
-            getPieces(at(to).color()).remove(to);
-        }
-
-        // Update matrix
-        board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
-        board_[from.file][from.rank] = nullptr;
-        
-        return true;
+    if (!isEmpty(from) && at(from).canMoveAt(to, *this))
+    {
+        if (isCastlingMove(from, to))
+            return doCastlingMove(from, to);
+        else if (isEnPassantMove(from, to))
+            return doEnPassantMove(from, to);
+        else
+            return updatePosition_(from, to);
     }
     return false;
 }
 
-bool chess::Board::tryMove(Coordinates from, Coordinates to) {
-    bool kingInCheck;
-    std::unique_ptr<Piece> movingPiece, landingPiece;
+bool chess::Board::doCastlingMove(Coordinates from, Coordinates to)
+{
+    // FILIPPO NIERO
 
-    if (isEmpty(from))
-        return false;
+    // Ricorda che l'arrocco è una mossa del re e le coordinate 'to' non sono quelle della torre
+    // ma sono le coordinate della casa in cui andrà il Re.
+
+    // Puoi usare updatePosition
+
+    return false;
+}
+
+bool chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
+{
+    // TOMMASO
+    // Puoi usare updatePosition
+    return updatePosition_(from, to);
+}
+
+bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
+{
+    return at(from).ascii() == 'R' && abs(from.file - to.file) > 1;
+}
+
+bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
+{
+    std::pair<Coordinates, Coordinates> candidate_move{from, to};
+    for (std::pair<Coordinates, Coordinates> available_en_passant : available_en_passants_)
+        if (candidate_move == available_en_passant)
+            return true;
+    return false;
+}
+
+void chess::Board::addAvailableEnPassant(Coordinates from, Coordinates to)
+{
+    available_en_passants_.push_back({from, to});
+}
+
+void chess::Board::clearEnPassants()
+{
+    available_en_passants_ = {};
+}
+
+bool chess::Board::updatePosition_(Coordinates from, Coordinates to)
+{
+    // Update position in own members
+    at(from).move(to);
+
+    // Update piece position in piece list
+    std::list<Coordinates>& own_color_pieces = getPiecesCoords(at(from).color());
+    for (Coordinates &piece : own_color_pieces) {
+        if (piece == from) {
+            piece = to;
+            break;
+        }
+    }
+
+    // Eat piece
+    if (!isEmpty(to))
+        getPiecesCoords(at(to).color()).remove(to);
+
+    // Finally, update matrix
+    board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
+    board_[from.file][from.rank] = nullptr;
+    return true;
+}
+
+bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to)
+{
+    assert(!isEmpty(from));
+
+    bool kingInCheck;
+    std::unique_ptr<Piece> moving_piece, landing_piece;
 
     // Save old state
-    movingPiece = copyPiece(at(from));
-    if (!isEmpty(to)) 
-        landingPiece = copyPiece(at(to)); // ate a piece
+    moving_piece = copyPiece_(at(from));
+    if (!isEmpty(to))
+        landing_piece = copyPiece_(at(to));
 
     // Movement in matrix
     board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
     board_[from.file][from.rank] = nullptr;
-    
-    kingInCheck = isKingInCheck(movingPiece->color());
+
+    // Check move validity
+    kingInCheck = isKingInCheck(moving_piece->color());
 
     // Reset
-    board_[from.file][from.rank] = std::move(movingPiece);
-    board_[to.file][to.rank] = std::move(landingPiece);
+    board_[from.file][from.rank] = std::move(moving_piece);
+    board_[to.file][to.rank] = std::move(landing_piece);
 
-    return !kingInCheck; // Move is correct if king is not in check
+    return !kingInCheck;
 }
 
-std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece& piece) {
+const std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece &piece)
+{
     return piece.legalMoves(*this);
 }
 
-std::list<chess::Coordinates>& chess::Board::getPieces(chess::Color color) {
-    if (color == Color::WHITE)
-        return white_pieces_;
-    return black_pieces_;
+std::list<chess::Coordinates> &chess::Board::getPiecesCoords(chess::Color color)
+{
+    if (color == WHITE)
+        return white_coords_;
+    return black_coords_;
 }
 
-// Check if there is a piece attacking the square
-bool chess::Board::isThreaten(chess::Coordinates coords, chess::Color pieceColor) {
-    King king{coords, pieceColor};
-    //Queen queen{coords, pieceColor};
-    Rook rook{coords, pieceColor};
-    Bishop bishop{coords, pieceColor};
-    Knight knight{coords, pieceColor};
-    Pawn pawn{coords, pieceColor};
+bool chess::Board::isReachableBy(Coordinates landing_square, const Piece& piece) const {
+    return isEmpty(landing_square) || at(landing_square).color() != piece.color();
+}
 
-    const Piece* possiblePieces[] = { &king, /*&queen,*/ &rook, &bishop, &knight, &pawn };
+bool chess::Board::isTakingAPiece(Coordinates landing_square, const Piece& piece) const {
+    return !isEmpty(landing_square) && at(landing_square).color() != piece.color();
+}
 
-    for (const Piece* piece : possiblePieces) {
-        std::vector<chess::Coordinates> moves = piece->legalMoves(*this);
+// Fact: Having two pieces of the same type P1 and P2, if P1 can take P2 then P2 can take P1.
+// Only exception: en passant
+bool chess::Board::isThreatened(Coordinates square, Color piece_color)
+{
+    const std::unique_ptr<Piece> dummy_pieces[] = {
+        std::make_unique<King>(square, piece_color),
+        std::make_unique<Queen>(square, piece_color),
+        std::make_unique<Rook>(square, piece_color),
+        std::make_unique<Bishop>(square, piece_color),
+        std::make_unique<Knight>(square, piece_color),
+        std::make_unique<Pawn>(square, piece_color),
+    };
 
-        for (chess::Coordinates move : moves) { 
-            if (!isEmpty(move)
-                && at(move).ascii() == piece->ascii()
-                && at(move).color() != piece->color())
-            {
+    for (const auto& dummy_piece : dummy_pieces) {
+        const std::vector<Piece*> &possible_attackers = dummy_piece->takeablePieces(*this);
+
+        for (Piece *possible_attacker : possible_attackers)
+            if (dummy_piece->ascii() == possible_attacker->ascii())
                 return true;
-            }
-        }
+    }
+
+    for (std::pair<Coordinates, Coordinates> en_passant : available_en_passants_) {
+        Coordinates landing_square = en_passant.second;
+        if (landing_square == square)
+            return true;
     }
     return false;
 }
 
-bool chess::Board::isKingInCheck(chess::Color kingColor) {
-    // King always at front
-    return isThreaten(getPieces(kingColor).front(), kingColor);
+chess::Piece &chess::Board::getKing(chess::Color king_color)
+{
+    return at(getPiecesCoords(king_color).front());
 }
 
-std::unique_ptr<chess::Piece> chess::Board::makePiece(char c, Coordinates coords, Color pieceColor) {
+bool chess::Board::isKingInCheck(chess::Color king_color)
+{
+    return isThreatened(getKing(king_color).coordinates(), king_color);
+}
+
+void chess::Board::promote(Coordinates pawn_coords, char piece)
+{
+    Color pieceColor = at(pawn_coords).color();
+    board_[pawn_coords.file][pawn_coords.rank] = std::move(makePiece_(piece, pawn_coords, pieceColor));
+}
+
+std::unique_ptr<chess::Piece> chess::Board::makePiece_(char c, Coordinates coords, Color color) const
+{
     switch (toupper(c))
     {
     case 'R':
-        return std::make_unique<King>(coords, pieceColor);
+        return std::make_unique<King>(coords, color);
     case 'D':
-        //return std::make_unique<Queen>(coords, pieceColor);
-        break;
+        return std::make_unique<Queen>(coords, color);
     case 'T':
-        return std::make_unique<Rook>(coords, pieceColor);
+        return std::make_unique<Rook>(coords, color);
     case 'A':
-        return std::make_unique<Bishop>(coords, pieceColor);
+        return std::make_unique<Bishop>(coords, color);
     case 'C':
-        return std::make_unique<Knight>(coords, pieceColor);
+        return std::make_unique<Knight>(coords, color);
     case 'P':
-        return std::make_unique<Pawn>(coords, pieceColor);
-
-    default:
-        return nullptr;
+        return std::make_unique<Pawn>(coords, color);
     }
+
+    return nullptr;
 }
 
-std::unique_ptr<chess::Piece> chess::Board::copyPiece(Piece& piece) {
-    return makePiece(piece.ascii(), {piece.file(), piece.rank()}, piece.color());
+std::unique_ptr<chess::Piece> chess::Board::copyPiece_(Piece &piece) const
+{
+    return makePiece_(piece.ascii(), piece.coordinates(), piece.color());
 }
 
-// Print the board. For every piece it prints its ascii character, lower if white,
-// upper if black. It prints a blank space if there is no piece.
-// It also prints the files and ranks coordinates.
-std::ostream& chess::operator<<(std::ostream& os, Board& board) {
-
+std::ostream &chess::operator<<(std::ostream &os, Board &board)
+{
     for (short r = 7; r >= 0; r--) {
-        os << r+1 << " ";
+        os << r + 1 << " ";
         for (short f = 0; f < 8; f++) {
-            if (board.isEmpty({f,r}))
+            if (board.isEmpty({f, r}))
                 os << " ";
             else {
-                char c = board.at({f,r}).ascii();
-                os << (board.at({f,r}).color() == Color::WHITE ? (char)tolower(c) : (char)toupper(c));
+                char c = board.at({f, r}).ascii();
+                os << (board.at({f, r}).color() == WHITE ? (char)tolower(c) : (char)toupper(c));
             };
         }
         os << "\n";

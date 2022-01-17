@@ -1,100 +1,62 @@
 #include "Knight.h"
 
-bool chess::Knight::canMove(Coordinates coords, chess::Board& board) const {
-    short delta_file = coords.file - file();
-    short delta_rank = coords.rank - rank();
+int manhattanDistance(chess::Coordinates coords1, chess::Coordinates coords2) {
+    return abs(coords1.file - coords2.file) + abs(coords1.rank - coords2.rank);
+}
 
-    //Knight moves with 3 total steps, so the manahattan distance must be 3
-    if (delta_file * delta_rank != 0 && abs(delta_file) + abs(delta_rank) == 3) {
-        return board.isEmpty(coords) || board.at(coords).color() != this->color();
-    }
+bool chess::Knight::canMoveAt(Coordinates landing_square, chess::Board &board) const
+{
+    return manhattanDistance(position_, landing_square) == 3
+        && landing_square.file != file()
+        && landing_square.rank != rank()
+        && board.isReachableBy(landing_square, *this);
+};
+
+bool chess::Knight::canMove(chess::Board &board) const
+{
+    for (const Coordinates &landing_square : candidateMoves_())
+        if (board.isReachableBy(landing_square, *this))
+            return true;
+
     return false;
 };
 
-bool chess::Knight::canMove(chess::Board& board) const {
-    short file, rank_upper, rank_lower;
+std::vector<chess::Coordinates> chess::Knight::legalMoves(Board &board) const
+{
+    std::vector<Coordinates> moves;
 
-    for (short delta_file = -2; delta_file <= 2; delta_file++) {
-        if (delta_file == 0)
-            continue;
+    for (const Coordinates &landing_square : candidateMoves_())
+        if (board.isReachableBy(landing_square, *this))
+            moves.push_back(landing_square);
 
-        file = position_.file + delta_file;
-        rank_upper = position_.rank + abs(3 - abs(delta_file));
-        rank_lower = position_.rank - abs(3 - abs(delta_file));
-
-        if (file >= 0 && file < 8) {
-            if (rank_upper >= 0 && rank_upper < 8 && canMove({file, rank_upper}, board))
-                return true;
-
-            if (rank_lower >= 0 && rank_lower < 8 && canMove({file, rank_lower}, board))
-                return true;
-        }
-    }
-    return false;
-};
-
-std::vector<chess::Coordinates> chess::Knight::legalMoves(Board& board) const {
-    std::vector<chess::Coordinates> moves = {};
-
-    short file, rank_upper, rank_lower;
-
-    for (short delta_file = -2; delta_file <= 2; delta_file++) {
-        if (delta_file == 0)
-            continue;
-
-        file = position_.file + delta_file;
-        rank_upper = position_.rank + abs(3 - abs(delta_file));
-        rank_lower = position_.rank - abs(3 - abs(delta_file));
-
-        if (file >= 0 && file < 8) {
-            if (rank_upper >= 0 && rank_upper < 8
-                && canMove({file, rank_upper}, board))
-            {
-                moves.push_back(chess::Coordinates{file, rank_upper});
-            }
-
-            if (rank_lower >= 0 && rank_lower < 8
-                && canMove({file, rank_lower}, board))
-            {
-                moves.push_back(chess::Coordinates{file, rank_lower});
-            }
-        }
-    }
     return moves;
 }
 
-/*
-std::vector<chess::Coordinates> chess::Knight::takeablePieces(Board& board) const {
-    std::vector<chess::Coordinates> pieces = {};
-    short file, rank_upper, rank_lower;
+std::vector<chess::Piece*> chess::Knight::takeablePieces(Board& board) const
+{
+    std::vector<Piece*> pieces;
 
-    for (short delta_file = -2; delta_file <= 2; delta_file++) {
-        if (delta_file == 0)
-            continue;
-
-        // Calculate movements in the same file.
-        // The movement must be made with manhattan distance = 3
-        file = position_.file + delta_file;
-        rank_upper = position_.rank + abs(3 - abs(delta_file));
-        rank_lower = position_.rank - abs(3 - abs(delta_file));
-
-        // Check if the movements are possible and if take a piece
-        if (file >= 0 && file < 8) {
-            if (rank_upper >= 0 && rank_upper < 8
-                && canMove(file, rank_upper, board)
-                && !board.isEmpty(file, rank_upper))
-            {
-                pieces.push_back(chess::Coordinates{file, rank_upper});
-            }
-
-            if (rank_lower >= 0 && rank_lower < 8
-                && canMove(file, rank_lower, board)
-                && !board.isEmpty(file, rank_lower))
-            {
-                pieces.push_back(chess::Coordinates{file, rank_lower});
-            }
-        }
-    }
+    for(const Coordinates& landing_square : candidateMoves_())
+        if (board.isTakingAPiece(landing_square, *this))
+            pieces.push_back(&board.at(landing_square));
 
     return pieces;
-}*/
+}
+
+const std::vector<chess::Coordinates> chess::Knight::candidateMoves_() const
+{
+    const std::vector<Coordinates> raw_moves {
+        {file() + 1, rank() + 2}, {file() + 2, rank() + 1}, // Up-right
+        {file() + 1, rank() - 2}, {file() + 2, rank() - 1}, // Down-right
+        {file() - 1, rank() + 2}, {file() - 2, rank() + 1}, // Up-left
+        {file() - 1, rank() - 2}, {file() - 2, rank() - 1}, // Down-left
+    };
+
+    std::vector<Coordinates> moves_in_boundaries{};
+
+    for (Coordinates move : raw_moves)
+        if (move.inBounderies())
+            moves_in_boundaries.push_back(move);
+
+    return moves_in_boundaries;
+}

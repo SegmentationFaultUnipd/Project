@@ -1,6 +1,6 @@
 #include "Rook.h"
 
-bool chess::Rook::canMove(Coordinates coords, Board& board) const {
+bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
     //Rook will only move horizontally or vertically
     //If it's moving vertically it will keep a fixed rank while changing the file and viceversa
     

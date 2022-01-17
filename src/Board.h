@@ -15,6 +15,7 @@
 #include "Pieces/Bishop.h"
 
 #include "Color.h"
+#include "Coordinates.h"
 
 namespace chess {
 
@@ -23,27 +24,47 @@ namespace chess {
             Board();
 
             bool isEmpty(Coordinates coords) const;
-
-            Piece& at(Coordinates coords);
+            Piece& at(Coordinates coords) const;
+            
+            const std::vector<Coordinates> legalMovesOf(Piece& piece);
+            std::list<Coordinates>& getPiecesCoords(Color color);
+            Piece& getKing(Color king_color);
            
             bool move(Coordinates from, Coordinates to);
-            bool tryMove(Coordinates from, Coordinates to);
+            bool moveCauseSelfCheck(Coordinates from, Coordinates to);
 
-            bool isThreaten(Coordinates coords, Color pieceColor);
-            bool isKingInCheck(Color kingColor);
+            bool isThreatened(Coordinates piece_coords, Color piece_color);
+            bool isKingInCheck(Color king_color);
 
-            // DA IMPLEMENTARE
-			//void promote(Coordinates coords, char chosen_piece);
+            bool isReachableBy(Coordinates landing_square, const Piece& piece) const;
+            bool isTakingAPiece(Coordinates landing_square, const Piece& piece) const;
 
-            std::vector<Coordinates> legalMovesOf(Piece& piece);
-            std::list<Coordinates>& getPieces(Color color);
+            // Special moves ---------------------------------------------
+			void promote(Coordinates pawn, char piece);
+
+            bool isCastlingMove(Coordinates from, Coordinates to);
+            bool doCastlingMove(Coordinates from, Coordinates to);
+
+            bool isEnPassantMove(Coordinates from, Coordinates to);
+            bool doEnPassantMove(Coordinates from, Coordinates to);
+
+            void addAvailableEnPassant(Coordinates from, Coordinates to);
+            void clearEnPassants();
 
         private:
-            std::unique_ptr<Piece> makePiece(char c, Coordinates coords, Color pieceColor);
-            std::unique_ptr<Piece> copyPiece(Piece& p);
+            void addPiece_(char pieceAscii, Coordinates coords, Color color);
+            void addPieceToMatrix_(std::unique_ptr<Piece>& pieceToAdd, Coordinates coords);
+            void addPieceCoords_(Coordinates coords);
 
-            std::list<Coordinates> white_pieces_;
-            std::list<Coordinates> black_pieces_;
+            std::unique_ptr<Piece> makePiece_(char c, Coordinates coords, Color color) const;
+            std::unique_ptr<Piece> copyPiece_(Piece& p) const;
+
+            bool updatePosition_(Coordinates from, Coordinates to);
+
+            std::list<Coordinates> white_coords_;
+            std::list<Coordinates> black_coords_;
+
+            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_;
 
             std::unique_ptr<Piece> board_[8][8];
     };
