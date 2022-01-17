@@ -50,27 +50,11 @@ void chess::GameManager::play() {
 
 		do {
 			current_player->nextTurn(board, from, to);
-			isValid = board.move(from, to) && (board.at(to).color() == current_player->getColor());
+			isValid = !board.isEmpty(from) && board.at(from).color() == current_player->getColor() && board.move(from, to);
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);
-
-		/*
-		Coordinates from, to;
-		bool isValid = false;
-		// Coordinates from, to; Doppia dichiarazione.
-		while(!isValid){
-			current_player->nextTurn(board, from, to);
-			if(board.isEmpty(from)) {
-				continue;
-			}
-			if(board.at(from).canMoveAt(to, board)) {
-				//TODO canMoveAt fa il controllo che il re di current_player non sia sotto scacco?
-				isValid = true;
-			}
-		}
-		board.move(from, to);
-		*/
+		std::cout << "Mossa eseguita\n";
 
 		//TODO log the move
 		logMove(from, to);
@@ -83,6 +67,7 @@ void chess::GameManager::play() {
 		}
 
 		nextPlayer();
+		std::cout << "Mossa eseguita2\n";
 		
 		//Check if player has available moves
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_player->getColor());
@@ -93,6 +78,8 @@ void chess::GameManager::play() {
 				break;
 			}
 		}
+		std::cout << "Mossa eseguita3\n";
+
 		if(!player_has_at_least_1_move) {
 			if(board.isKingInCheck(current_player->getColor())) {
 				//Scacco matto
@@ -110,6 +97,7 @@ void chess::GameManager::play() {
 		if(!infinite_game) {
 			current_move++;
 		}
+		std::cout << "Mossa eseguita4\n";
 	}
 	log_stream<<"---"<<std::endl;
 
