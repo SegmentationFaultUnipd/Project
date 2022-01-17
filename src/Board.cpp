@@ -96,7 +96,7 @@ bool chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
 {
     // TOMMASO
     // Puoi usare updatePosition
-    return updatePosition(from, to);
+    return updatePosition_(from, to);
 }
 
 bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
