@@ -180,3 +180,8 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
 
     return moves;
 }
+
+void chess::Rook::move(Coordinates new_position) {
+	position_ = new_position;
+	has_moved = true;
+}

@@ -9,17 +9,17 @@ namespace chess {
 
     class King : public Piece {
 		private:
-			bool hasMoved;
+			bool has_moved;
         public:
-            King(Coordinates pos, Color color) : Piece{pos, color} {hasMoved = false;};
+            King(Coordinates pos, Color color) : Piece{pos, color} {has_moved = false;};
 
-			//bool hasMoved() {return hasMoved;}
-			void firstMove() {hasMoved = true;}
-			bool canCastle(short to_file, short to_rank, Board& board);
+			void move (Coordinates new_position) override;
+			bool canCastle(Coordinates to_coords, Board& board) const;
           	bool canMoveAt(Coordinates coords, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
-            char ascii() const override { return 'R'; };
+            char ascii() const override { return 'R'; }
+			bool hasMoved() const {return has_moved;}
     };
 
 } //namespace chess
