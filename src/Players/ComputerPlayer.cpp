@@ -2,7 +2,7 @@
 #include <list>
 
 void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, chess::Coordinates &to) const {
-	std::list<Coordinates> my_pieces = board.getPieceCoords(color_);
+	std::list<Coordinates> my_pieces = board.getPiecesCoords(color_);
 
 	bool chosen = false;
 	while(!chosen) {
