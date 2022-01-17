@@ -29,15 +29,15 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank + 2);
         if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + 1})) {
             Coordinates from, to;
-            to{position_.file, position_.rank + 1};
+            to = {position_.file, position_.rank + 1};
             //If there is a pawn on the right it can then en pass
-            from{position_.file + 1, position_.rank + 2};
-            if(!board.isEmpty(from) && board.at(from).ascii() == 'P') {
+            from = {position_.file + 1, position_.rank + 2};
+            if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P') {
                 board.addAvailableEnPassant(from, to);
             }
             //If there is a pawn on the left it can then en pass
-            from{position_.file - 1, position_.rank + 2};
-            if(!board.isEmpty(from) && board.at(from).ascii() == 'P'){
+            from = {position_.file - 1, position_.rank + 2};
+            if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P'){
                 board.addAvailableEnPassant(from, to);
             }
             return true;
@@ -64,15 +64,15 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank - 2);
         if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank - 1})) {
             Coordinates from, to;
-            to{position_.file, position_.rank - 1};
+            to = {position_.file, position_.rank - 1};
             //If there is a pawn on the right it can then en pass
-            from{position_.file + 1, position_.rank - 2};
-            if(!board.isEmpty(from) && board.at(from).ascii() == 'P') {
+            from = {position_.file + 1, position_.rank - 2};
+            if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P') {
                 board.addAvailableEnPassant(from, to);
             }
             //If there is a pawn on the left it can then en pass
-            from{position_.file - 1, position_.rank - 2};
-            if(!board.isEmpty(from) && board.at(from).ascii() == 'P'){
+            from = {position_.file - 1, position_.rank - 2};
+            if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P'){
                 board.addAvailableEnPassant(from, to);
             }
             return true;

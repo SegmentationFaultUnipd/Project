@@ -4,6 +4,18 @@ chess::Board::Board()
 {
     char asciiSetup[8][8] = {
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
+        'c', 'p', ' ', 'P', ' ', ' ', 'P', 'C',
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
+        'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R',
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
+    };
+
+    /*
+    char asciiSetup[8][8] = {
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
         'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
@@ -12,6 +24,7 @@ chess::Board::Board()
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
     };
+    */
 
     for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
@@ -70,17 +83,19 @@ bool chess::Board::move(Coordinates from, Coordinates to)
 
     if (!isEmpty(from) && at(from).canMoveAt(to, *this))
     {
-        if (isCastlingMove(from, to))
-            return doCastlingMove(from, to);
-        else if (isEnPassantMove(from, to))
-            return doEnPassantMove(from, to);
+        if (isEnPassantMove(from, to))
+            doEnPassantMove(from, to);
+        else if (isCastlingMove(from, to))
+            doCastlingMove(from, to);
         else
-            return updatePosition_(from, to);
+            updatePosition_(from, to);
+
+        return true;
     }
     return false;
 }
 
-bool chess::Board::doCastlingMove(Coordinates from, Coordinates to)
+void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
 {
     // FILIPPO NIERO
 
@@ -88,15 +103,19 @@ bool chess::Board::doCastlingMove(Coordinates from, Coordinates to)
     // ma sono le coordinate della casa in cui andrà il Re.
 
     // Puoi usare updatePosition
-
-    return false;
 }
 
-bool chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
+void chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
 {
-    // TOMMASO
-    // Puoi usare updatePosition
-    return updatePosition_(from, to);
+    Coordinates piece_to_eat;
+    if (to.rank > from.rank)
+        piece_to_eat = {to.file, to.rank - 1};
+    else
+        piece_to_eat = {to.file, to.rank + 1};
+
+    updatePosition_(from, to);
+    removePiece_(piece_to_eat);
+    clearEnPassants_();
 }
 
 bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
@@ -116,14 +135,24 @@ bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 void chess::Board::addAvailableEnPassant(Coordinates from, Coordinates to)
 {
     available_en_passants_.push_back({from, to});
+    std::cout << "Available en passant! " << from << to << "\n";
 }
 
-void chess::Board::clearEnPassants()
+void chess::Board::clearEnPassants_()
 {
     available_en_passants_ = {};
 }
 
-bool chess::Board::updatePosition_(Coordinates from, Coordinates to)
+void chess::Board::removePiece_(Coordinates coords) {
+    if (isEmpty(coords))
+        return;
+
+    Color color = at(coords).color();
+    getPiecesCoords(color).remove(coords);
+    board_[coords.file][coords.rank] = nullptr;
+}
+
+void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 {
     // Update position in own members
     at(from).move(to);
@@ -144,7 +173,6 @@ bool chess::Board::updatePosition_(Coordinates from, Coordinates to)
     // Finally, update matrix
     board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
     board_[from.file][from.rank] = nullptr;
-    return true;
 }
 
 bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to)

@@ -41,8 +41,8 @@ void chess::GameManager::play() {
 		std::cout << "Tocca al " << (current_player.getColor() == WHITE ? "bianco\n" : "nero\n");
 
 		do {
-			current_player.nextTurn(board, from, to);
-			isValid = !board.isEmpty(from) && (board.at(from).color() == current_player.getColor()) && board.move(from, to);
+			current_player->nextTurn(board, from, to);
+			isValid = !board.isEmpty(from) && board.at(from).color() == current_player->getColor() && board.move(from, to);
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);
@@ -58,6 +58,7 @@ void chess::GameManager::play() {
 		}
 
 		nextPlayer();
+		std::cout << "Mossa eseguita2\n";
 		
 		//Check if player has available moves
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_player.getColor());
@@ -68,6 +69,8 @@ void chess::GameManager::play() {
 				break;
 			}
 		}
+		std::cout << "Mossa eseguita3\n";
+
 		if(!player_has_at_least_1_move) {
 			if(board.isKingInCheck(current_player.getColor())) {
 				//Scacco matto
@@ -85,6 +88,7 @@ void chess::GameManager::play() {
 		if(!infinite_game) {
 			current_move++;
 		}
+		std::cout << "Mossa eseguita4\n";
 	}
 	log_stream<<"---"<<std::endl;
 
