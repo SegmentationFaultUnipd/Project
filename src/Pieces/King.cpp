@@ -1,5 +1,8 @@
 #include "King.h"
 bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
+	if(canCastle(coords, board)) {
+		return true;
+	}
     short delta_file = abs(coords.file - file());
     short delta_rank = abs(coords.rank - rank());
 
@@ -32,6 +35,15 @@ bool chess::King::canMove(chess::Board& board) const {
 			} 
     	}
     }
+	int right_rank = (color() == WHITE)?0:7;
+
+	if(canCastle({2 ,right_rank}, board)) {
+		return true;
+	}
+	
+	if(canCastle({6 ,right_rank}, board)) {
+		return true;
+	}
     return false;
 };
 
@@ -50,11 +62,21 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 			} 
     	}
     }
+	int right_rank = (color() == WHITE)?0:7;
+
+	if(canCastle({2 ,right_rank}, board)) {
+		moves.push_back({2, right_rank});
+	}
+	
+	if(canCastle({6 ,right_rank}, board)) {
+		moves.push_back({6, right_rank});
+	}
+
     return moves;
 }
 
 
-bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) {
+bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 	//If the king has moved, you can't castle
 	if(hasMoved) {
 		return false;
