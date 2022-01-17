@@ -16,6 +16,11 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
+
+    //The pawn is trying to en pass
+    if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
+        return true;
+    }
     
     //THE PAWN IS WHITE
     if(this->color() == chess::WHITE) {
@@ -23,6 +28,18 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank + 2);
         if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + 1})) {
+            Coordinates from, to;
+            to{position_.file, position_.rank + 1};
+            //If there is a pawn on the right it can then en pass
+            from{position_.file + 1, position_.rank + 2};
+            if(!board.isEmpty(from) && board.at(from).ascii() == 'P') {
+                board.addAvailableEnPassant(from, to);
+            }
+            //If there is a pawn on the left it can then en pass
+            from{position_.file - 1, position_.rank + 2};
+            if(!board.isEmpty(from) && board.at(from).ascii() == 'P'){
+                board.addAvailableEnPassant(from, to);
+            }
             return true;
         }
         
@@ -46,6 +63,18 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         //The pawn moves two steps forward (if it hasn't yet moved)
         bool two_up = coords.file == position_.file && coords.rank == (position_.rank - 2);
         if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank - 1})) {
+            Coordinates from, to;
+            to{position_.file, position_.rank - 1};
+            //If there is a pawn on the right it can then en pass
+            from{position_.file + 1, position_.rank - 2};
+            if(!board.isEmpty(from) && board.at(from).ascii() == 'P') {
+                board.addAvailableEnPassant(from, to);
+            }
+            //If there is a pawn on the left it can then en pass
+            from{position_.file - 1, position_.rank - 2};
+            if(!board.isEmpty(from) && board.at(from).ascii() == 'P'){
+                board.addAvailableEnPassant(from, to);
+            }
             return true;
         }
         
