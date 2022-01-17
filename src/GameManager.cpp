@@ -52,27 +52,10 @@ void chess::GameManager::play() {
 
 		do {
 			current_player->nextTurn(board, from, to);
-			isValid = board.move(from, to) && board.at(to).color() == current_player->getColor();
+			isValid = board.move(from, to) && (board.at(to).color() == current_player->getColor());
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);
-		
-		/*
-		Coordinates from, to;
-		bool isValid = false;
-		// Coordinates from, to; Doppia dichiarazione.
-		while(!isValid){
-			current_player->nextTurn(board, from, to);
-			if(board.isEmpty(from)) {
-				continue;
-			}
-			if(board.at(from).canMove(to, board)) {
-				//TODO canMove fa il controllo che il re di current_player non sia sotto scacco?
-				isValid = true;
-			}
-		}
-		board.move(from, to);
-		*/
 
 		//TODO log the move
 		logMove(from, to);
@@ -81,6 +64,7 @@ void chess::GameManager::play() {
 		//Promozione
 		if(board.at(to).ascii()=='P'&&(to.rank == 0 || to.rank == 7) ) {
 			char chosen = current_player->choosePromotion();
+			board.promote(coords, 'R');
 			logPromotion(chosen, to);
 		}
 		*/
