@@ -41,8 +41,8 @@ void chess::GameManager::play() {
 		std::cout << "Tocca al " << (current_player.getColor() == WHITE ? "bianco\n" : "nero\n");
 
 		do {
-			current_player->nextTurn(board, from, to);
-			isValid = !board.isEmpty(from) && board.at(from).color() == current_player->getColor() && board.move(from, to);
+			current_player.nextTurn(board, from, to);
+			isValid = !board.isEmpty(from) && board.at(from).color() == current_player.getColor() && board.move(from, to);
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);

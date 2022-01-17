@@ -78,7 +78,7 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 
 bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 	//If the king has moved, you can't castle
-	if(hasMoved) {
+	if(has_moved) {
 		return false;
 	}
 	//Check that the target position is valid. 
