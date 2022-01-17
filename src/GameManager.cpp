@@ -85,7 +85,7 @@ void chess::GameManager::play() {
 		nextPlayer();
 		
 		//Check if player has available moves
-		std::list<Coordinates> pieces = board.getPieceCoords(current_player->getColor());
+		std::list<Coordinates> pieces = board.getPiecesCoords(current_player->getColor());
 		bool player_has_at_least_1_move = false;
 		for(auto coords: pieces) {
 			if(board.legalMovesOf(board.at(coords)).size() > 0) {

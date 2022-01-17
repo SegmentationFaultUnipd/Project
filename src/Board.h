@@ -27,11 +27,11 @@ namespace chess {
             Piece& at(Coordinates coords) const;
             
             const std::vector<Coordinates> legalMovesOf(Piece& piece);
-            std::list<Coordinates>& getPieceCoords(Color color);
+            std::list<Coordinates>& getPiecesCoords(Color color);
             Piece& getKing(Color king_color);
            
             bool move(Coordinates from, Coordinates to);
-            bool doesMoveCauseSelfCheck(Coordinates from, Coordinates to);
+            bool moveCauseSelfCheck(Coordinates from, Coordinates to);
 
             bool isThreatened(Coordinates piece_coords, Color piece_color);
             bool isKingInCheck(Color king_color);
@@ -52,10 +52,14 @@ namespace chess {
             void clearEnPassants();
 
         private:
-            std::unique_ptr<Piece> makePiece(char c, Coordinates coords, Color color) const;
-            std::unique_ptr<Piece> copyPiece(Piece& p) const;
+            void addPiece_(char pieceAscii, Coordinates coords, Color color);
+            void addPieceToMatrix_(std::unique_ptr<Piece>& pieceToAdd, Coordinates coords);
+            void addPieceCoords_(Coordinates coords);
 
-            bool updatePosition(Coordinates from, Coordinates to);
+            std::unique_ptr<Piece> makePiece_(char c, Coordinates coords, Color color) const;
+            std::unique_ptr<Piece> copyPiece_(Piece& p) const;
+
+            bool updatePosition_(Coordinates from, Coordinates to);
 
             std::list<Coordinates> white_coords_;
             std::list<Coordinates> black_coords_;
