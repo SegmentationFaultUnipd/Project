@@ -22,13 +22,13 @@ namespace chess
      */
     struct Coordinates
     {
-        short file;
-        short rank;
+        int file;
+        int rank;
 
         Coordinates(int _file, int _rank)
         {
-            file = (short)_file;
-            rank = (short)_rank;
+            file = _file;
+            rank = _rank;
         }
 
         Coordinates(const std::string notation)

@@ -36,19 +36,19 @@ void chess::GameManager::play() {
 	current_color = WHITE; //Seleziona il giocatore iniziale
 	bool infinite_game = (max_moves_ == -1);
 	bool isGameEnded = false;
-
 	while(!isGameEnded && (infinite_game || current_move < max_moves_)) {
 		Coordinates from, to;
 		bool isValid = false;
 
 		std::cout << "Tocca al " << (current_color == WHITE ? "bianco\n" : "nero\n");
-
+		std::cerr <<"GameManager::play::START LOOP"<<std::endl;
 		do {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color && board.move(from, to);
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);
+		std::cerr <<"GameManager::play::MOSSA ESEGUITA"<<std::endl;
 
 		//TODO log the move
 		logMove(from, to);
@@ -59,8 +59,10 @@ void chess::GameManager::play() {
 			board.promote(to, chosen);
 			logPromotion(chosen, to);
 		}
+		std::cerr <<"GameManager::play::CHECK PROMOZIONE PASSATO"<<std::endl;
 
 		nextPlayer();
+		std::cerr <<"GameManager::play::CAMBIO GIOCATORE"<<std::endl;
 		
 		//Check if player has available moves
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color);
@@ -71,6 +73,7 @@ void chess::GameManager::play() {
 				break;
 			}
 		}
+		std::cerr <<"GameManager::play::CHECK AVAILABLE MOVES SUPERATO"<<std::endl;
 
 		if(!player_has_at_least_1_move) {
 			if(board.isKingInCheck(current_color)) {
@@ -86,9 +89,13 @@ void chess::GameManager::play() {
 				draw();
 			}
 		}
+		std::cerr <<"GameManager::play::PARTITA NON FINITA"<<std::endl;
+
 		if(!infinite_game) {
 			current_move++;
 		}
+		std::cerr <<"GameManager::play::FINE  LOOP"<<std::endl;
+
 	}
 	log_stream<<"---"<<std::endl;
 

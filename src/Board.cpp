@@ -76,13 +76,19 @@ chess::Piece &chess::Board::at(Coordinates coords) const
 // Move the piece
 bool chess::Board::move(Coordinates from, Coordinates to)
 {
+	std::cerr <<"Board::move::START"<<std::endl;
+
     assert(from.file >= 0 && from.file < 8);
     assert(from.rank >= 0 && from.rank < 8);
     assert(to.file >= 0 && to.file < 8);
     assert(to.rank >= 0 && to.rank < 8);
 
+	std::cerr <<"Board::move::ASSERT SUPERATI"<<std::endl;
+
     if (!isEmpty(from) && at(from).canMoveAt(to, *this))
     {
+	std::cerr <<"Board::move::CANMOVEAT SUPERATO"<<std::endl;
+
         if (isEnPassantMove(from, to))
             doEnPassantMove(from, to);
         else if (isCastlingMove(from, to))
@@ -90,7 +96,11 @@ bool chess::Board::move(Coordinates from, Coordinates to)
         else
             updatePosition_(from, to);
             
+		std::cerr <<"Board::move::SPECIALMOVES "<<std::endl;
+		
         clearEnPassants_(at(to).color());
+		std::cerr <<"Board::move::CLEARENPASSANTS "<<std::endl;
+
         return true;
     }
     return false;
@@ -125,12 +135,19 @@ bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
 
 bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 {
+	std::cerr <<"Board::isEnPassantMove::START"<<std::endl;
+	std::cerr << "Board::isEnPassantMove::" << from.toNotation() << std::endl;
+	std::cerr << "Board::isEnPassantMove::" << from.file<< " "<<from.rank << std::endl;
     Color color = at(from).color();
+	std::cerr <<"Board::isEnPassantMove::FIRST INSTRUCTION"<<std::endl;
+
     std::pair<Coordinates, Coordinates> candidate_move{from, to};
+	std::cerr <<"Board::isEnPassantMove::CANDIDATE MOVE"<<std::endl;
 
     for (auto available_en_passant : availableEnPassantsFor(color))
         if (candidate_move == available_en_passant)
             return true;
+	std::cerr <<"Board::isEnPassantMove::AFTER THE FOR"<<std::endl;
     
     return false;
 }
@@ -187,6 +204,7 @@ void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to)
 {
     assert(!isEmpty(from));
+	return false;
 
     bool kingInCheck;
     std::unique_ptr<Piece> moving_piece, landing_piece;
