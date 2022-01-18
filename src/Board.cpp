@@ -213,12 +213,12 @@ std::list<chess::Coordinates> &chess::Board::getPiecesCoords(chess::Color color)
     return black_coords_;
 }
 
-bool chess::Board::isReachableBy(Coordinates landing_square, const Piece& piece) const {
-    return isEmpty(landing_square) || at(landing_square).color() != piece.color();
+bool chess::Board::isEmptyOrOppositeColor(Coordinates landing_square, Color piece_color) const {
+    return isEmpty(landing_square) || at(landing_square).color() != piece_color;
 }
 
-bool chess::Board::isTakingAPiece(Coordinates landing_square, const Piece& piece) const {
-    return !isEmpty(landing_square) && at(landing_square).color() != piece.color();
+bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color) const {
+    return !isEmpty(landing_square) && at(landing_square).color() != piece_color;
 }
 
 // Fact: Having two pieces of the same type P1 and P2, if P1 can take P2 then P2 can take P1.
