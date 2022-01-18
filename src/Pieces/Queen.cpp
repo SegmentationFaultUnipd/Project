@@ -12,6 +12,10 @@ bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
     if(position_.file == coords.file && position_.rank == coords.rank) {
         return false;
     }
+    //Can't make a move that would cause a self check
+    if(board.moveCauseSelfCheck(position_, coords)) {
+        return false;
+    }
 
     //MOVING LIKE A BISHOP
     short delta_file = position_.file - coords.file;

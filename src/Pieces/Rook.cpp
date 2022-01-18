@@ -12,6 +12,10 @@ bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
+    //Can't make a move that would cause a self check
+    if(board.moveCauseSelfCheck(position_, coords)) {
+        return false;
+    }
 
     //VERTICAL MOVEMENT
     if(coords.rank == position_.rank) {

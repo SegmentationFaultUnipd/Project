@@ -12,6 +12,10 @@ bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
     if(position_ == coords) {
         return false;
     }
+    //Can't make a move that would cause a self check
+    if(board.moveCauseSelfCheck(position_, coords)) {
+        return false;
+    }
     
     //Getting the movement in each direction
     short delta_file = position_.file - coords.file;
