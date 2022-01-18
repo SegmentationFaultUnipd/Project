@@ -276,7 +276,7 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
         if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
             if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(chess::Coordinates{coords);
+                moves.push_back(chess::Coordinates{coords});
             }
             break;
         }
