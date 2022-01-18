@@ -103,7 +103,9 @@ bool chess::Pawn::canMove(Board& board) const {
     if(this->color() == chess::WHITE) {
         //The pawn can move two steps forward
         if(position_.rank - 2 >= 0 && canMoveAt({position_.file, position_.rank - 2}, board)) {
-            return true;
+            if(board.moveCauseSelfCheck(position_, coords)) {
+                return true;
+            }
         }
 
         if(position_.rank - 1 >= 0) {
@@ -113,7 +115,9 @@ bool chess::Pawn::canMove(Board& board) const {
             bool eat_right = canMoveAt({position_.file + 1, position_.rank - 1}, board);
             bool eat_left = canMoveAt({position_.file - 1, position_.rank - 1}, board);
             if(one_step || eat_right || eat_left) {
-                return true;
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    return true;
+                }
             }
         }
     }
@@ -121,7 +125,9 @@ bool chess::Pawn::canMove(Board& board) const {
     if(this->color() == chess::BLACK) {
         //The pawn can move two steps forward
         if(position_.rank + 2 < 8 && canMoveAt({position_.file, position_.rank + 2}, board)) {
-            return true;
+            if(board.moveCauseSelfCheck(position_, coords)) {
+                return true;
+            }
         }
 
         if(position_.rank + 1 >= 0) {
@@ -131,7 +137,9 @@ bool chess::Pawn::canMove(Board& board) const {
             bool eat_right = canMoveAt({position_.file + 1, position_.rank + 1}, board);
             bool eat_left = canMoveAt({position_.file - 1, position_.rank + 1}, board);
             if(one_step || eat_right || eat_left) {
-                return true;
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    return true;
+                }
             }
         }
     }
@@ -146,38 +154,54 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     if(this->color() == chess::WHITE) {
         //Double move up
         if(position_.rank - 2 >= 0 && canMoveAt({position_.file, position_.rank - 2}, board)) {
-            moves.push_back(Coordinates{position_.file, position_.rank - 2});
+            if(board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(Coordinates{position_.file, position_.rank - 2});
+            }
         }
 
         if(position_.rank - 1 >= 0) {
             //Single move up
             if(canMoveAt({position_.file, position_.rank - 1}, board)) {
-                moves.push_back(Coordinates{position_.file, position_.rank - 1});
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(Coordinates{position_.file, position_.rank - 1});
+                }
             }
             //Diagonal eating moves
             if(position_.file + 1 < 8 && canMoveAt({position_.file + 1, position_.rank - 1}, board)) {
-                moves.push_back(Coordinates{position_.file + 1, position_.rank - 1});
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(Coordinates{position_.file + 1, position_.rank - 1});
+                }
             }
             if(position_.file - 1 >= 0 && canMoveAt({position_.file - 1, position_.rank - 1}, board)) {
-                moves.push_back(Coordinates{position_.file - 1, position_.rank - 1});
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(Coordinates{position_.file - 1, position_.rank - 1});
+                }
             }
         }
     }
     //THE PAWN IS BLACK
     if(this->color() == chess::BLACK) {
         if(position_.rank + 2 < 8 && canMoveAt({position_.file, position_.rank + 2}, board)) {
-            moves.push_back(Coordinates{position_.file, position_.rank + 2});
+            if(board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(Coordinates{position_.file, position_.rank + 2});
+            }
         }
 
         if(position_.rank + 1 >= 0) {
             if(canMoveAt({position_.file, position_.rank + 1}, board)) {
-                moves.push_back(Coordinates{position_.file, position_.rank + 1});
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(Coordinates{position_.file, position_.rank + 1});
+                }
             }
             if(position_.file + 1 < 8 && canMoveAt({position_.file + 1, position_.rank + 1}, board)) {
-                moves.push_back(Coordinates{position_.file + 1, position_.rank + 1});
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(Coordinates{position_.file + 1, position_.rank + 1});
+                }
             }
             if(position_.file - 1 >= 0 && canMoveAt({position_.file - 1, position_.rank + 1}, board)) {
-                moves.push_back(Coordinates{position_.file - 1, position_.rank + 1});
+                if(board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(Coordinates{position_.file - 1, position_.rank + 1});
+                }
             }
         }
     }

@@ -80,14 +80,16 @@ bool chess::Bishop::canMove(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file >= 0 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file--;
         coords.rank--;
     }
@@ -96,14 +98,16 @@ bool chess::Bishop::canMove(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file < 8 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file++;
         coords.rank--;
     }
@@ -113,14 +117,16 @@ bool chess::Bishop::canMove(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file >= 0 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file--;
         coords.rank++;
     }
@@ -129,14 +135,16 @@ bool chess::Bishop::canMove(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file < 8 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file++;
         coords.rank++;
     }
@@ -155,14 +163,16 @@ std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file >= 0 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file--;
         coords.rank--;
     }
@@ -171,14 +181,16 @@ std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file < 8 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file++;
         coords.rank--;
     }
@@ -188,14 +200,16 @@ std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file >= 0 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords;
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file--;
         coords.rank++;
     }
@@ -204,14 +218,16 @@ std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file < 8 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color()) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file++;
         coords.rank++;
     }
