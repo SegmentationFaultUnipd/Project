@@ -126,14 +126,16 @@ bool chess::Queen::canMove(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file >= 0 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file--;
         coords.rank--;
     }
@@ -142,14 +144,16 @@ bool chess::Queen::canMove(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file < 8 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file++;
         coords.rank--;
     }
@@ -159,14 +163,16 @@ bool chess::Queen::canMove(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file >= 0 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file--;
         coords.rank++;
     }
@@ -175,14 +181,16 @@ bool chess::Queen::canMove(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file < 8 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file++;
         coords.rank++;
     }
@@ -192,26 +200,30 @@ bool chess::Queen::canMove(Board& board) const {
     coords.file = position_.file + 1;
     while(coords.file < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, position_.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, position_.rank}).color() != this->color()) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file++;
     }
     //Left
     coords.file = position_.file - 1;
     while(coords.file >= 0) {
-        if(!board.isEmpty({coords.file, position_.rank})) {
-            if(board.at({coords.file, position_.rank}).color() != this->color()) {
+        if(!board.isEmpty(coords)) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file--;
     }
     
@@ -220,25 +232,29 @@ bool chess::Queen::canMove(Board& board) const {
     //Down
     coords.rank = position_.rank + 1;
     while(coords.file < 8) {
-        if(!board.isEmpty({position_.file, coords.rank})) {
-            if(board.at({position_.file, coords.rank}).color() != this->color()) {
+        if(!board.isEmpty(coords)) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file++;
     }
     //Up
     coords.rank = position_.rank - 1;
     while(coords.file >= 0) {
-        if(!board.isEmpty({position_.file, coords.rank})) {
-            if(board.at({position_.file, coords.rank}).color() != this->color()) {
+        if(!board.isEmpty(coords)) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
             }
             break;
         }
-        return true;
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            return true;
+        }
         coords.file--;
     }
 
@@ -257,14 +273,16 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file >= 0 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(chess::Coordinates{coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file--;
         coords.rank--;
     }
@@ -273,14 +291,16 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     coords.rank = position_.rank - 1;
     while(coords.file < 8 && coords.rank >= 0) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file++;
         coords.rank--;
     }
@@ -290,14 +310,16 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file >= 0 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file--;
         coords.rank++;
     }
@@ -306,14 +328,16 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     coords.rank = position_.rank + 1;
     while(coords.file < 8 && coords.rank < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, coords.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, coords.rank});
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, coords.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file++;
         coords.rank++;
     }
@@ -323,26 +347,30 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     coords.file = position_.file + 1;
     while(coords.file < 8) {
         //Can't move past an obstacle
-        if(!board.isEmpty({coords.file, position_.rank})) {
+        if(!board.isEmpty(coords)) {
             //Can move to eat a piece of different color
-            if(board.at({coords.file, position_.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, position_.rank});
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, position_.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file++;
     }
     //Left
     coords.file = position_.file - 1;
     while(coords.file >= 0) {
-        if(!board.isEmpty({coords.file, position_.rank})) {
-            if(board.at({coords.file, position_.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{coords.file, position_.rank});
+        if(!board.isEmpty(coords)) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{coords.file, position_.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file--;
     }
     
@@ -351,25 +379,29 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     //Down
     coords.rank = position_.rank + 1;
     while(coords.rank < 8) {
-        if(!board.isEmpty({position_.file, coords.rank})) {
-            if(board.at({position_.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{position_.file, coords.rank});
+        if(!board.isEmpty(coords)) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{position_.file, coords.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file++;
     }
     //Up
     coords.rank = position_.rank - 1;
     while(coords.rank >= 0) {
-        if(!board.isEmpty({position_.file, coords.rank})) {
-            if(board.at({position_.file, coords.rank}).color() != this->color()) {
-                moves.push_back(chess::Coordinates{position_.file, coords.rank});
+        if(!board.isEmpty(coords)) {
+            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                moves.push_back(coords);
             }
             break;
         }
-        moves.push_back(chess::Coordinates{position_.file, coords.rank});
+        if(!board.moveCauseSelfCheck(position_, coords)) {
+            moves.push_back(coords);
+        }
         coords.file--;
     }
 
