@@ -16,6 +16,10 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
+    //Can't make a move that would cause a self check
+    if(board.moveCauseSelfCheck(position_, coords)) {
+        return false;
+    }
 
     //The pawn is trying to en pass
     if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
