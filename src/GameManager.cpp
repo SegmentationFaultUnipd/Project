@@ -20,17 +20,20 @@ std::string chess::GameManager::padTime(int x) {
 	return "" + x;
 }
 
+chess::Player& chess::GameManager::currentPlayer() {
+	if (current_color == player1_.getColor())
+		return player1_;
+	else
+		return player2_;
+}
+
 void chess::GameManager::nextPlayer() {
-	if(current_player.getColor() == player1_.getColor()) {
-		current_player = player2_;
-	} else {
-		current_player = player1_;
-	}
+	current_color = opposite(current_color);
 }
 
 void chess::GameManager::play() {
 	current_move = 0;//Contatore delle mosse: serve per le partite tra due PC, perché devono finire dopo max_moves mosse
-	current_player = (player1_.getColor() == WHITE)? player1_:player2_; //Seleziona il giocatore iniziale
+	current_color = WHITE; //Seleziona il giocatore iniziale
 	bool infinite_game = (max_moves_ == -1);
 	bool isGameEnded = false;
 
@@ -38,11 +41,11 @@ void chess::GameManager::play() {
 		Coordinates from, to;
 		bool isValid = false;
 
-		std::cout << "Tocca al " << (current_player.getColor() == WHITE ? "bianco\n" : "nero\n");
+		std::cout << "Tocca al " << (current_color == WHITE ? "bianco\n" : "nero\n");
 
 		do {
-			current_player.nextTurn(board, from, to);
-			isValid = !board.isEmpty(from) && board.at(from).color() == current_player.getColor() && board.move(from, to);
+			currentPlayer().nextTurn(board, from, to);
+			isValid = !board.isEmpty(from) && board.at(from).color() == current_color && board.move(from, to);
 			if (!isValid)
 				std::cout << "Mossa non consentita\n";
 		} while (!isValid);
@@ -52,16 +55,15 @@ void chess::GameManager::play() {
 
 		// Promozione
 		if(board.at(to).ascii()=='P' && (to.rank == 0 || to.rank == 7) ) {
-			char chosen = current_player.choosePromotion();
+			char chosen = currentPlayer().choosePromotion();
 			board.promote(to, chosen);
 			logPromotion(chosen, to);
 		}
 
 		nextPlayer();
-		std::cout << "Mossa eseguita2\n";
 		
 		//Check if player has available moves
-		std::list<Coordinates> pieces = board.getPiecesCoords(current_player.getColor());
+		std::list<Coordinates> pieces = board.getPiecesCoords(current_color);
 		bool player_has_at_least_1_move = false;
 		for(auto coords: pieces) {
 			if(board.legalMovesOf(board.at(coords)).size() > 0) {
@@ -69,26 +71,24 @@ void chess::GameManager::play() {
 				break;
 			}
 		}
-		std::cout << "Mossa eseguita3\n";
 
 		if(!player_has_at_least_1_move) {
-			if(board.isKingInCheck(current_player.getColor())) {
+			if(board.isKingInCheck(current_color)) {
 				//Scacco matto
 				log_stream<<"---"<<std::endl;
-				log_stream<<((current_player.getColor() == player1_.getColor())?"Player1":"Player2")<<" has no valid moves and his king is in check";
+				log_stream<<((current_color == player1_.getColor())?"Player1":"Player2")<<" has no valid moves and his king is in check";
 				nextPlayer();
-				win(current_player);
+				win(currentPlayer());
 			}else {
 				//Parità
 				log_stream<<"---"<<std::endl;
-				log_stream<<((current_player.getColor() == player1_.getColor())?"Player1":"Player2")<<" has no valid moves but his king is not in check";
+				log_stream<<((current_color == player1_.getColor())?"Player1":"Player2")<<" has no valid moves but his king is not in check";
 				draw();
 			}
 		}
 		if(!infinite_game) {
 			current_move++;
 		}
-		std::cout << "Mossa eseguita4\n";
 	}
 	log_stream<<"---"<<std::endl;
 

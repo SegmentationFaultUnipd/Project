@@ -36,8 +36,8 @@ namespace chess {
             bool isThreatened(Coordinates piece_coords, Color piece_color);
             bool isKingInCheck(Color king_color);
 
-            bool isReachableBy(Coordinates landing_square, const Piece& piece) const;
-            bool isTakingAPiece(Coordinates landing_square, const Piece& piece) const;
+            bool isEmptyOrOppositeColor(Coordinates landing_square, Color piece_color) const;
+            bool isOppositeColor(Coordinates landing_square, Color piece_color) const;
 
             // Special moves ---------------------------------------------
             void addAvailableEnPassant(Coordinates from, Coordinates to);

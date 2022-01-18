@@ -11,7 +11,7 @@ namespace chess {
     class GameManager {
         public:
 			//Nota: current_player viene inizializzato a player1 nel costruttore, ma una volta che viene chiamato GameManager::play() viene corretto con il giocatore che ha il bianco
-            GameManager(Player &player1, Player &player2, int max_moves) : player1_(player1), player2_(player2), max_moves_(max_moves), current_player(selectStartingPlayer(player1, player2)) {
+            GameManager(Player &player1, Player &player2, int max_moves) : player1_(player1), player2_(player2), max_moves_(max_moves), current_color(WHITE) {
 				createLogFile();
 			}
            	void play();
@@ -23,10 +23,11 @@ namespace chess {
 			Board board;
 			int max_moves_;//If max_moves is -1, go on forever
 			int current_move = 0;
-			Player &current_player;
+			Color current_color;
 			std::string file_name;
 			std::ofstream log_stream;
 
+			Player& currentPlayer();
 			void nextPlayer();
 			void win(Player &winner);
 			void draw();
