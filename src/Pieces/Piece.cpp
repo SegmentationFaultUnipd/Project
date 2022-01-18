@@ -14,7 +14,8 @@ std::vector<chess::Piece*> chess::Piece::takeablePieces(Board &board) const
 
 	for (Coordinates move : moves)
 	{
-		if (!board.isEmpty(move) && board.at(move).color() != this->color())
+		if (!board.isEmpty(move) && board.at(move).color() != this->color()
+			&& !board.moveCauseSelfCheck(position_, move))
 		{
 			takeable_pieces.push_back(&board.at(move));
 		}

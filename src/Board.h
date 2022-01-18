@@ -67,7 +67,9 @@ namespace chess {
             std::list<Coordinates> white_coords_;
             std::list<Coordinates> black_coords_;
 
-            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_;
+            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_for_white_;
+            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_for_black_;
+            std::list<std::pair<Coordinates, Coordinates>>& availableEnPassantsFor(Color color);
 
             std::unique_ptr<Piece> board_[8][8];
     };
