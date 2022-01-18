@@ -12,12 +12,10 @@ bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
 	}
 
 
-	if (board.isEmpty(coords))
-		return true;
+	if (!board.isEmpty(coords) || board.at(coords).color() != this->color())
+		return !board.moveCauseSelfCheck(this->coordinates(), coords);
 	
-	const Piece& landing_piece = board.at(coords);
-
-	return landing_piece.color() != this->color();
+	return false;//Last case: King is trying to capture a piece of the same color
 };
 
 
@@ -113,7 +111,8 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 			return false;
 		}
 	}
-	return true;
+	//Last position of the king must not be in check
+	return !board.moveCauseSelfCheck(this->coordinates(), to_coords);
 }
 
 
