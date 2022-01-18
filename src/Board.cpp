@@ -89,8 +89,8 @@ bool chess::Board::move(Coordinates from, Coordinates to)
             doCastlingMove(from, to);
         else
             updatePosition_(from, to);
-
-        clearEnPassants_(at(from).color());
+            
+        clearEnPassants_(at(to).color());
         return true;
     }
     return false;
@@ -163,7 +163,6 @@ void chess::Board::removePiece_(Coordinates coords) {
 
 void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 {
-    std::cout << "Updating\n";
     // Update position in own members
     at(from).move(to);
 
