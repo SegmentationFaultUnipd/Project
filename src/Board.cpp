@@ -89,8 +89,8 @@ bool chess::Board::move(Coordinates from, Coordinates to)
             doCastlingMove(from, to);
         else
             updatePosition_(from, to);
-
-        clearEnPassants_(at(from).color());
+            
+        clearEnPassants_(at(to).color());
         return true;
     }
     return false;
@@ -125,24 +125,31 @@ bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
 
 bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 {
+    Color color = at(from).color();
     std::pair<Coordinates, Coordinates> candidate_move{from, to};
-    for (std::pair<Coordinates, Coordinates> available_en_passant : available_en_passants_)
+
+    for (auto available_en_passant : availableEnPassantsFor(color))
         if (candidate_move == available_en_passant)
             return true;
+    
     return false;
 }
 
 void chess::Board::addAvailableEnPassant(Coordinates from, Coordinates to)
 {
-    available_en_passants_.push_back({from, to});
+    availableEnPassantsFor(at(from).color()).push_back({from, to});
     std::cout << "Available en passant! " << from << to << "\n";
 }
 
-void chess::Board::clearEnPassants_(Color attacking_piece_color)
+std::list<std::pair<chess::Coordinates, chess::Coordinates>>& chess::Board::availableEnPassantsFor(Color color) {
+    if (color == WHITE)
+        return available_en_passants_for_white_;
+    return available_en_passants_for_black_;
+}
+
+void chess::Board::clearEnPassants_(Color of_color)
 {
-    for (auto en_passant : available_en_passants_)
-        if (at(en_passant.first).color() == attacking_piece_color)
-            available_en_passants_.remove(en_passant);
+    availableEnPassantsFor(of_color) = {};
 }
 
 void chess::Board::removePiece_(Coordinates coords) {
@@ -244,7 +251,8 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
                 return true;
     }
 
-    for (std::pair<Coordinates, Coordinates> en_passant : available_en_passants_) {
+    //Exception: en passants
+    for (std::pair<Coordinates, Coordinates> en_passant : availableEnPassantsFor(opposite(piece_color))) {
         Coordinates landing_square = en_passant.second;
         if (landing_square == square)
             return true;
