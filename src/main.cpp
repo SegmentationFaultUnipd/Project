@@ -7,8 +7,7 @@
 #include "Players/HumanPlayer.h"
 #include "Players/ComputerPlayer.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     chess::HumanPlayer p1{chess::WHITE};
     chess::HumanPlayer p2{chess::BLACK};
 

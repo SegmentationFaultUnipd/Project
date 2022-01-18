@@ -90,6 +90,7 @@ bool chess::Board::move(Coordinates from, Coordinates to)
         else
             updatePosition_(from, to);
 
+        clearEnPassants_(at(from).color());
         return true;
     }
     return false;
@@ -115,7 +116,6 @@ void chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
 
     updatePosition_(from, to);
     removePiece_(piece_to_eat);
-    clearEnPassants_();
 }
 
 bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
@@ -138,9 +138,11 @@ void chess::Board::addAvailableEnPassant(Coordinates from, Coordinates to)
     std::cout << "Available en passant! " << from << to << "\n";
 }
 
-void chess::Board::clearEnPassants_()
+void chess::Board::clearEnPassants_(Color attacking_piece_color)
 {
-    available_en_passants_ = {};
+    for (auto en_passant : available_en_passants_)
+        if (at(en_passant.first).color() == attacking_piece_color)
+            available_en_passants_.remove(en_passant);
 }
 
 void chess::Board::removePiece_(Coordinates coords) {
@@ -198,7 +200,7 @@ bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to)
     board_[from.file][from.rank] = std::move(moving_piece);
     board_[to.file][to.rank] = std::move(landing_piece);
 
-    return !kingInCheck;
+    return kingInCheck;
 }
 
 const std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece &piece)

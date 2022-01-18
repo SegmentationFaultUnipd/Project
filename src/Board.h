@@ -51,11 +51,11 @@ namespace chess {
             void doEnPassantMove(Coordinates from, Coordinates to);
 
         private:
-            void addPiece_(char pieceAscii, Coordinates coords, Color color);
-            void addPieceToMatrix_(std::unique_ptr<Piece>& pieceToAdd, Coordinates coords);
+            void addPiece_(char piece_ascii, Coordinates coords, Color color);
+            void addPieceToMatrix_(std::unique_ptr<Piece>& attacking_piece_color, Coordinates coords);
             void addPieceCoords_(Coordinates coords);
 
-            void clearEnPassants_();
+            void clearEnPassants_(Color attacking_piece_color);
 
             void removePiece_(Coordinates coords);
 
