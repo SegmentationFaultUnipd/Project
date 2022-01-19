@@ -24,14 +24,15 @@ namespace chess {
             Board();
 
             bool isEmpty(Coordinates coords) const;
-            Piece& at(Coordinates coords) const;
-            
+            Piece& at(Coordinates coords);
+            const Piece& at(Coordinates coords) const;
+
             const std::vector<Coordinates> legalMovesOf(Piece& piece);
             std::list<Coordinates>& getPiecesCoords(Color color);
             Piece& getKing(Color king_color);
            
             bool move(Coordinates from, Coordinates to);
-            bool moveCauseSelfCheck(Coordinates from, Coordinates to);
+            bool moveCauseSelfCheck(Coordinates from, Coordinates to, bool debug = false);
 
             bool isThreatened(Coordinates piece_coords, Color piece_color);
             bool isKingInCheck(Color king_color);
@@ -60,7 +61,7 @@ namespace chess {
             void removePiece_(Coordinates coords);
 
             std::unique_ptr<Piece> makePiece_(char c, Coordinates coords, Color color) const;
-            std::unique_ptr<Piece> copyPiece_(Piece& p) const;
+            std::unique_ptr<Piece> copyPiece_(const Piece& p) const;
 
             void updatePosition_(Coordinates from, Coordinates to);
 
@@ -74,7 +75,7 @@ namespace chess {
             std::unique_ptr<Piece> board_[8][8];
     };
 
-    std::ostream& operator<<(std::ostream& os, Board& board);
+    std::ostream& operator<<(std::ostream& os, const Board& board);
 
 } //namespace chess
 
