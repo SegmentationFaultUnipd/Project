@@ -7,34 +7,26 @@ void chess::Pawn::move(Coordinates new_position) {
 
 bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     //The pawn can make 3 different moves, 1 only if it hasn't yet moved
-	std::cerr <<"Pawn::canMoveAt::START"<<std::endl;
-	std::cerr << "Pawn is in coordinates... "<<file()<< " "<< rank() << ": "<<position_.toNotation() << std::endl;
-	std::cerr <<"Pawn::canMoveAt::1Calling isEnPassantMove with from: "<<position_.file << " " <<position_.rank<<std::endl;
 
     //Can't stay stationary
     if(position_ == coords) {
         return false;
     }
-	std::cerr <<"Pawn::canMoveAt::2Calling isEnPassantMove with from: "<<position_.file << " " <<position_.rank<<std::endl;
 
     //Can't land on a piece of the same color
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
-	std::cerr <<"Pawn::canMoveAt::3Calling isEnPassantMove with from: "<<position_.file << " " <<position_.rank<<std::endl;
 
     //Can't make a move that would cause a self check
     if(board.moveCauseSelfCheck(position_, coords)) {
         return false;
     }
-	std::cerr <<"Pawn::canMoveAt::FIRST CHECKS"<<std::endl;
 
     //The pawn is trying to en pass
-	std::cerr <<"Pawn::canMoveAt::4Calling isEnPassantMove with from: "<<position_.file << " " <<position_.rank<<std::endl;
     if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
         return true;
     }
-	std::cerr <<"Pawn::canMoveAt::ENPASSANT"<<std::endl;
     
     //Check the pawn color
     short color_n;
@@ -44,7 +36,6 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     else {
         color_n = -1;
     }
-	std::cerr <<"Pawn::canMoveAt::CHECK COLOR"<<std::endl;
 
 
     //The pawn moves two steps forward (if it hasn't yet moved)
@@ -64,14 +55,12 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         }
         return true;
     }
-	std::cerr <<"Pawn::canMoveAt::BULK IF"<<std::endl;
     
     //The pawn moves one step forward (if the tile is free)
     bool one_up = coords.file == position_.file && coords.rank == (position_.rank + (1 * color_n));
     if(one_up && board.isEmpty(coords)) {
         return true;
     }
-	std::cerr <<"Pawn::canMoveAt::SMALL IFS"<<std::endl;
 
     //The pawn moves diagonally (if there's a opponent piece to eat)
     bool diag_right = coords.file == (position_.file + 1) && coords.rank == (position_.rank + (1 * color_n));
@@ -79,7 +68,6 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if((diag_right || diag_left) && !board.isEmpty(coords) && board.isOppositeColor(coords, this->color())) {
         return true;
     }
-	std::cerr <<"Pawn::canMoveAt::FINAL"<<std::endl;
 
 
     return false;
@@ -126,6 +114,7 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     //Double move up
     if(position_.rank - 2 >= 0 && canMoveAt({position_.file, position_.rank + (2 * color_n)}, board)) {
         moves.push_back(Coordinates{position_.file, position_.rank + (2 * color_n)});
+        std::cout << Coordinates{position_.file, position_.rank + (2 * color_n)} << ", ";
     }
 
     if(position_.rank - 1 >= 0) {
