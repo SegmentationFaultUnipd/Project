@@ -256,9 +256,11 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
         std::cout << "Checking " << dummy_piece->ascii() << "\n";
         const std::vector<Piece*> &possible_attackers = dummy_piece->takeablePieces(*this);
         std::cout << "Took takeable pieces\n";
-        for (Piece *possible_attacker : possible_attackers)
+        for (Piece *possible_attacker : possible_attackers) {
+            //std::cerr << "possible attacker"<<possible_attacker->coordinates().toNotation()<<std::endl;
             if (dummy_piece->ascii() == possible_attacker->ascii())
                 return true;
+        }
     }
 
     //Exception: en passants
