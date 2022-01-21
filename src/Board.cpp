@@ -6,7 +6,7 @@ chess::Board::Board()
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
-        'd', 'p ', ' ', ' ', ' ', ' ', 'P', 'D',
+        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
         'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R',
         'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
@@ -69,10 +69,8 @@ chess::Piece &chess::Board::at(Coordinates coords)
 // Move the piece
 bool chess::Board::move(Coordinates from, Coordinates to)
 {
-    assert(from.file >= 0 && from.file < 8);
-    assert(from.rank >= 0 && from.rank < 8);
-    assert(to.file >= 0 && to.file < 8);
-    assert(to.rank >= 0 && to.rank < 8);
+    assert(from.inBounderies());
+    assert(to.inBounderies());
 
     if (!isEmpty(from) && at(from).canMoveAt(to, *this))
     {
