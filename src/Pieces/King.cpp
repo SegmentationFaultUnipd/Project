@@ -128,7 +128,7 @@ bool chess::King::checkEmptyAndNotInCheck(chess::Board& board, int range, bool i
 } 
 
 
-void chess::King::move(Coordinates new_position) {
+void chess::King::move(Coordinates new_position, Board& board) {
 	position_ = new_position;
 	has_moved = true;
 }

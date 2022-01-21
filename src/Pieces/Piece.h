@@ -12,7 +12,7 @@ namespace chess {
 
     class Piece {
         public:
-            virtual void move (Coordinates new_position) {
+            virtual void move (Coordinates new_position, Board &board) {
                 position_ = new_position;
             }
 

@@ -14,6 +14,7 @@ std::vector<chess::Piece*> chess::Piece::takeablePieces(Board &board) const
 	std::vector<Coordinates> moves = legalMoves(board);
 	std::vector<Piece*> takeable_pieces;
 
+	std::cerr << "(did legal moves)";
 	for (Coordinates move : moves)
 	{
 		//For testing: std::cout << move << " ";
