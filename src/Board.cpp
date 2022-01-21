@@ -26,7 +26,7 @@ chess::Board::Board()
 
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
     std::unique_ptr<Piece> pieceToAdd = makePiece_(asciiPiece, coords, color);
-    
+
     addPieceToMatrix_(pieceToAdd, coords);
     if (!isEmpty(coords))
         addPieceCoords_(coords);
@@ -77,12 +77,12 @@ bool chess::Board::move(Coordinates from, Coordinates to)
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
         if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to); 
+            doEnPassantMove(from, to);
         else if (isCastlingMove(from, to))
-            doCastlingMove(from, to); 
+            doCastlingMove(from, to);
         else
             updatePosition_(from, to);
-		
+
         clearEnPassants_(at(to).color());
         return true;
     }
@@ -134,7 +134,7 @@ bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
     for (auto available_en_passant : availableEnPassantsFor(color))
         if (candidate_move == available_en_passant)
             return true;
-    
+
     return false;
 }
 
