@@ -17,48 +17,31 @@ bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
         return false;
     }
 
-    //VERTICAL MOVEMENT
-    if(coords.rank == position_.rank) {
-        //Is moving down vertically
-        if(coords.file > position_.file) {
-            //Checking if the route is free
-            for(int i = position_.file + 1; i < coords.file; i++){
-                if(!board.isEmpty({i, position_.rank})) {
-                    return false;
-                }
+    //Getting the movement in each direction
+    short delta_file = coords.file - position_.file;
+    short delta_rank = coords.rank - position_.rank;
+    //Verify if the route is free
+    if(delta_file == 0) {
+        Coordinates curr_pos = position_;
+        Coordinates dir {0, delta_rank/abs(delta_rank)};
+        for(short i = 0; i < abs(delta_rank) - 1; i++) {
+            curr_pos += dir;
+            if(!board.isEmpty(curr_pos)) {
+                return false;
             }
-            return true;
         }
-        //Is moving up vertically
-        if(coords.file < position_.file) {
-            for(int i = position_.file - 1; i > coords.file; i--) {
-                if(!board.isEmpty({i, position_.rank})) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return true;
     }
-    //HORIZONTAL MOVEMENT
-    if(coords.file == position_.file) {
-        //Is moving right horizontally
-        if(coords.rank > position_.rank) {
-            for(int i = position_.rank + 1; i < coords.rank; i++) {
-                if(!board.isEmpty({position_.file, i})) {
-                    return false;
-                }
+    else if (delta_rank == 0){
+        Coordinates curr_pos = position_;
+        Coordinates dir {delta_file/abs(delta_file), 0};
+        for(short i = 0; i < abs(delta_file) - 1; i++) {
+            curr_pos += dir;
+            if(!board.isEmpty(curr_pos)) {
+                return false;
             }
-            return true;
         }
-        //Is moving left horizontally
-        if(coords.rank < position_.rank) {
-            for(int i = position_.rank - 1; i > coords.rank; i--) {
-                if(!board.isEmpty({position_.file, i})) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return true;
     }
 
     return false;
@@ -71,17 +54,17 @@ bool chess::Rook::canMove(Board& board) const {
     };
 
     for(Coordinates dir : directions) {
-    coords.file = position_.file + dir.file;
-    coords.rank = position_.rank + dir.rank;
-    while(coords.inBounderies()) {
+        coords.file = position_.file + dir.file;
+        coords.rank = position_.rank + dir.rank;
+        while(coords.inBounderies()) {
             if(canMoveAt(coords, board)) {
                 return true;
             }
+            coords.file += dir.file;
+            coords.rank += dir.rank;
         }
-        coords.file += dir.file;
-        coords.rank += dir.rank;
     }
-    
+
     return false;
 }
 

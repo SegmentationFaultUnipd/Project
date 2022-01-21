@@ -38,7 +38,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     }
 
 
-    //The pawn moves two steps forward (if it hasn't yet moved)
+    //The pawn is moving two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
     if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
         Coordinates from, to;
@@ -56,16 +56,16 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         return true;
     }
     
-    //The pawn moves one step forward (if the tile is free)
+    //The pawn is moving one step forward (if the tile is free)
     bool one_up = coords.file == position_.file && coords.rank == (position_.rank + (1 * color_n));
     if(one_up && board.isEmpty(coords)) {
         return true;
     }
 
-    //The pawn moves diagonally (if there's a opponent piece to eat)
+    //The pawn is moving diagonally (if there's a opponent piece to take)
     bool diag_right = coords.file == (position_.file + 1) && coords.rank == (position_.rank + (1 * color_n));
     bool diag_left = coords.file == (position_.file - 1) && coords.rank == (position_.rank + (1 * color_n));
-    if((diag_right || diag_left) && !board.isEmpty(coords) && board.isOppositeColor(coords, this->color())) {
+    if((diag_right || diag_left) && board.isOppositeColor(coords, this->color())) {
         return true;
     }
 
