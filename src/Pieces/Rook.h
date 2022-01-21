@@ -11,7 +11,7 @@ namespace chess {
 			bool has_moved;
         public:
             Rook(Coordinates pos, Color color) : Piece{pos, color}, has_moved{false} {};
-
+            Rook(const Rook& obj) : Piece{obj.position_, obj.color_}, has_moved{false} {};
             bool canMoveAt(Coordinates coords, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;

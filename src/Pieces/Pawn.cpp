@@ -2,7 +2,7 @@
 
 void chess::Pawn::move(Coordinates new_position) {
     position_ = new_position;
-    hasMoved = true;
+    has_moved = true;
 }
 
 bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
@@ -31,7 +31,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     }
     //The pawn is moving two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
-    if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
+    if(two_up && !has_moved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
         Coordinates from, to;
         to = {position_.file, position_.rank + (1 * color_n)};
         //If there is a pawn on the right it can then en pass

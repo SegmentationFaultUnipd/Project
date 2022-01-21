@@ -9,7 +9,7 @@ namespace chess {
     class Queen : public Piece {
         public:
             Queen(Coordinates coords, Color color) : Piece{coords, color} {};
-
+            Queen(const Queen& obj) : Piece{obj.position_, obj.color_} {};
             bool canMoveAt(Coordinates pos, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
