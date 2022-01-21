@@ -14,7 +14,13 @@ namespace chess {
 
         public:
             King(Coordinates pos, Color color) : Piece{pos, color}, has_moved{false} {};
+            King(const King &obj) : Piece{obj.position_, obj.color_}, has_moved{obj.has_moved} {};
 
+            King& operator=(const King& obj) {
+                position_ = obj.position_;
+                has_moved = obj.has_moved;
+                return *this;
+            }
 			void move (Coordinates new_position) override;
 			bool canCastle(Coordinates to_coords, Board& board) const;
           	bool canMoveAt(Coordinates coords, Board& board) const override;

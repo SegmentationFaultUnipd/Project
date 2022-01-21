@@ -12,7 +12,7 @@ namespace chess {
 
     class Piece {
         public:
-            virtual void move (Coordinates new_position) {
+            virtual void move (Coordinates new_position, Board &board) {
                 position_ = new_position;
             }
 
@@ -35,12 +35,18 @@ namespace chess {
             short file() const { return position_.file; }
             short rank() const { return position_.rank; }
             Coordinates coordinates() const { return position_; }
-
+            Piece(const Piece &obj) : Piece{obj.position_, obj.color_} {};
+            
+            Piece& operator=(const Piece& obj) {
+                position_ = obj.position_;
+                return *this;
+            }
         protected:
             Piece(Coordinates pos, Color color) {
                 position_ = pos;
                 color_ = color;
             };
+
 
             Coordinates position_;
             Color color_;

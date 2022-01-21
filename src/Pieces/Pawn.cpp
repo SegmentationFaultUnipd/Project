@@ -42,7 +42,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
         return true;
     }
-    
+
     //Check the pawn color
     short color_n;
     if(this->color() == WHITE) {
@@ -56,7 +56,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(two_up && !has_moved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
         return true;
     }
-    
+
     //The pawn is moving one step forward (if the tile is free)
     bool one_up = coords.file == position_.file && coords.rank == (position_.rank + (1 * color_n));
     if(one_up && board.isEmpty(coords)) {
