@@ -66,86 +66,52 @@ bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
 
 bool chess::Rook::canMove(Board& board) const {
     Coordinates coords;
-    short i;
-    //HORIZONTAL MOVEMENT
-    i = 1;
-    while(i > -2) {
-        coords.file += i;
-        while(coords.inBounderies()) {
+    const std::vector<Coordinates> directions {
+        {0,1}, {-1,0}, {0,-1}, {1,0}
+    };
+
+    for(Coordinates dir : directions) {
+    coords.file = position_.file + dir.file;
+    coords.rank = position_.rank + dir.rank;
+    while(coords.inBounderies()) {
             if(canMoveAt(coords, board)) {
                 return true;
             }
-            coords.file += i;
         }
-        coords.file = position_.file;
-        i -= 2;
+        coords.file += dir.file;
+        coords.rank += dir.rank;
     }
-    //VERTICAL MOVEMENT
-    i = 1;
-    while(i > -2) {
-        coords.rank += i;
-        while(coords.inBounderies()) {
-            if(canMoveAt(coords,board)) {
-                return true;
-            }
-            coords.rank += i;
-        }
-        coords.rank = position_.rank;
-        i -= 2;
-    }
-
+    
     return false;
 }
 
 std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
     Coordinates coords = position_;
-    short i;
-    //HORIZONTAL MOVEMENT
-    i = 1;
-    while(i > -2) {
-        coords.file += i;
+    const std::vector<Coordinates> directions {
+        {0,1}, {-1,0}, {0,-1}, {1,0}
+    };
+
+    for(Coordinates dir : directions) {
+        coords.file = position_.file + dir.file;
+        coords.rank = position_.rank + dir.rank;
         while(coords.inBounderies()) {
             //Can't move past an obstacle
             if(!board.isEmpty(coords)) {
                 //Can move to eat a piece of different color
                 if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                    std::cout << coords << " is a legal moves\n";
                     moves.push_back(coords);
                 }
                 break;
             }
             if(!board.moveCauseSelfCheck(position_, coords)) {
-                std::cout << coords << " is a legal moves\n";
                 moves.push_back(coords);
             }
-            coords.file += i;
+            coords.file += dir.file;
+            coords.rank += dir.rank;
         }
-        coords.file = position_.file;
-        i -= 2;
     }
-    //VERTICAL MOVEMENT
-    i = 1;
-    while(i > -2) {
-        coords.rank += i;
-        while(coords.inBounderies()) {
-            if(!board.isEmpty(coords)) {
-                if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                    std::cout << coords << " is a legal moves\n";
-                    moves.push_back(coords);
-                }
-                break;
-            }
-            if(!board.moveCauseSelfCheck(position_, coords)) {
-                    std::cout << coords << " is a legal moves\n";
-                moves.push_back(coords);
-            }
-            coords.rank += i;
-        }
-        coords.rank = position_.rank;
-        i -= 2;
-    }
-
+    
     return moves;
 }
 
