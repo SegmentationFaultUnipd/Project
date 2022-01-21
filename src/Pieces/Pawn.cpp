@@ -12,17 +12,10 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(position_ == coords) {
         return false;
     }
-
     //Can't land on a piece of the same color
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
-
-    //Can't make a move that would cause a self check
-    if(board.moveCauseSelfCheck(position_, coords)) {
-        return false;
-    }
-
     //The pawn is trying to en pass
     if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
         return true;
@@ -36,8 +29,6 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     else {
         color_n = -1;
     }
-
-
     //The pawn is moving two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
     if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
