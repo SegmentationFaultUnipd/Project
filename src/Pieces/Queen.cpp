@@ -92,7 +92,7 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
             //Can't move past an obstacle
             if(!board.isEmpty(coords)) {
                 //Can move to eat a piece of different color
-                if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                if(board.isOppositeColor(coords, this->color()) && !board.moveCauseSelfCheck(position_, coords)) {
                     moves.push_back(coords);
                 }
                 break;
