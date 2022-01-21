@@ -11,7 +11,7 @@ namespace chess {
 		private:
 			bool has_moved;
         public:
-            King(Coordinates pos, Color color) : Piece{pos, color} {has_moved = false;};
+            King(Coordinates pos, Color color) : Piece{pos, color}, has_moved{false} {};
 
 			void move (Coordinates new_position) override;
 			bool canCastle(Coordinates to_coords, Board& board) const;
