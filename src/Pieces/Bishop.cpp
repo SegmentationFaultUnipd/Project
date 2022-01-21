@@ -27,59 +27,15 @@ bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
     short delta_rank = coords.rank - position_.rank;
     //Verify if the route is free
     if(abs(delta_file) == abs(delta_rank)) {
-        short x = position_.file, y = position_.rank;
-        //Moving down-left
-        if(delta_rank < 0 && delta_file > 0) {
-            while(x > coords.file && y < coords.rank) {
-                x--;
-                y++;
-                if(!board.isEmpty({x, y})) {
-                    std::cout << "4\n";
-                    return false;
-                }
+        Coordinates curr_pos = position_;
+        Coordinates dir {delta_file/abs(delta_file), delta_rank/abs(delta_rank)};
+        for(short i = 0; i < abs(delta_file); i++) {
+            curr_pos += dir;
+            if(!board.isEmpty(curr_pos)) {
+                return false;
             }
-            std::cout << "5\n";
-            return true;
         }
-        //Moving down-right
-        if(delta_rank < 0 && delta_file < 0) {
-            while(x < coords.file && y < coords.rank) {
-                x++;
-                y++;
-                if(!board.isEmpty({x, y})) {
-                    std::cout << "6\n";
-                    return false;
-                }
-            }
-            std::cout << "7\n";
-            return true;
-        }
-        //Moving up-left
-        if(delta_rank > 0 && delta_file > 0) {
-            while(x > coords.file && y > coords.rank) {
-                x--;
-                y--;
-                if(!board.isEmpty({x, y})) {
-                    return false;
-                    std::cout << "8\n";
-                }
-            }
-            std::cout << "9\n";
-            return true;
-        }
-        //Moving up-right
-        if(delta_rank > 0 && delta_file < 0) {
-            while(x < coords.file && y > coords.rank) {
-                x++;
-                y--;
-                if(!board.isEmpty({x, y})) {
-                    std::cout << "10\n";
-                    return false;
-                }
-            }
-            std::cout << "11\n";
-            return true;
-        }
+        return true;
     }
     return false;
 }

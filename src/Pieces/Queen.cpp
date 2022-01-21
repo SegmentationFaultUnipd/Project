@@ -18,55 +18,19 @@ bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
     }
 
     //MOVING LIKE A BISHOP
-    short delta_file = position_.file - coords.file;
-    short delta_rank = position_.rank - coords.rank;
+    short delta_file = coords.file - position_.file;
+    short delta_rank = coords.rank - position_.rank;
     //Verify if the route is free
     if(abs(delta_file) == abs(delta_rank)) {
-        short x = position_.file, y = position_.rank;
-        //Moving down-left
-        if(delta_rank < 0 && delta_file > 0) {
-            while(x > coords.file && y < coords.rank) {
-                x--;
-                y++;
-                if(!board.isEmpty({x, y})) {
-                    return false;
-                }
+        Coordinates curr_pos = position_;
+        Coordinates dir {delta_file/abs(delta_file), delta_rank/abs(delta_rank)};
+        for(short i = 0; i < abs(delta_file); i++) {
+            curr_pos += dir;
+            if(!board.isEmpty(curr_pos)) {
+                return false;
             }
-            return true;
         }
-        //Moving down-right
-        if(delta_rank < 0 && delta_file < 0) {
-            while(x < coords.file && y < coords.rank) {
-                x++;
-                y++;
-                if(!board.isEmpty({x, y})) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        //Moving up-left
-        if(delta_rank > 0 && delta_file > 0) {
-            while(x > coords.file && y > coords.rank) {
-                x--;
-                y--;
-                if(!board.isEmpty({x, y})) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        //Moving up-right
-        if(delta_rank > 0 && delta_file < 0) {
-            while(x < coords.file && y > coords.rank) {
-                x++;
-                y--;
-                if(!board.isEmpty({x, y})) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return true;
     }
 
     //MOVING LIKE A ROOK
@@ -166,6 +130,6 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
             coords.rank += dir.rank;
         }
     }
-    
+
     return moves;
 }
