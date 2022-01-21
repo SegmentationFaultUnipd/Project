@@ -231,7 +231,7 @@ bool chess::Queen::canMove(Board& board) const {
     //VERTICAL MOVEMENT
     //Down
     coords.rank = position_.rank + 1;
-    while(coords.rank < 8) {
+    while(coords.file < 8) {
         if(!board.isEmpty(coords)) {
             if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
@@ -241,11 +241,11 @@ bool chess::Queen::canMove(Board& board) const {
         if(!board.moveCauseSelfCheck(position_, coords)) {
             return true;
         }
-        coords.rank++;
+        coords.file++;
     }
     //Up
     coords.rank = position_.rank - 1;
-    while(coords.rank >= 0) {
+    while(coords.file >= 0) {
         if(!board.isEmpty(coords)) {
             if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
@@ -255,7 +255,7 @@ bool chess::Queen::canMove(Board& board) const {
         if(!board.moveCauseSelfCheck(position_, coords)) {
             return true;
         }
-        coords.rank--;
+        coords.file--;
     }
 
     return false;

@@ -36,11 +36,13 @@ void chess::GameManager::play() {
 	current_color = WHITE; //Seleziona il giocatore iniziale
 	bool infinite_game = (max_moves_ == -1);
 	bool isGameEnded = false;
+
 	while(!isGameEnded && (infinite_game || current_move < max_moves_)) {
 		Coordinates from, to;
 		bool isValid = false;
 
 		std::cout << "Tocca al " << (current_color == WHITE ? "bianco\n" : "nero\n");
+
 		do {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color && board.move(from, to);
@@ -63,9 +65,8 @@ void chess::GameManager::play() {
 		//Check if player has available moves
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color);
 		bool player_has_at_least_1_move = false;
-		for(auto piece : pieces) {
-			std::cout << piece << ": \n";
-			if(board.legalMovesOf(board.at(piece)).size() > 0) {
+		for(auto coords: pieces) {
+			if(board.legalMovesOf(board.at(coords)).size() > 0) {
 				player_has_at_least_1_move = true;
 				break;
 			}
@@ -85,11 +86,9 @@ void chess::GameManager::play() {
 				draw();
 			}
 		}
-
 		if(!infinite_game) {
 			current_move++;
 		}
-
 	}
 	log_stream<<"---"<<std::endl;
 

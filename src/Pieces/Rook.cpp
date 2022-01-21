@@ -102,7 +102,7 @@ bool chess::Rook::canMove(Board& board) const {
     //VERTICAL MOVEMENT
     //Down
     coords.rank = position_.rank + 1;
-    while(coords.rank < 8) {
+    while(coords.file < 8) {
         if(!board.isEmpty({position_.file, coords.rank})) {
             if(board.at({position_.file, coords.rank}).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
@@ -112,11 +112,11 @@ bool chess::Rook::canMove(Board& board) const {
         if(!board.moveCauseSelfCheck(position_, coords)) {
             return true;
         }
-        coords.rank++;
+        coords.file++;
     }
     //Up
     coords.rank = position_.rank - 1;
-    while(coords.rank >= 0) {
+    while(coords.file >= 0) {
         if(!board.isEmpty({position_.file, coords.rank})) {
             if(board.at({position_.file, coords.rank}).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
                 return true;
@@ -126,7 +126,7 @@ bool chess::Rook::canMove(Board& board) const {
         if(!board.moveCauseSelfCheck(position_, coords)) {
             return true;
         }
-        coords.rank--;
+        coords.file--;
     }
 
     return false;
@@ -144,13 +144,11 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
         if(!board.isEmpty({coords.file, position_.rank})) {
             //Can move to eat a piece of different color
             if(board.at({coords.file, position_.rank}).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                std::cout << Coordinates{coords.file, position_.rank} << " is a legal moves\n";
                 moves.push_back(chess::Coordinates{coords.file, position_.rank});
             }
             break;
         }
         if(!board.moveCauseSelfCheck(position_, coords)) {
-            std::cout << Coordinates{coords.file, position_.rank} << " is a legal moves\n";
             moves.push_back(chess::Coordinates{coords.file, position_.rank});
         }
         coords.file++;
@@ -160,13 +158,11 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     while(coords.file >= 0) {
         if(!board.isEmpty({coords.file, position_.rank})) {
             if(board.at({coords.file, position_.rank}).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                std::cout << Coordinates{coords.file, position_.rank} << " is a legal moves\n";
                 moves.push_back(chess::Coordinates{coords.file, position_.rank});
             }
             break;
         }
         if(!board.moveCauseSelfCheck(position_, coords)) {
-            std::cout << Coordinates{coords.file, position_.rank} << " is a legal moves\n";
             moves.push_back(chess::Coordinates{coords.file, position_.rank});
         }
         coords.file--;
@@ -178,16 +174,14 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     while(coords.rank < 8) {
         if(!board.isEmpty({position_.file, coords.rank})) {
             if(board.at({position_.file, coords.rank}).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                std::cout << Coordinates{coords.file, position_.rank} << " is a legal moves\n";
                 moves.push_back(chess::Coordinates{position_.file, coords.rank});
             }
             break;
         }
         if(!board.moveCauseSelfCheck(position_, coords)) {
-                std::cout << Coordinates{coords.file, position_.rank} << " is a legal moves\n";
             moves.push_back(chess::Coordinates{coords.file, position_.rank});
         }
-        coords.rank++;
+        coords.file++;
     }
     //Up
     coords.rank = position_.rank - 1;
@@ -201,7 +195,7 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
         if(!board.moveCauseSelfCheck(position_, coords)) {
             moves.push_back(chess::Coordinates{coords.file, position_.rank});
         }
-        coords.rank--;
+        coords.file--;
     }
 
     return moves;
