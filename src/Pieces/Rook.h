@@ -16,7 +16,7 @@ namespace chess {
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
 			void move (Coordinates new_position) override;
-            Rook& operator=(Rook& obj) { 
+            Rook& operator=(const Rook& obj) { 
                 position_ = obj.position_;
                 color_ = obj.color_;
                 has_moved = obj.has_moved;

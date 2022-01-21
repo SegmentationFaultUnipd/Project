@@ -1,8 +1,30 @@
 #include "Pawn.h"
 
-void chess::Pawn::move(Coordinates new_position, Board &board) {
+void chess::Pawn::move(Coordinates new_position, Board& board) {
     position_ = new_position;
     has_moved = true;
+    short color_n;
+    if(this->color() == WHITE) {
+        color_n = 1;
+    }
+    else {
+        color_n = -1;
+    }
+    bool two_up = new_position.file == position_.file && new_position.rank == (position_.rank + (2 * color_n));
+    if(two_up) {
+        Coordinates from, to;
+        to = {position_.file, position_.rank + (1 * color_n)};
+        //If there is a pawn on the right it can then en pass
+        from = {position_.file + 1, position_.rank + (2 * color_n)};
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P') {
+            board.addAvailableEnPassant(from, to);
+        }
+        //If there is a pawn on the left it can then en pass
+        from = {position_.file - 1, position_.rank + (2 * color_n)};
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P'){
+            board.addAvailableEnPassant(from, to);
+        }
+    }
 }
 
 bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
@@ -20,7 +42,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
         return true;
     }
-    
+
     //Check the pawn color
     short color_n;
     if(this->color() == WHITE) {
@@ -32,21 +54,9 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     //The pawn is moving two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
     if(two_up && !has_moved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
-        Coordinates from, to;
-        to = {position_.file, position_.rank + (1 * color_n)};
-        //If there is a pawn on the right it can then en pass
-        from = {position_.file + 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P') {
-            board.addAvailableEnPassant(from, to);
-        }
-        //If there is a pawn on the left it can then en pass
-        from = {position_.file - 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P'){
-            board.addAvailableEnPassant(from, to);
-        }
         return true;
     }
-    
+
     //The pawn is moving one step forward (if the tile is free)
     bool one_up = coords.file == position_.file && coords.rank == (position_.rank + (1 * color_n));
     if(one_up && board.isEmpty(coords)) {
