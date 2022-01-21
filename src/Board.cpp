@@ -181,8 +181,7 @@ void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 
 bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool debug /*= false*/)
 {
-    if (!debug)
-	    return false;
+    return false;
 
     assert(!isEmpty(from));
 
