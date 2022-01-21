@@ -7,18 +7,14 @@ bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
 
     //Can't land on a piece of the same color
     if(!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
-        std::cout << coords << std::endl;
-        std::cout << board.at(coords).ascii() << std::endl;
         return false;
     }
     //Can' stay stationary
     if(position_ == coords) {
-        std::cout << "2\n";
         return false;
     }
     //Can't make a move that would cause a self check
     if(board.moveCauseSelfCheck(position_, coords)) {
-        std::cout << "3\n";
         return false;
     }
     
@@ -42,7 +38,6 @@ bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
 
 bool chess::Bishop::canMove(Board& board) const {
     Coordinates coords;
-
     const std::vector<Coordinates> directions {
         {1,1}, {-1,1}, {-1,-1}, {1,-1}
     };
