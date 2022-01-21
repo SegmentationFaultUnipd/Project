@@ -4,12 +4,12 @@ chess::Board::Board()
 {
     char ascii_setup[8][8] = {
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
-        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
-        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
-        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
+        ' ', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        ' ', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        ' ', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
         'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R',
-        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
-        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        ' ', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        ' ', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
     };
 
@@ -26,7 +26,7 @@ chess::Board::Board()
 
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
     std::unique_ptr<Piece> pieceToAdd = makePiece_(asciiPiece, coords, color);
-    
+
     addPieceToMatrix_(pieceToAdd, coords);
     if (!isEmpty(coords))
         addPieceCoords_(coords);
@@ -77,12 +77,12 @@ bool chess::Board::move(Coordinates from, Coordinates to)
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
         if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to); /*
+            doEnPassantMove(from, to);
         else if (isCastlingMove(from, to))
-            doCastlingMove(from, to); */
+            doCastlingMove(from, to);
         else
             updatePosition_(from, to);
-		
+
         clearEnPassants_(at(to).color());
         return true;
     }
@@ -134,7 +134,7 @@ bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
     for (auto available_en_passant : availableEnPassantsFor(color))
         if (candidate_move == available_en_passant)
             return true;
-    
+
     return false;
 }
 
@@ -192,7 +192,7 @@ bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool deb
 
     assert(!isEmpty(from));
     std::cout << "CauseSelfCheck: \"from\" is indeed empty, ";
-    
+
     bool kingInCheck;
     std::unique_ptr<Piece> moving_piece, landing_piece;
 
@@ -244,7 +244,7 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
     const std::unique_ptr<Piece> dummy_pieces[] = {
-        std::make_unique<King>(square, piece_color),
+        //std::make_unique<King>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
         std::make_unique<Bishop>(square, piece_color),
         std::make_unique<Knight>(square, piece_color),
@@ -254,9 +254,10 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 
     for (const auto& dummy_piece : dummy_pieces) {
         const std::vector<Piece*> &possible_attackers = dummy_piece->takeablePieces(*this);
-        for (Piece *possible_attacker : possible_attackers)
+        for (Piece *possible_attacker : possible_attackers) {
             if (dummy_piece->ascii() == possible_attacker->ascii())
                 return true;
+        }
     }
 
     //Exception: en passants
