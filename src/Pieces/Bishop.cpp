@@ -1,7 +1,6 @@
 #include "Bishop.h"
 
 bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
-    std::cout << "checking";
     //Bishop can only move diagonally
     //To move diagonally it should move the same amount vertically and horizontally
 
