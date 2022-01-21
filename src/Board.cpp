@@ -244,7 +244,7 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
     const std::unique_ptr<Piece> dummy_pieces[] = {
-        std::make_unique<King>(square, piece_color),
+        //std::make_unique<King>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
         std::make_unique<Bishop>(square, piece_color),
         std::make_unique<Knight>(square, piece_color),
@@ -253,11 +253,8 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
     };
 
     for (const auto& dummy_piece : dummy_pieces) {
-        std::cout << "Checking " << dummy_piece->ascii() << "\n";
         const std::vector<Piece*> &possible_attackers = dummy_piece->takeablePieces(*this);
-        std::cout << "Took takeable pieces\n";
         for (Piece *possible_attacker : possible_attackers) {
-            //std::cerr << "possible attacker"<<possible_attacker->coordinates().toNotation()<<std::endl;
             if (dummy_piece->ascii() == possible_attacker->ascii())
                 return true;
         }
