@@ -3,9 +3,8 @@
 bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
     //Queen can move as much as she wants both horizontally, vertically or diagonally
     //It mixes the movement of a Bishop with the move of a Rook
-
     //Can't land on a piece of the same color
-    if(!board.isEmpty({coords.file, position_.rank}) && board.at({coords.file, position_.rank}).color() == this->color()) {
+    if(!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
     //Can' stay stationary
@@ -16,15 +15,13 @@ bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
     if(board.moveCauseSelfCheck(position_, coords)) {
         return false;
     }
-
-    //MOVING LIKE A BISHOP
     short delta_file = coords.file - position_.file;
     short delta_rank = coords.rank - position_.rank;
     //Verify if the route is free
     if(abs(delta_file) == abs(delta_rank)) {
         Coordinates curr_pos = position_;
         Coordinates dir {delta_file/abs(delta_file), delta_rank/abs(delta_rank)};
-        for(short i = 0; i < abs(delta_file); i++) {
+        for(short i = 0; i < abs(delta_file) - 1; i++) {
             curr_pos += dir;
             if(!board.isEmpty(curr_pos)) {
                 return false;
@@ -32,50 +29,27 @@ bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
         }
         return true;
     }
-
-    //MOVING LIKE A ROOK
-    //VERTICAL MOVEMENT
-    if(coords.rank == position_.rank) {
-        //Is moving down vertically
-        if(coords.file > position_.file) {
-            //Checking if the route is free
-            for(int i = position_.file + 1; i < coords.file; i++){
-                if(!board.isEmpty({i, position_.rank})) {
-                    return false;
-                }
+    if(delta_file == 0) {
+        Coordinates curr_pos = position_;
+        Coordinates dir {0, delta_rank/abs(delta_rank)};
+        for(short i = 0; i < abs(delta_rank) - 1; i++) {
+            curr_pos += dir;
+            if(!board.isEmpty(curr_pos)) {
+                return false;
             }
-            return true;
         }
-        //Is moving up vertically
-        if(coords.file < position_.file) {
-            for(int i = position_.file - 1; i > coords.file; i--) {
-                if(!board.isEmpty({i, position_.rank})) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return true;
     }
-    //HORIZONTAL MOVEMENT
-    if(coords.file == position_.file) {
-        //Is moving right horizontally
-        if(coords.rank > position_.rank) {
-            for(int i = position_.rank + 1; i < coords.rank; i++) {
-                if(!board.isEmpty({position_.file, i})) {
-                    return false;
-                }
+    else if(delta_rank == 0){
+        Coordinates curr_pos = position_;
+        Coordinates dir {delta_file/abs(delta_file), 0};
+        for(short i = 0; i < abs(delta_file) - 1; i++) {
+            curr_pos += dir;
+            if(!board.isEmpty(curr_pos)) {
+                return false;
             }
-            return true;
         }
-        //Is moving left horizontally
-        if(coords.rank < position_.rank) {
-            for(int i = position_.rank - 1; i > coords.rank; i--) {
-                if(!board.isEmpty({position_.file, i})) {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return true;
     }
     return false;
 }

@@ -25,7 +25,7 @@ bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
     if(abs(delta_file) == abs(delta_rank)) {
         Coordinates curr_pos = position_;
         Coordinates dir {delta_file/abs(delta_file), delta_rank/abs(delta_rank)};
-        for(short i = 0; i < abs(delta_file); i++) {
+        for(short i = 0; i < abs(delta_file) - 1; i++) {
             curr_pos += dir;
             if(!board.isEmpty(curr_pos)) {
                 return false;

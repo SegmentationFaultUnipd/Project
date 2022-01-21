@@ -24,7 +24,7 @@ bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
     if(delta_file == 0) {
         Coordinates curr_pos = position_;
         Coordinates dir {0, delta_rank/abs(delta_rank)};
-        for(short i = 0; i < abs(delta_file); i++) {
+        for(short i = 0; i < abs(delta_rank) - 1; i++) {
             curr_pos += dir;
             if(!board.isEmpty(curr_pos)) {
                 return false;
@@ -32,10 +32,10 @@ bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
         }
         return true;
     }
-    else {
+    else if (delta_rank == 0){
         Coordinates curr_pos = position_;
         Coordinates dir {delta_file/abs(delta_file), 0};
-        for(short i = 0; i < abs(delta_file); i++) {
+        for(short i = 0; i < abs(delta_file) - 1; i++) {
             curr_pos += dir;
             if(!board.isEmpty(curr_pos)) {
                 return false;
