@@ -11,8 +11,8 @@ namespace chess {
     class ComputerPlayer : public Player {
         public:
             ComputerPlayer(unsigned int seed, Color color);
-            void nextTurn(Board &board, Coordinates &from, Coordinates &to) const override;
-			char choosePromotion() const override;
+            void nextTurn(Board &board, Coordinates &from, Coordinates &to) override;
+			char choosePromotion() override;
         private:
 
     };
