@@ -12,10 +12,12 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(position_ == coords) {
         return false;
     }
+
     //Can't land on a piece of the same color
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
+
     //Can't make a move that would cause a self check
     if(board.moveCauseSelfCheck(position_, coords)) {
         return false;
@@ -34,6 +36,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     else {
         color_n = -1;
     }
+
 
     //The pawn moves two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
@@ -65,6 +68,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if((diag_right || diag_left) && !board.isEmpty(coords) && board.isOppositeColor(coords, this->color())) {
         return true;
     }
+
 
     return false;
 }
@@ -110,6 +114,7 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     //Double move up
     if(position_.rank - 2 >= 0 && canMoveAt({position_.file, position_.rank + (2 * color_n)}, board)) {
         moves.push_back(Coordinates{position_.file, position_.rank + (2 * color_n)});
+        std::cout << Coordinates{position_.file, position_.rank + (2 * color_n)} << ", ";
     }
 
     if(position_.rank - 1 >= 0) {
