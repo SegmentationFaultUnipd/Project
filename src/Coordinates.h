@@ -6,11 +6,13 @@
 #include <ostream>
 #include <sstream>
 
-#define CHESSBOARD_LOWER_BOUND 0
-#define CHESSBOARD_UPPER_BOUND 7
-
 namespace chess
 {
+
+    constexpr int BOARD_LOWER_RANK{0};
+    constexpr int BOARD_UPPER_RANK{7};
+    constexpr int BOARD_LEFT_FILE{0};
+    constexpr int BOARD_RIGHT_FILE{7};
 
     /**
      * @brief Contains the coordinates of a square on the chess board
@@ -22,13 +24,13 @@ namespace chess
      */
     struct Coordinates
     {
-        short file;
-        short rank;
+        int file;
+        int rank;
 
         Coordinates(int _file, int _rank)
         {
-            file = (short)_file;
-            rank = (short)_rank;
+            file = _file;
+            rank = _rank;
         }
 
         Coordinates(const std::string notation)
@@ -48,8 +50,8 @@ namespace chess
 
         bool inBounderies() const
         {
-            return file >= CHESSBOARD_LOWER_BOUND && file <= CHESSBOARD_UPPER_BOUND
-                && rank >= CHESSBOARD_LOWER_BOUND && rank <= CHESSBOARD_UPPER_BOUND;
+            return file >= BOARD_LEFT_FILE && file <= BOARD_RIGHT_FILE
+                && rank >= BOARD_LOWER_RANK && rank <= BOARD_UPPER_RANK;
         }
 
         bool operator==(const Coordinates &c2) const
@@ -86,6 +88,16 @@ namespace chess
     inline Coordinates operator-(const Coordinates &coords1, const Coordinates &coords2)
     {
         return Coordinates{coords1.file - coords2.file, coords1.rank - coords2.rank};
+    }
+
+    inline Coordinates operator*(const Coordinates &coords, const int scalar)
+    {
+        return Coordinates(coords.file * scalar, coords.rank * scalar);
+    }
+
+    inline Coordinates operator*(const int scalar, const Coordinates &coords)
+    {
+        return Coordinates(coords.file * scalar, coords.rank * scalar);
     }
 
 }
