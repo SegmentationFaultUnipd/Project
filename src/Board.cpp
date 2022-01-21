@@ -105,8 +105,7 @@ void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
     }
 
     updatePosition_(from, to);
-    removePiece_(rook_old_coords);
-    addPiece_('R', rook_new_coords, castling_color);
+    updatePosition_(rook_old_coords, rook_new_coords);
 }
 
 void chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
