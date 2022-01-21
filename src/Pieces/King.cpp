@@ -26,7 +26,8 @@ bool chess::King::canMove(chess::Board& board) const {
 			if (d_file == 0 && d_rank == 0)
 				continue;
 
-			if(d_file + file() >= 0 && d_file + file() < 8 && d_rank + rank() >= 0 && d_rank + rank() < 8) {//file, rank in valid range
+			Coordinates final_coords = {d_file + file(), d_rank + rank()};
+			if(final_coords.inBounderies()) {//file, rank in valid range
 				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
 					return true;
 				}
@@ -52,8 +53,8 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
        	for (short d_rank = -1; d_rank <= 1; d_rank++) {
 			if (d_file == 0 && d_rank == 0)
 				continue;
-
-			if(d_file + file() >= 0 && d_file + file() < 8 && d_rank + rank() >= 0 && d_rank + rank() < 8) {//file, rank in valid range
+			Coordinates final_coords = {d_file + file(), d_rank + rank()};
+			if(final_coords.inBounderies()) {//file, rank in valid range
 				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
 					moves.push_back({d_file + file(),  d_rank + rank()});
 				}

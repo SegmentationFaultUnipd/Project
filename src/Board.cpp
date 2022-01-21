@@ -3,14 +3,14 @@
 chess::Board::Board()
 {
     char ascii_setup[8][8] = {
-        ' ', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
-        ' ', ' ', ' ', ' ', ' ', ' ', 'P', 'C',
-        ' ', ' ', ' ', ' ', ' ', ' ', 'P', 'A',
-        ' ', ' ', ' ', ' ', ' ', ' ', 'P', 'D',
-        'r', ' ', ' ', ' ', ' ', ' ', 'P', 'R',
-        ' ', ' ', ' ', ' ', ' ', ' ', 'P', 'A',
-        ' ', ' ', ' ', ' ', ' ', ' ', 'P', 'C',
-        ' ', ' ', ' ', ' ', ' ', ' ', 'P', 'T',
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        'd', 'p ', ' ', ' ', ' ', ' ', 'P', 'D',
+        'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R',
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
     };
 
     for (short r = 0; r < 8; r++) {
@@ -79,9 +79,9 @@ bool chess::Board::move(Coordinates from, Coordinates to)
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
         if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to);
+            doEnPassantMove(from, to); /*
         else if (isCastlingMove(from, to))
-            doCastlingMove(from, to);
+            doCastlingMove(from, to); */
         else
             updatePosition_(from, to);
 		
@@ -93,12 +93,22 @@ bool chess::Board::move(Coordinates from, Coordinates to)
 
 void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
 {
-    // FILIPPO NIERO
+    Color castling_color = at(from).color();
 
-    // Ricorda che l'arrocco è una mossa del re e le coordinate 'to' non sono quelle della torre
-    // ma sono le coordinate della casa in cui andrà il Re.
+    bool castle_queenside = to.file < 4;
 
-    // Puoi usare updatePosition
+    Coordinates rook_old_coords, rook_new_coords;
+    if (castle_queenside) {
+        rook_old_coords = {BOARD_LEFT_FILE, to.rank};
+        rook_new_coords = {to.file + 1, to.rank};
+    } else {
+        rook_old_coords = {BOARD_RIGHT_FILE, to.rank};
+        rook_new_coords = {to.file - 1, to.rank};
+    }
+
+    updatePosition_(from, to);
+    removePiece_(rook_old_coords);
+    addPiece_('R', rook_new_coords, castling_color);
 }
 
 void chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
