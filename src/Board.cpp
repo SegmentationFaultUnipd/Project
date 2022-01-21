@@ -26,7 +26,7 @@ chess::Board::Board()
 
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
     std::unique_ptr<Piece> pieceToAdd = makePiece_(asciiPiece, coords, color);
-    
+
     addPieceToMatrix_(pieceToAdd, coords);
     if (!isEmpty(coords))
         addPieceCoords_(coords);
@@ -69,22 +69,20 @@ chess::Piece &chess::Board::at(Coordinates coords)
 // Move the piece
 bool chess::Board::move(Coordinates from, Coordinates to)
 {
-    assert(from.file >= 0 && from.file < 8);
-    assert(from.rank >= 0 && from.rank < 8);
-    assert(to.file >= 0 && to.file < 8);
-    assert(to.rank >= 0 && to.rank < 8);
+    assert(from.inBounderies());
+    assert(to.inBounderies());
 
     if (!isEmpty(from) && at(from).canMoveAt(to, *this))
     {
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
         if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to); 
+            doEnPassantMove(from, to);
         else if (isCastlingMove(from, to))
-            doCastlingMove(from, to); 
+            doCastlingMove(from, to);
         else
             updatePosition_(from, to);
-		
+
         clearEnPassants_(at(to).color());
         return true;
     }
@@ -107,8 +105,7 @@ void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
     }
 
     updatePosition_(from, to);
-    removePiece_(rook_old_coords);
-    addPiece_('R', rook_new_coords, castling_color);
+    updatePosition_(rook_old_coords, rook_new_coords);
 }
 
 void chess::Board::doEnPassantMove(Coordinates from, Coordinates to)
@@ -137,7 +134,7 @@ bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
     for (auto available_en_passant : availableEnPassantsFor(color))
         if (candidate_move == available_en_passant)
             return true;
-    
+
     return false;
 }
 

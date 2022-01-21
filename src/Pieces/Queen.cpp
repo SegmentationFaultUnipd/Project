@@ -118,144 +118,21 @@ bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
 
 bool chess::Queen::canMove(Board& board) const {
     Coordinates coords;
+    const std::vector<Coordinates> directions {
+        {1,1}, {-1,1}, {-1,-1}, {1,-1},
+        {0,1}, {-1,0}, {0,-1}, {1,0}
+    };
 
-    //MOVING LIKE A BISHOP 
-    //UPPER VERTICALS
-    //left
-    coords.file = position_.file - 1;
-    coords.rank = position_.rank - 1;
-    while(coords.file >= 0 && coords.rank >= 0) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+    for(Coordinates dir : directions) {
+        coords.file = position_.file + dir.file;
+        coords.rank = position_.rank + dir.rank;
+        while(coords.inBounderies()) {
+            if(canMoveAt(coords, board)) {
                 return true;
             }
-            break;
+            coords.file += dir.file;
+            coords.rank += dir.rank;
         }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.file--;
-        coords.rank--;
-    }
-    //right
-    coords.file = position_.file + 1;
-    coords.rank = position_.rank - 1;
-    while(coords.file < 8 && coords.rank >= 0) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.file++;
-        coords.rank--;
-    }
-    //LOWER VERTICALS
-    //left
-    coords.file = position_.file - 1;
-    coords.rank = position_.rank + 1;
-    while(coords.file >= 0 && coords.rank < 8) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.file--;
-        coords.rank++;
-    }
-    //right
-    coords.file = position_.file + 1;
-    coords.rank = position_.rank + 1;
-    while(coords.file < 8 && coords.rank < 8) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.file++;
-        coords.rank++;
-    }
-
-    //HORIZONTAL MOVEMENT
-    //Right
-    coords.file = position_.file + 1;
-    while(coords.file < 8) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.file++;
-    }
-    //Left
-    coords.file = position_.file - 1;
-    while(coords.file >= 0) {
-        if(!board.isEmpty(coords)) {
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.file--;
-    }
-    
-    //MOVING LIKE A ROOK
-    //VERTICAL MOVEMENT
-    //Down
-    coords.rank = position_.rank + 1;
-    while(coords.rank < 8) {
-        if(!board.isEmpty(coords)) {
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.rank++;
-    }
-    //Up
-    coords.rank = position_.rank - 1;
-    while(coords.rank >= 0) {
-        if(!board.isEmpty(coords)) {
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                return true;
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            return true;
-        }
-        coords.rank--;
     }
 
     return false;
@@ -265,145 +142,30 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
 
     Coordinates coords;
-    
-    //BISHOP MOVES
-    //UPPER VERTICALS
-    //left
-    coords.file = position_.file - 1;
-    coords.rank = position_.rank - 1;
-    while(coords.file >= 0 && coords.rank >= 0) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(chess::Coordinates{coords});
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file--;
-        coords.rank--;
-    }
-    //right
-    coords.file = position_.file + 1;
-    coords.rank = position_.rank - 1;
-    while(coords.file < 8 && coords.rank >= 0) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file++;
-        coords.rank--;
-    }
-    //LOWER VERTICALS
-    //left
-    coords.file = position_.file - 1;
-    coords.rank = position_.rank + 1;
-    while(coords.file >= 0 && coords.rank < 8) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file--;
-        coords.rank++;
-    }
-    //right
-    coords.file = position_.file + 1;
-    coords.rank = position_.rank + 1;
-    while(coords.file < 8 && coords.rank < 8) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file++;
-        coords.rank++;
-    }
+    const std::vector<Coordinates> directions {
+        {1,1}, {-1,1}, {-1,-1}, {1,-1},
+        {0,1}, {-1,0}, {0,-1}, {1,0}
+    };
 
-    //HORIZONTAL MOVEMENT
-    //Right
-    coords.file = position_.file + 1;
-    while(coords.file < 8) {
-        //Can't move past an obstacle
-        if(!board.isEmpty(coords)) {
-            //Can move to eat a piece of different color
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+    for(Coordinates dir : directions) {
+        coords.file = position_.file + dir.file;
+        coords.rank = position_.rank + dir.rank;
+        while(coords.inBounderies()) {
+            //Can't move past an obstacle
+            if(!board.isEmpty(coords)) {
+                //Can move to eat a piece of different color
+                if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                    moves.push_back(coords);
+                }
+                break;
+            }
+            if(!board.moveCauseSelfCheck(position_, coords)) {
                 moves.push_back(coords);
             }
-            break;
+            coords.file += dir.file;
+            coords.rank += dir.rank;
         }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file++;
-    }
-    //Left
-    coords.file = position_.file - 1;
-    while(coords.file >= 0) {
-        if(!board.isEmpty(coords)) {
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file--;
     }
     
-    //ROOK MOVES
-    //VERTICAL MOVEMENT
-    //Down
-    coords.rank = position_.rank + 1;
-    while(coords.rank < 8) {
-        if(!board.isEmpty(coords)) {
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file++;
-    }
-    //Up
-    coords.rank = position_.rank - 1;
-    while(coords.rank >= 0) {
-        if(!board.isEmpty(coords)) {
-            if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
-            break;
-        }
-        if(!board.moveCauseSelfCheck(position_, coords)) {
-            moves.push_back(coords);
-        }
-        coords.file--;
-    }
-
     return moves;
 }
