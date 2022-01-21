@@ -21,7 +21,7 @@ namespace chess {
                 has_moved = obj.has_moved;
                 return *this;
             }
-			void move (Coordinates new_position) override;
+			void move(Coordinates new_position, Board& board) override;
 			bool canCastle(Coordinates to_coords, Board& board) const;
           	bool canMoveAt(Coordinates coords, Board& board) const override;
             bool canMove(Board& board) const override;
