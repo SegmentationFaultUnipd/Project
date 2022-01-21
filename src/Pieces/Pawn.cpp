@@ -1,6 +1,6 @@
 #include "Pawn.h"
 
-void chess::Pawn::move(Coordinates new_position) {
+void chess::Pawn::move(Coordinates new_position, Board &board) {
     position_ = new_position;
     has_moved = true;
 }

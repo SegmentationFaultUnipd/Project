@@ -73,6 +73,14 @@ namespace chess {
             std::list<std::pair<Coordinates, Coordinates>>& availableEnPassantsFor(Color color);
 
             std::unique_ptr<Piece> board_[8][8];
+
+            struct State {
+                std::unique_ptr<Piece> board;
+                std::list<Coordinates> white_coords;
+                std::list<Coordinates> black_coords;
+            };
+            State getCurrentState();
+            void restore(State state);
     };
 
     std::ostream& operator<<(std::ostream& os, const Board& board);
