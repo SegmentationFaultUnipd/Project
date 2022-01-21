@@ -11,10 +11,7 @@ bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {
     if(position_.file == coords.file && position_.rank == coords.rank) {
         return false;
     }
-    //Can't make a move that would cause a self check
-    if(board.moveCauseSelfCheck(position_, coords)) {
-        return false;
-    }
+
     short delta_file = coords.file - position_.file;
     short delta_rank = coords.rank - position_.rank;
     //Verify if the route is free
@@ -92,14 +89,12 @@ std::vector<chess::Coordinates> chess::Queen::legalMoves(Board& board) const {
             //Can't move past an obstacle
             if(!board.isEmpty(coords)) {
                 //Can move to eat a piece of different color
-                if(board.isOppositeColor(coords, this->color()) && !board.moveCauseSelfCheck(position_, coords)) {
+                if(board.isOppositeColor(coords, this->color())) {
                     moves.push_back(coords);
                 }
                 break;
             }
-            if(!board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
+            moves.push_back(coords);
             coords.file += dir.file;
             coords.rank += dir.rank;
         }
