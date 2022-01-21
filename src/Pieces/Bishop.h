@@ -16,6 +16,7 @@ namespace chess {
             Bishop& operator=(Bishop& obj) { 
                 position_ = obj.position_;
                 color_ = obj.color_;
+                return *this;
             }
             char ascii() const override { return 'A'; };
     };

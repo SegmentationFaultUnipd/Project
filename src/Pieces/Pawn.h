@@ -20,6 +20,7 @@ namespace chess {
                 position_ = obj.position_;
                 color_ = obj.color_;
                 has_moved = obj.has_moved;
+                return *this;
             }
             char ascii() const override { return 'P'; };
 
