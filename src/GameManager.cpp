@@ -2,11 +2,11 @@
 
 
 void chess::GameManager::createLogFile() {
-	time_t now = time(0);
+	time_t now = time(NULL);
 	tm *now_localtime = localtime(&now);
-	std::string year =  "" + (1900 + now_localtime->tm_year);
+	std::string year =  std::to_string(1900 + now_localtime->tm_year);
 	//Formato: chesslog_DDMMYYYY_HHmm.txt
-	file_name = "chesslog_" + padTime(now_localtime->tm_mday) + padTime(now_localtime->tm_mon) + year + "_" + padTime(now_localtime->tm_hour) + padTime(now_localtime->tm_min);
+	file_name = "chesslog_" + padTime(now_localtime->tm_mday)  + padTime(now_localtime->tm_mon + 1) + year + "_" + padTime(now_localtime->tm_hour) +""+ padTime(now_localtime->tm_min) + ".txt";
 	//Save stream, overwrite file if it already exists
 	log_stream.open(file_name, std::ofstream::trunc);
 	log_stream<<"PLAYER1:"<<player1_.getColor()<<std::endl;
@@ -15,9 +15,9 @@ void chess::GameManager::createLogFile() {
 
 std::string chess::GameManager::padTime(int x) {
 	if(x < 10) {
-		return "0" + x;
+		return "0" + std::to_string(x);
 	}
-	return "" + x;
+	return std::to_string(x);
 }
 
 chess::Player& chess::GameManager::currentPlayer() {
@@ -49,13 +49,13 @@ void chess::GameManager::play() {
 		} while (!isValid);
 
 		//TODO log the move
-		logMove(from, to);
+		logMove(current_move, from, to);
 
 		// Promozione
 		if(board.at(to).ascii()=='P' && (to.rank == 0 || to.rank == 7) ) {
 			char chosen = currentPlayer().choosePromotion();
 			board.promote(to, chosen);
-			logPromotion(chosen, to);
+			logPromotion(current_move, chosen, to);
 		}
 
 		nextPlayer();
@@ -109,19 +109,17 @@ void chess::GameManager::win(Player &winner) {
 
 void chess::GameManager::draw() {
 	std::cout << "Draw! " <<std::endl;
-		log_stream<<"Draw! "<<std::endl;
+	log_stream<<"Draw! "<<std::endl;
 }
 
 void chess::GameManager::cleanUp() {
 	log_stream.close();
 }
 
-void chess::GameManager::logMove(Coordinates from, Coordinates to) {
-	//TODO
-	//log_stream<<from.toString()<<" "<<toString()<<std::endl;
+void chess::GameManager::logMove(int move_number, Coordinates from, Coordinates to) {
+	log_stream<< move_number << " " << from.toNotation() << " " << to.toNotation() << std::endl;
 }
 
-void chess::GameManager::logPromotion(char piece, Coordinates position) {
-	//TODO
-	//log_stream << "### " <<piece << position.toString();
+void chess::GameManager::logPromotion(int move_number, char piece, Coordinates position) {
+	log_stream << move_number << " " << position.toNotation() << "=" << (char)toupper(piece)<<std::endl;
 }

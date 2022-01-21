@@ -1,0 +1,45 @@
+PLAYER1:0
+PLAYER2:1
+0 d2 d4
+1 d7 d5
+2 c1 f4
+3 g8 f6
+4 e2 e3
+5 e7 e6
+6 b1 d2
+7 f8 b4
+8 d1 e2
+9 e8 g8
+10 e1 c1
+11 b4 d2
+12 d1 d2
+13 f6 e4
+14 e2 a6
+15 b7 a6
+16 c2 c4
+17 d5 c4
+18 f1 c4
+19 e4 d2
+20 g1 f3
+21 a6 a5
+22 f3 d2
+23 a5 a4
+24 b2 b4
+25 a4 b3
+26 d2 b3
+27 d8 d4
+28 e3 d4
+29 e6 e5
+30 d4 d5
+31 e5 f4
+32 d5 d6
+33 f4 f3
+34 d6 d7
+35 f3 g2
+36 d7 d8
+36 d8=D
+37 g2 h1
+37 h1=C
+38 c4 f7
+39 g8 h8
+40 d8 f8

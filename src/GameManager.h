@@ -15,8 +15,8 @@ namespace chess {
 				createLogFile();
 			}
            	void play();
-			void logMove(Coordinates from, Coordinates to);
-			void logPromotion(char piece, Coordinates position);
+			void logMove(int move_number, Coordinates from, Coordinates to);
+			void logPromotion(int move_number, char piece, Coordinates position);
 			
         private:
 			Player &player1_, &player2_;
