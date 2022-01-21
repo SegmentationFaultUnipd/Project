@@ -12,10 +12,12 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(position_ == coords) {
         return false;
     }
+
     //Can't land on a piece of the same color
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
+
     //Can't make a move that would cause a self check
     if(board.moveCauseSelfCheck(position_, coords)) {
         return false;
@@ -35,6 +37,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         color_n = -1;
     }
 
+
     //The pawn moves two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
     if(two_up && !hasMoved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
@@ -42,12 +45,12 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         to = {position_.file, position_.rank + (1 * color_n)};
         //If there is a pawn on the right it can then en pass
         from = {position_.file + 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P') {
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P') {
             board.addAvailableEnPassant(from, to);
         }
         //If there is a pawn on the left it can then en pass
         from = {position_.file - 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P'){
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P'){
             board.addAvailableEnPassant(from, to);
         }
         return true;
@@ -110,6 +113,7 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     //Double move up
     if(position_.rank - 2 >= 0 && canMoveAt({position_.file, position_.rank + (2 * color_n)}, board)) {
         moves.push_back(Coordinates{position_.file, position_.rank + (2 * color_n)});
+        std::cout << Coordinates{position_.file, position_.rank + (2 * color_n)} << ", ";
     }
 
     if(position_.rank - 1 >= 0) {
