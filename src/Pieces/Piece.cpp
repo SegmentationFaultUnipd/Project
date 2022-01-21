@@ -9,14 +9,14 @@
  */
 std::vector<chess::Piece*> chess::Piece::takeablePieces(Board &board) const
 {
-	std::cout << "Taking pieces: ";
+	//For testing: std::cout << "Taking pieces: ";
 
 	std::vector<Coordinates> moves = legalMoves(board);
 	std::vector<Piece*> takeable_pieces;
 
 	for (Coordinates move : moves)
 	{
-		std::cout << move << " ";
+		//For testing: std::cout << move << " ";
 		if (!board.isEmpty(move) && board.at(move).color() != this->color())
 		{
 			takeable_pieces.push_back(&board.at(move));
