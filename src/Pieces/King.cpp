@@ -13,7 +13,7 @@ bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
 
 
 	if (board.isEmpty(coords) || board.at(coords).color() != this->color())
-		return !board.moveCauseSelfCheck(this->coordinates(), coords);
+		return true;
 	
 	return false;//Last case: King is trying to capture a piece of the same color
 };
