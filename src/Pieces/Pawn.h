@@ -16,6 +16,11 @@ namespace chess {
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
             void move(Coordinates new_position) override;
+            Pawn& operator=(Pawn& obj) { 
+                position_ = obj.position_;
+                color_ = obj.color_;
+                has_moved = obj.has_moved;
+            }
             char ascii() const override { return 'P'; };
 
         protected:
