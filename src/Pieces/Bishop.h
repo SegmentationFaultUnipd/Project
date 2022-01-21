@@ -13,7 +13,7 @@ namespace chess {
             bool canMoveAt(Coordinates pos, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
-            Bishop& operator=(Bishop& obj) { 
+            Bishop& operator=(const Bishop& obj) { 
                 position_ = obj.position_;
                 color_ = obj.color_;
                 return *this;
