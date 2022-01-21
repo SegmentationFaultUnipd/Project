@@ -191,30 +191,30 @@ bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool deb
     return false;
 
     assert(!isEmpty(from));
+    std::cout << "CauseSelfCheck: \"from\" is indeed empty, ";
 
-    std::cout << "1" << "\n";
     bool kingInCheck;
     std::unique_ptr<Piece> moving_piece, landing_piece;
 
     // Save old state
-    std::cout << "2" << "\n";
     moving_piece = copyPiece_(at(from));
     if (!isEmpty(to))
         landing_piece = copyPiece_(at(to));
+    std::cout << "state saved, ";
 
     // Movement in matrix
-    std::cout << "3" << "\n";
     board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
     board_[from.file][from.rank] = nullptr;
+    std::cout << "move applied, ";
 
     // Check move validity
-    std::cout << "4" << "\n";
     kingInCheck = isKingInCheck(moving_piece->color());
+    std::cout << "validity checked, " << "\n";
 
     // Reset
-    std::cout << "5" << "\n";
     board_[from.file][from.rank] = std::move(moving_piece);
     board_[to.file][to.rank] = std::move(landing_piece);
+    std::cout << "and reset completed.\n" << "\n";
 
     return kingInCheck;
 }
@@ -262,7 +262,7 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 
     //Exception: en passants
     for (std::pair<Coordinates, Coordinates> en_passant : availableEnPassantsFor(opposite(piece_color))) {
-        Coordinates landing_square = en_passant.second;
+        Coordinates& landing_square = en_passant.second;
         if (landing_square == square)
             return true;
     }

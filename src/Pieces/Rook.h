@@ -8,7 +8,7 @@
 namespace chess {
     class Rook : public Piece {
 		private:
-			bool has_moved;
+			bool has_moved = false;
         public:
             Rook(Coordinates pos, Color color) : Piece{pos, color} {};
 

@@ -38,7 +38,7 @@ bool chess::HumanPlayer::verifyNotation(std::string coords) const {
     short f = coords[0] - 'a';
     short r = coords[1] - '1';
 
-    return f >= 0 && f < 8 && r >= 0 && r < 8;
+    return Coordinates{f,r}.inBounderies();
 }
 
 char chess::HumanPlayer::choosePromotion() const {
