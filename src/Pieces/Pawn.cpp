@@ -45,12 +45,12 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         to = {position_.file, position_.rank + (1 * color_n)};
         //If there is a pawn on the right it can then en pass
         from = {position_.file + 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P') {
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P') {
             board.addAvailableEnPassant(from, to);
         }
         //If there is a pawn on the left it can then en pass
         from = {position_.file - 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && !board.isEmpty(from) && board.at(from).ascii() == 'P'){
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P'){
             board.addAvailableEnPassant(from, to);
         }
         return true;
@@ -68,7 +68,6 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if((diag_right || diag_left) && !board.isEmpty(coords) && board.isOppositeColor(coords, this->color())) {
         return true;
     }
-
 
     return false;
 }
