@@ -10,6 +10,8 @@ namespace chess {
     class King : public Piece {
 		private:
 			bool has_moved;
+            bool checkEmptyAndNotInCheck(chess::Board& board, int range, bool isKingSide) const;
+
         public:
             King(Coordinates pos, Color color) : Piece{pos, color} {has_moved = false;};
 

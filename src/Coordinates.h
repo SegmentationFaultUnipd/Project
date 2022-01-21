@@ -13,6 +13,8 @@ namespace chess
     constexpr int BOARD_UPPER_RANK{7};
     constexpr int BOARD_LEFT_FILE{0};
     constexpr int BOARD_RIGHT_FILE{7};
+    constexpr int BOARD_TARGET_QUEENSIDE_CASTLE_FILE{2};
+    constexpr int BOARD_TARGET_KINGSIDE_CASTLE_FILE{6};
 
     /**
      * @brief Contains the coordinates of a square on the chess board
