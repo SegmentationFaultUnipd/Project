@@ -79,9 +79,9 @@ bool chess::Board::move(Coordinates from, Coordinates to)
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
         if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to); /*
+            doEnPassantMove(from, to); 
         else if (isCastlingMove(from, to))
-            doCastlingMove(from, to); */
+            doCastlingMove(from, to); 
         else
             updatePosition_(from, to);
 		

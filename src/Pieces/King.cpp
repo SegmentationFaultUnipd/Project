@@ -80,10 +80,12 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 	if(has_moved) {
 		return false;
 	}
+
 	//Check that the target position is valid. 
-	if(to_coords.rank != rank() || (to_coords.file == 2 || to_coords.file == 6)) {
+	if(to_coords.rank != rank() || (to_coords.file != 2 && to_coords.file != 6)) {
 		return false;
 	}
+
 	bool castlingKingSide = to_coords.file == 6;
 	//Getting the rook
 	Coordinates rook_coords = {(castlingKingSide)?7:0, rank()};
@@ -100,9 +102,16 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 	if(rook.hasMoved()) {
 		return false;
 	}
+
+	if(castlingKingSide) {
+
+	}else {
+
+	}
 	int delta = (castlingKingSide)?1:-1;
 	
 	//Check that the squares in between are empty
+	//TODO ARROCCO LUNGO
 	if(!board.isEmpty({file() + delta, rank()}) || !board.isEmpty({file() + 2*delta, rank()})) {
 		return false;
 	}
@@ -113,11 +122,38 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 		}
 	}
 	//Last position of the king must not be in check
-	return !board.moveCauseSelfCheck(this->coordinates(), to_coords);
+	return true;
 }
 
 
 void chess::King::move(Coordinates new_position) {
 	position_ = new_position;
 	has_moved = true;
+}
+
+/**
+ * @brief 	Metodo che ritorna i pezzi che sono catturabili dal re
+ * @note	Abbiamo riscritto takeablePieces per il King perché non dobbiamo considerare i due arrocchi perché causerebbe un ciclo infinito di controlli e in ogni caso 
+ * 			il re non può prendere nessun pezzo facendo l'arrocco
+ * @param 	board la scacchiera
+ * @return 	std::vector<chess::Coordinates> le coordinate dei pezzi catturabili
+ */
+std::vector<chess::Piece*> chess::King::takeablePieces(Board &board) const
+{
+	
+	std::vector<Piece*> takeable_pieces;
+
+	 for (short d_file = -1; d_file <= 1; d_file++) {
+       	for (short d_rank = -1; d_rank <= 1; d_rank++) {
+			if (d_file == 0 && d_rank == 0)
+				continue;
+			Coordinates final_coords = {d_file + file(), d_rank + rank()};
+			if(final_coords.inBounderies()) {//file, rank in valid range
+				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
+					takeable_pieces.push_back(&board.at(final_coords));
+				}
+			} 
+    	}
+    }
+	return takeable_pieces;
 }
