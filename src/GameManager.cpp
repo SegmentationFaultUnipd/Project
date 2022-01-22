@@ -45,10 +45,9 @@ void chess::GameManager::play() {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color_ && board.move(from, to);
 			if (!isValid)
-				std::cout << "Mossa non consentita\n";
+				std::cout << "Mossa non consentita" << std::endl;
 		} while (!isValid);
 
-		//TODO log the move
 		logMove(current_move_, from, to);
 
 		// Promozione
@@ -94,7 +93,7 @@ void chess::GameManager::play() {
 	log_stream_<<"---"<<std::endl;
 
 	if(current_move_ >= max_moves_) {
-		std::cout << "Number of moves reached. " << std::endl;
+		std::cout << "Numero di mosse previsto raggiunto. " << std::endl;
 		draw();
 	}
 	cleanUp();
@@ -102,13 +101,13 @@ void chess::GameManager::play() {
 
 void chess::GameManager::win(Player &winner) {
 	std::string win_message_part = (winner.getColor() == player1_.getColor())? "PLAYER 1": "PLAYER 2";
-	std::cout << "The winner is "<<win_message_part<<"!!!"<<std::endl;
-	log_stream_ <<"The winner is "<<win_message_part<<"!!!"<<std::endl;
+	std::cout << win_message_part<<" vince!!!" << std::endl;
+	log_stream_ << win_message_part<<" vince!!!" << std::endl;
 }
 
 void chess::GameManager::draw() {
-	std::cout << "Draw! " <<std::endl;
-	log_stream_<<"Draw! "<<std::endl;
+	std::cout << "Patta! " <<std::endl;
+	log_stream_<<"Patta! "<<std::endl;
 }
 
 void chess::GameManager::cleanUp() {

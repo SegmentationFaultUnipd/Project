@@ -10,6 +10,13 @@ char chess::ReplayPlayer::choosePromotion() {
     return promotions_.at(curr_index_promotions_++);
 }
 
+void chess::ReplayPlayer::addMove(Coordinates from, Coordinates to) {
+	moves_.push_back({from, to});
+}
+void chess::ReplayPlayer::addPromotion(Coordinates position, char chosen_piece) {
+	promotions_.push_back(chosen_piece);
+}
+
 int chess::ReplayPlayer::availableMoves() {
     return moves_.size() - curr_index_moves_;
 }

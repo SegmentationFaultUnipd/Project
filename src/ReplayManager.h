@@ -4,36 +4,32 @@
 #include "Players/ReplayPlayer.h"
 #include "Board.h"
 #include "Color.h"
-#include <ctime>
 #include <fstream>
 #include <iostream>
 namespace chess {
 
     class ReplayManager {
         public:
-            ReplayManager(std::ifstream& input_file, std::ostream &output, bool need_to_pause, ReplayPlayer &player1, ReplayPlayer &player2) : output_(output), need_to_pause_(need_to_pause_), player1_(player1), player2_(player2) {	
-				output_ << "Player1: " << ColorNames[player1_.getColor()] << std::endl;
-				output_ << "Player2: " << ColorNames[player2_.getColor()] << std::endl;
-				while(input_file.good()) {
-						
-				}
-			}
-           	void play();
+            ReplayManager(std::string input_file, std::ifstream& input, std::ostream &output, bool need_to_pause, ReplayPlayer &player1, ReplayPlayer &player2);
+           	void play(std::ostream &output);
 		
         private:
 			ReplayPlayer &player1_, &player2_;
-			Board board_;
+			Board board;
 			Color current_color_;
-			std::ostream &output_;
 			bool need_to_pause_;
-
-			Player& currentPlayer();
+			int last_move_;
+			std::string final_outcome;
+			ReplayPlayer& currentPlayer();
 			void nextPlayer();
-			void cleanUp();
+			ReplayPlayer& getWhitePlayer();
+			ReplayPlayer& getBlackPlayer();
 
-			static Player& selectStartingPlayer(Player& player1, Player& player2) {
-				return (player1.getColor()== WHITE)?player1: player2;
-			}
+			ReplayPlayer& getPlayerFromMoveNumber(int move_number);
+
+			void addMove(int move_number, std::string first_coord_string, std::string second_coord_string);
+
+			void addPromotion(int move_number, std::string promotion_string);
 		
     };
 

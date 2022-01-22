@@ -10,7 +10,7 @@
 namespace chess {
     class ReplayPlayer : public Player {
         public:
-            ReplayPlayer(Color color) : Player{color} {};
+            ReplayPlayer(Color color) : Player{color}, curr_index_moves_(0), curr_index_promotions_(0) {};
             void nextTurn(Board& board, Coordinates& from, Coordinates& to) override;
             char choosePromotion() override;
             void addMove(Coordinates from, Coordinates to);

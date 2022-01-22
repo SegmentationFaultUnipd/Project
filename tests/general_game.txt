@@ -43,3 +43,5 @@ PLAYER2:1
 38 c4 f7
 39 g8 h8
 40 d8 f8
+---
+Draw!
