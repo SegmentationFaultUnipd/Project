@@ -9,8 +9,8 @@ void chess::GameManager::createLogFile() {
 	file_name_ = "chesslog_" + padTime(now_localtime->tm_mday)  + padTime(now_localtime->tm_mon + 1) + year + "_" + padTime(now_localtime->tm_hour) +""+ padTime(now_localtime->tm_min) + ".txt";
 	//Save stream, overwrite file if it already exists
 	log_stream_.open(file_name_, std::ofstream::trunc);
-	log_stream_<<"PLAYER1:"<<player1_.getColor()<<std::endl;
-	log_stream_<<"PLAYER2:"<<player2_.getColor()<<std::endl;
+	log_stream_<<"Player1:"<<player1_.getColor()<<std::endl;
+	log_stream_<<"Player2:"<<player2_.getColor()<<std::endl;
 }
 
 std::string chess::GameManager::padTime(int x) {
@@ -32,6 +32,8 @@ void chess::GameManager::nextPlayer() {
 }
 
 void chess::GameManager::play() {
+	std::cout << "Player1 colore "<<  ColorNames[player1_.getColor()] << std::endl;
+	std::cout << "Player2 colore "<<  ColorNames[player2_.getColor()] << std::endl;
 	current_move_ = 0;//Contatore delle mosse: serve per le partite tra due PC, perché devono finire dopo max_moves mosse
 	current_color_ = WHITE; //Seleziona il giocatore iniziale
 	bool infinite_game = (max_moves_ == -1);
@@ -40,7 +42,7 @@ void chess::GameManager::play() {
 		Coordinates from, to;
 		bool isValid = false;
 
-		std::cout << "Tocca al " << (current_color_ == WHITE ? "bianco\n" : "nero\n");
+		std::cout << "Tocca al " << ColorNames[WHITE] << std::endl;
 		do {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color_ && board.move(from, to);
@@ -48,6 +50,7 @@ void chess::GameManager::play() {
 				std::cout << "Mossa non consentita" << std::endl;
 		} while (!isValid);
 
+		std::cout << "Mossa eseguita: "<< from.toNotation() << " " << to.toNotation() << std::endl;
 		logMove(current_move_, from, to);
 
 		// Promozione
@@ -74,13 +77,13 @@ void chess::GameManager::play() {
 			if(board.isKingInCheck(current_color_)) {
 				//Scacco matto
 				log_stream_<<"---"<<std::endl;
-				log_stream_<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" has no valid moves and his king is in check";
+				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re è sotto scacco";
 				nextPlayer();
 				win(currentPlayer());
 			}else {
 				//Parità
 				log_stream_<<"---"<<std::endl;
-				log_stream_<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" has no valid moves but his king is not in check";
+				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re non è sotto scacco";
 				draw();
 			}
 		}

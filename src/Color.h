@@ -6,7 +6,7 @@ namespace chess {
         WHITE,
         BLACK
     };
-	static const char* ColorNames[] = { "WHITE", "BLACK" };
+	static const char* ColorNames[] = { "BIANCO", "NERO" };
 
     inline Color opposite(Color color) {
         return color == WHITE ? BLACK : WHITE;

@@ -108,7 +108,7 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     Coordinates double_up {position_.file, position_.rank + (2 * color_n)};
     if(position_.rank - 2 >= 0 && double_up.inBounderies() && canMoveAt(double_up, board)) {
         moves.push_back(double_up);
-        std::cout << double_up << ", ";
+        std::cerr << double_up << ", ";
     }
 
     if(position_.rank - 1 >= 0) {
