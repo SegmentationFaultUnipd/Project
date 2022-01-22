@@ -13,7 +13,7 @@ void printUsage() {
 int main (int argc, char* argv[]) {
 	std::vector<std::string> args(argv, argv+argc);//Confronti facile con stringhe
 	//Check arguments
-	if(argc <= 2 || args[1] == "--help") {
+	if(argc <= 2 || args[1] == "?") {
 		printUsage();
 		return 0;
 	}
