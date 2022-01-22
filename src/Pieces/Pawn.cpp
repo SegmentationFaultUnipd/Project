@@ -86,7 +86,7 @@ bool chess::Pawn::canMove(Board& board) const {
     }
     //The pawn can move two steps forward
     Coordinates double_up {position_.file, position_.rank + (2 * color_n)};
-    if(double_up.inBounderies() && canMoveAt(double_up, board)) {
+    if(double_up.inBounderies() && canMoveAt(double_up, board) && !board.isKingInCheckAfterMove(position_, double_up)) {
             return true;
     }
     if(position_.rank - 1 >= 0) {
@@ -98,7 +98,9 @@ bool chess::Pawn::canMove(Board& board) const {
         bool eat_right = diag_right.inBounderies() && canMoveAt(diag_right, board);
         Coordinates diag_left {position_.file - 1, position_.rank + (1 * color_n)};
         bool eat_left = diag_left.inBounderies() && canMoveAt(diag_left, board);
-        if(one_step || eat_right || eat_left) {
+        if (one_step && !board.isKingInCheckAfterMove(position_, single_up)
+            || eat_right && !board.isKingInCheckAfterMove(position_, diag_right)
+            || eat_left && !board.isKingInCheckAfterMove(position_, diag_left)) {
             return true;
         }
     }
@@ -120,7 +122,6 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     Coordinates double_up {position_.file, position_.rank + (2 * color_n)};
     if(position_.rank - 2 >= 0 && double_up.inBounderies() && canMoveAt(double_up, board)) {
         moves.push_back(double_up);
-        std::cout << double_up << ", ";
     }
 
     if(position_.rank - 1 >= 0) {

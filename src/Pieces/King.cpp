@@ -28,19 +28,20 @@ bool chess::King::canMove(chess::Board& board) const {
 
 			Coordinates final_coords = {d_file + file(), d_rank + rank()};
 			if(final_coords.inBounderies()) {//file, rank in valid range
-				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
+				if (canMoveAt({d_file + file(), d_rank + rank()}, board)
+					&& !board.isKingInCheckAfterMove(position_, {d_file + file(), d_rank + rank()})) {
 					return true;
 				}
 			} 
     	}
     }
-	int right_rank = (color() == WHITE)?0:7;
+	int castling_rank = (color() == WHITE)?0:7;
 
-	if(canCastle({2 ,right_rank}, board)) {
+	if(canCastle({2 ,castling_rank}, board) && !board.isKingInCheckAfterMove(position_, {2, castling_rank})) {
 		return true;
 	}
 	
-	if(canCastle({6 ,right_rank}, board)) {
+	if(canCastle({6 ,castling_rank}, board) && !board.isKingInCheckAfterMove(position_, {2, castling_rank})) {
 		return true;
 	}
     return false;
@@ -61,14 +62,14 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 			} 
     	}
     }
-	int right_rank = (color() == WHITE)?0:7;
+	int castling_rank = (color() == WHITE)?0:7;
 
-	if(canCastle({2 ,right_rank}, board)) {
-		moves.push_back({2, right_rank});
+	if(canCastle({2 ,castling_rank}, board)) {
+		moves.push_back({2, castling_rank});
 	}
 	
-	if(canCastle({6 ,right_rank}, board)) {
-		moves.push_back({6, right_rank});
+	if(canCastle({6 ,castling_rank}, board)) {
+		moves.push_back({6, castling_rank});
 	}
 
     return moves;

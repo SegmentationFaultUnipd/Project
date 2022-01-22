@@ -33,6 +33,7 @@ namespace chess {
            
             bool move(Coordinates from, Coordinates to);
 
+            bool isKingInCheckAfterMove(Coordinates from, Coordinates to);
             bool isThreatened(Coordinates piece_coords, Color piece_color);
             bool isKingInCheck(Color king_color);
 
@@ -75,6 +76,7 @@ namespace chess {
                 std::unique_ptr<Piece> board[8][8];
                 std::list<Coordinates> white_coords;
                 std::list<Coordinates> black_coords;
+                std::list<std::pair<Coordinates, Coordinates>> available_en_passants;
             };
             State getCurrentState_();
             void restoreState_(State& state);
