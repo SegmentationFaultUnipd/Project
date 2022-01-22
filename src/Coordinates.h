@@ -9,12 +9,12 @@
 namespace chess
 {
 
-    constexpr int BOARD_LOWER_RANK{0};
-    constexpr int BOARD_UPPER_RANK{7};
-    constexpr int BOARD_LEFT_FILE{0};
-    constexpr int BOARD_RIGHT_FILE{7};
-    constexpr int BOARD_TARGET_QUEENSIDE_CASTLE_FILE{2};
-    constexpr int BOARD_TARGET_KINGSIDE_CASTLE_FILE{6};
+    constexpr int LOWER_RANK{0};
+    constexpr int UPPER_RANK{7};
+    constexpr int LEFT_FILE{0};
+    constexpr int RIGHT_FILE{7};
+    constexpr int TARGET_QUEENSIDE_CASTLE_FILE{2};
+    constexpr int TARGET_KINGSIDE_CASTLE_FILE{6};
 
     /**
      * @brief Contains the coordinates of a square on the chess board
@@ -52,8 +52,8 @@ namespace chess
 
         bool inBounderies() const
         {
-            return file >= BOARD_LEFT_FILE && file <= BOARD_RIGHT_FILE
-                && rank >= BOARD_LOWER_RANK && rank <= BOARD_UPPER_RANK;
+            return file >= LEFT_FILE && file <= RIGHT_FILE
+                && rank >= LOWER_RANK && rank <= UPPER_RANK;
         }
 
         bool operator==(const Coordinates &c2) const

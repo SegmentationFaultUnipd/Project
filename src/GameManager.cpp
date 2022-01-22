@@ -64,7 +64,6 @@ void chess::GameManager::play() {
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color);
 		bool player_has_at_least_1_move = false;
 		for(auto piece : pieces) {
-			std::cout << piece << ": \n";
 			if(board.legalMovesOf(board.at(piece)).size() > 0) {
 				player_has_at_least_1_move = true;
 				break;

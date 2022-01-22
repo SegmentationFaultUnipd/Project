@@ -1,7 +1,6 @@
 #include "Pawn.h"
 
 void chess::Pawn::move(Coordinates new_position, Board& board) {
-    position_ = new_position;
     has_moved = true;
     short color_n;
     if(this->color() == WHITE) {
@@ -10,6 +9,7 @@ void chess::Pawn::move(Coordinates new_position, Board& board) {
     else {
         color_n = -1;
     }
+
     bool two_up = new_position.file == position_.file && new_position.rank == (position_.rank + (2 * color_n));
     if(two_up) {
         Coordinates from, to;
@@ -25,6 +25,8 @@ void chess::Pawn::move(Coordinates new_position, Board& board) {
             board.addAvailableEnPassant(from, to);
         }
     }
+
+    position_ = new_position;
 }
 
 bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {

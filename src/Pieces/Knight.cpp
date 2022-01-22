@@ -29,9 +29,7 @@ std::vector<chess::Coordinates> chess::Knight::legalMoves(Board &board) const
 
     for (const Coordinates &landing_square : candidateMoves_())
         if (board.isEmptyOrOppositeColor(landing_square, this->color_))
-        {
             moves.push_back(landing_square);
-        }
 
     return moves;
 }
@@ -42,9 +40,7 @@ std::vector<chess::Piece*> chess::Knight::takeablePieces(Board& board) const
 
     for(const Coordinates& landing_square : candidateMoves_())
         if (board.isOppositeColor(landing_square, this->color_))
-        {
             pieces.push_back(&board.at(landing_square));
-        }
 
     return pieces;
 }

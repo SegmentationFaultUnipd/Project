@@ -24,15 +24,14 @@ namespace chess {
             Board();
 
             bool isEmpty(Coordinates coords) const;
-            Piece& at(Coordinates coords);
             const Piece& at(Coordinates coords) const;
+            Piece& at(Coordinates coords);
 
             const std::vector<Coordinates> legalMovesOf(Piece& piece);
             std::list<Coordinates>& getPiecesCoords(Color color);
             Piece& getKing(Color king_color);
            
             bool move(Coordinates from, Coordinates to);
-            bool moveCauseSelfCheck(Coordinates from, Coordinates to, bool debug = false);
 
             bool isThreatened(Coordinates piece_coords, Color piece_color);
             bool isKingInCheck(Color king_color);
@@ -61,26 +60,25 @@ namespace chess {
             void removePiece_(Coordinates coords);
 
             std::unique_ptr<Piece> makePiece_(char c, Coordinates coords, Color color) const;
-            std::unique_ptr<Piece> copyPiece_(const Piece& p) const;
+            std::unique_ptr<Piece> clonePiece_(const Piece& p) const;
 
             void updatePosition_(Coordinates from, Coordinates to);
 
             std::list<Coordinates> white_coords_;
             std::list<Coordinates> black_coords_;
 
-            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_for_white_;
-            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_for_black_;
-            std::list<std::pair<Coordinates, Coordinates>>& availableEnPassantsFor(Color color);
+            std::list<std::pair<Coordinates, Coordinates>> available_en_passants_;
 
             std::unique_ptr<Piece> board_[8][8];
 
             struct State {
-                std::unique_ptr<Piece> board;
+                std::unique_ptr<Piece> board[8][8];
                 std::list<Coordinates> white_coords;
                 std::list<Coordinates> black_coords;
             };
-            State getCurrentState();
-            void restore(State state);
+            State getCurrentState_();
+            void restoreState_(State& state);
+            std::unique_ptr<Piece>** copyPieceMatrix_(std::unique_ptr<Piece> to_copy[8][8]);
     };
 
     std::ostream& operator<<(std::ostream& os, const Board& board);

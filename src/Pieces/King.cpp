@@ -81,13 +81,13 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 		return false;
 	}
 	//Check that the target position is valid. 
-	if(to_coords.rank != rank() || (to_coords.file != BOARD_TARGET_KINGSIDE_CASTLE_FILE && to_coords.file != BOARD_TARGET_QUEENSIDE_CASTLE_FILE)) {
+	if(to_coords.rank != rank() || (to_coords.file != TARGET_KINGSIDE_CASTLE_FILE && to_coords.file != TARGET_QUEENSIDE_CASTLE_FILE)) {
 		return false;
 	}
 
-	bool castlingKingSide = to_coords.file == BOARD_TARGET_KINGSIDE_CASTLE_FILE;
+	bool castlingKingSide = to_coords.file == TARGET_KINGSIDE_CASTLE_FILE;
 	//Getting the rook
-	Coordinates rook_coords = {(castlingKingSide)?BOARD_RIGHT_FILE:BOARD_LEFT_FILE, rank()};
+	Coordinates rook_coords = {(castlingKingSide)?RIGHT_FILE:LEFT_FILE, rank()};
 	// Check that the rook_coords are actually the positions of a rook, also check for the right color
 	if(board.isEmpty(rook_coords)) {
 		return false;

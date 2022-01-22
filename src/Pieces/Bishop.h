@@ -10,6 +10,7 @@ namespace chess {
         public:
             Bishop(Coordinates coords, Color color) : Piece{coords, color} {};
             Bishop(const Bishop& obj) : Piece{obj.position_, obj.color_} {};
+            
             bool canMoveAt(Coordinates pos, Board& board) const override;
             bool canMove(Board& board) const override;
             std::vector<Coordinates> legalMoves(Board& board) const override;
