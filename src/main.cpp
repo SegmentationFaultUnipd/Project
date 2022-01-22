@@ -25,7 +25,7 @@ chess::Color selectRandomColor() {
 
 int main(int argc, char *argv[]) {
 	std::vector<std::string> args(argv, argv+argc);//Confronti facile con stringhe
-	if(argc != 2 || (args[1] != "pc" && args[1] != "cc")) {
+	if(argc != 2 || (args[1] != "pc" && args[1] != "cc") || args[1] == "?") {
 		printUsage();
 		return 0;
 	}
