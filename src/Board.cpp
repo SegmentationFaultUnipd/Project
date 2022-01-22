@@ -3,6 +3,18 @@
 chess::Board::Board()
 {
     char ascii_setup[8][8] = {
+        ' ', ' ', ' ', 'c', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', 'a', ' ', ' ', ' ', 'p', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', 'p', 'D', ' ', ' ', ' ', 'r',
+        ' ', ' ', 'p', ' ', ' ', ' ', ' ', ' ',
+        ' ', ' ', ' ', ' ', ' ', 'T', ' ', ' ',
+        'R', ' ', ' ', 'c', ' ', ' ', ' ', ' ',
+    };
+
+    /*
+    char ascii_setup[8][8] = {
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
@@ -12,6 +24,7 @@ chess::Board::Board()
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
     };
+    */
 
     for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
@@ -22,6 +35,11 @@ chess::Board::Board()
             addPiece_(ascii_piece, coords, color);
         }
     }
+
+    std::cout << "Takeable from queen: ";
+    for (const Piece* piece : at({4,3}).takeablePieces(*this))
+        std::cout << piece->coordinates() << ", ";
+    std::cout << "\n";
 }
 
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
@@ -76,6 +94,8 @@ bool chess::Board::move(Coordinates from, Coordinates to)
     {
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
+        State before_move = getCurrentState();
+
         if (isEnPassantMove(from, to))
             doEnPassantMove(from, to);
         else if (isCastlingMove(from, to))
@@ -84,6 +104,10 @@ bool chess::Board::move(Coordinates from, Coordinates to)
             updatePosition_(from, to);
 
         clearEnPassants_(at(to).color());
+
+        // if king in check
+        // restore (before_move);
+
         return true;
     }
     return false;
@@ -166,13 +190,13 @@ void chess::Board::removePiece_(Coordinates coords) {
 void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 {
     // Update position in own members
-    at(from).move(to);
+    at(from).move(to, *this);
 
     // Update piece position in piece list
-    std::list<Coordinates>& own_color_pieces = getPiecesCoords(at(from).color());
-    for (Coordinates &piece : own_color_pieces) {
-        if (piece == from) {
-            piece = to;
+    std::list<Coordinates>& own_color_pieces_coords = getPiecesCoords(at(from).color());
+    for (Coordinates &piece_coords : own_color_pieces_coords) {
+        if (piece_coords == from) {
+            piece_coords = to;
             break;
         }
     }
@@ -188,10 +212,8 @@ void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 
 bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool debug /*= false*/)
 {
-    return false;
-
     assert(!isEmpty(from));
-    std::cout << "CauseSelfCheck: \"from\" is indeed empty, ";
+    std::cout << "CauseSelfCheck " << from << to << ": \"from\" is indeed empty, ";
 
     bool kingInCheck;
     std::unique_ptr<Piece> moving_piece, landing_piece;
@@ -243,6 +265,7 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 // Only exception: en passant
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
+    std::cerr << "{isThreatened " << square << "? ";
     const std::unique_ptr<Piece> dummy_pieces[] = {
         //std::make_unique<King>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
@@ -253,24 +276,31 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
     };
 
     for (const auto& dummy_piece : dummy_pieces) {
-        const std::vector<Piece*> &possible_attackers = dummy_piece->takeablePieces(*this);
-        for (Piece *possible_attacker : possible_attackers) {
-            if (dummy_piece->ascii() == possible_attacker->ascii())
+        std::cerr << "checking " << dummy_piece->ascii() << " ";
+        const std::vector<Piece*> &possible_threats = dummy_piece->takeablePieces(*this);
+        
+        for (Piece *possible_threat : possible_threats) {
+            std::cerr << possible_threat->coordinates() << " ";
+            if (dummy_piece->ascii() == possible_threat->ascii())
+                std::cerr << " YES}";
                 return true;
         }
+        std::cerr << " }";
     }
 
-    //Exception: en passants
+    /*Exception: en passants
     for (std::pair<Coordinates, Coordinates> en_passant : availableEnPassantsFor(opposite(piece_color))) {
         Coordinates& landing_square = en_passant.second;
         if (landing_square == square)
             return true;
-    }
+    }*/
     return false;
 }
 
 chess::Piece &chess::Board::getKing(chess::Color king_color)
 {
+    std::cerr << "!" << getPiecesCoords(king_color).front() << "\n";
+    std::cerr << board_[7][0]->ascii() << "\n";
     return at(getPiecesCoords(king_color).front());
 }
 

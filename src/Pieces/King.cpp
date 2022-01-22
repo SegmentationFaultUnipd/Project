@@ -13,7 +13,7 @@ bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
 
 
 	if (board.isEmpty(coords) || board.at(coords).color() != this->color())
-		return !board.moveCauseSelfCheck(this->coordinates(), coords);
+		return true;
 	
 	return false;//Last case: King is trying to capture a piece of the same color
 };
@@ -128,7 +128,7 @@ bool chess::King::checkEmptyAndNotInCheck(chess::Board& board, int range, bool i
 } 
 
 
-void chess::King::move(Coordinates new_position) {
+void chess::King::move(Coordinates new_position, Board& board) {
 	position_ = new_position;
 	has_moved = true;
 }

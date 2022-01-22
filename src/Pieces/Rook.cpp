@@ -12,10 +12,6 @@ bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
     if (!board.isEmpty(coords) && board.at(coords).color() == this->color()) {
         return false;
     }
-    //Can't make a move that would cause a self check
-    if(board.moveCauseSelfCheck(position_, coords)) {
-        return false;
-    }
 
     //Getting the movement in each direction
     short delta_file = coords.file - position_.file;
@@ -82,14 +78,12 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
             //Can't move past an obstacle
             if(!board.isEmpty(coords)) {
                 //Can move to eat a piece of different color
-                if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                if(board.isOppositeColor(coords, this->color())) {
                     moves.push_back(coords);
                 }
                 break;
             }
-            if(!board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
+            moves.push_back(coords);
             coords.file += dir.file;
             coords.rank += dir.rank;
         }
@@ -98,7 +92,7 @@ std::vector<chess::Coordinates> chess::Rook::legalMoves(Board& board) const {
     return moves;
 }
 
-void chess::Rook::move(Coordinates new_position) {
+void chess::Rook::move(Coordinates new_position, Board &board) {
 	position_ = new_position;
 	has_moved = true;
 }

@@ -1,7 +1,6 @@
 #include "Bishop.h"
 
 bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
-    std::cout << "checking";
     //Bishop can only move diagonally
     //To move diagonally it should move the same amount vertically and horizontally
 
@@ -11,10 +10,6 @@ bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {
     }
     //Can' stay stationary
     if(position_ == coords) {
-        return false;
-    }
-    //Can't make a move that would cause a self check
-    if(board.moveCauseSelfCheck(position_, coords)) {
         return false;
     }
     
@@ -72,14 +67,12 @@ std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
             //Can't move past an obstacle
             if(!board.isEmpty(coords)) {
                 //Can move to eat a piece of different color
-                if(board.at(coords).color() != this->color() && !board.moveCauseSelfCheck(position_, coords)) {
+                if(board.isOppositeColor(coords, this->color())) {
                     moves.push_back(coords);
                 }
                 break;
             }
-            if(!board.moveCauseSelfCheck(position_, coords)) {
-                moves.push_back(coords);
-            }
+            moves.push_back(coords);
             coords.file += dir.file;
             coords.rank += dir.rank;
         }
