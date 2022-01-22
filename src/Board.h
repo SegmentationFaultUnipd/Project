@@ -79,7 +79,7 @@ namespace chess {
                 std::list<Coordinates> white_coords;
                 std::list<Coordinates> black_coords;
             };
-            State getCurrentState();
+            //State getCurrentState();
             void restore(State state);
     };
 

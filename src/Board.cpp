@@ -94,7 +94,7 @@ bool chess::Board::move(Coordinates from, Coordinates to)
     {
         std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
 
-        State before_move = getCurrentState();
+        // State before_move = getCurrentState();
 
         if (isEnPassantMove(from, to))
             doEnPassantMove(from, to);
