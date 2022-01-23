@@ -45,7 +45,7 @@ namespace chess
         Coordinates() : Coordinates{0, 0} {}
 
         /**
-         * @brief Metodo che ritorna una stringa con la coordinata
+         * @brief Ritorna una stringa con la coordinata
          * in notazione alfanumerica
          * 
          * @return std::string con le coordinata alfanumerica ex:
@@ -59,7 +59,7 @@ namespace chess
         }
 
         /**
-         * @brief Metodo che verifica se this si trova all'interno
+         * @brief Verifica se this si trova all'interno
          * della scacchiera 8x8
          * 
          * @return true se si trova all'interno della scacchiera

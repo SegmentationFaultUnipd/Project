@@ -15,7 +15,20 @@ namespace chess {
             GameManager(Player &player1, Player &player2, int max_moves) : player1_(player1), player2_(player2), max_moves_(max_moves) {
 				createLogFile();
 			}
+
+			/**
+			 * @brief Metodo che inizia la partita
+			 * 
+			 */
            	void play();
+
+			/**
+			 * @brief Metodo che salva la mossa indicata nei parametri nel log
+			 * 
+			 * @param move_number numero della mossa (la prima mossa è 0)
+			 * @param from coordinate di partenza
+			 * @param to coordinate di arrivo
+			 */
 			void logMove(int move_number, Coordinates from, Coordinates to);
 			void logPromotion(int move_number, char piece, Coordinates position);
 			

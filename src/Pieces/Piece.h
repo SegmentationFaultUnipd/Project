@@ -14,7 +14,7 @@ namespace chess {
     class Piece {
         public:
             /**
-             * @brief Metodo che aggiorna le coordinate di this
+             * @brief Aggiorna le coordinate di this
              * 
              * @param new_position le coordinate della nuova posizione
              * @param board la schacchiera
@@ -24,7 +24,7 @@ namespace chess {
             }
             
             /**
-             * @brief Metodo che verifica se this può muoversi nella posizione
+             * @brief Verifica se this può muoversi nella posizione
              * pos usando la schacchiera board
              * @param pos le coordinate di arrivo da verificare
              * @param board la schacchiera
@@ -34,7 +34,7 @@ namespace chess {
             virtual bool canMoveAt(Coordinates pos, chess::Board& board) const = 0;
             
             /**
-             * @brief Metodo che verifica se this ha almeno una mossa disponibile sulla 
+             * @brief Verifica se this ha almeno una mossa disponibile sulla 
              * scacchiera board
              * @note Questo metodo potrebbe essere sostituito da una verifica sulla
              * grandezza del vettore ritornato da legalMoves ma sarebbe meno efficiente
@@ -45,7 +45,7 @@ namespace chess {
             virtual bool canMove(chess::Board& board) const = 0;
 
             /**
-             * @brief Metodo che ritorna tutte le mosse che this può fare sulla schacchiera
+             * @brief Ritorna tutte le mosse che this può fare sulla schacchiera
              * board
              * @note Le mosse ritornate potrebbero causare scacco
              * @param board la schacchiera
@@ -55,7 +55,7 @@ namespace chess {
             virtual std::vector<Coordinates> legalMoves(chess::Board& board) const = 0;
 
             /**
-             * @brief Metodo che ritorna tutti i pezzi catturabili da this sulla schacchiera
+             * @brief Ritorna tutti i pezzi catturabili da this sulla schacchiera
              * board
              * @note Le mosse ritornate potrebbero causare scacco
              * @param board la schacchiera
@@ -64,7 +64,7 @@ namespace chess {
             virtual std::vector<Piece*> takeablePieces(chess::Board& board) const;
 
             /**
-             * @brief Metodo che ritorna il carattere ascii associato a this 
+             * @brief Ritorna il carattere ascii associato a this 
              * @note Associazioni:
              * Re = r
              * Regina = d
@@ -76,32 +76,9 @@ namespace chess {
              */
             char virtual ascii() const = 0;
 
-            /**
-             * @brief Metodo che ritorna il colore di this
-             * 
-             * @return Color colore di this
-             */
             Color color() const { return color_;}
-
-            /**
-             * @brief Metodo che ritorna la colonna dove si trova this (da 0 a 7)
-             * 
-             * @return short colonna dove si trova this
-             */
             short file() const { return position_.file; }
-
-            /**
-             * @brief Metodo che ritorna la riga dove si trova this (da 0 a 7)
-             * 
-             * @return short riga dove si trova this
-             */
             short rank() const { return position_.rank; }
-
-            /**
-             * @brief Metodo che ritorna le coordinate di this
-             * 
-             * @return Coordinates coordinate di this
-             */
             Coordinates coordinates() const { return position_; }
             
             Piece& operator=(const Piece& obj) {
