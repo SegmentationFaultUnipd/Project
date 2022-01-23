@@ -18,12 +18,9 @@ namespace chess
     constexpr int TARGET_KINGSIDE_CASTLE_FILE{6};
 
     /**
-     * @brief Contains the coordinates of a square on the chess board
-     * file is the column, contains an index 0-7, meaning a-h files
-     * rank is the row, contains an index 0-7, meaning 1-8 ranks
-     *
-     * Occasionaly Coordinates can store values indicating a mathematical vector,
-     * example Coordinate delta{-2, 0} indicates a movement of -2 file and same rank
+     * @brief Contiene le coordinate di una casa nella scacchiera
+     * file è la colonna, contiene un indice da 0 a 7 per le file da a a h
+     * rank è la riga, contiene un indice da 0 a 7 per le righe da 1 a 8
      */
     struct Coordinates
     {
@@ -45,11 +42,11 @@ namespace chess
         Coordinates() : Coordinates{0, 0} {}
 
         /**
-         * @brief Ritorna una stringa con la coordinata
-         * in notazione alfanumerica
+         * @brief Ritorna una stringa con la coordinata in notazione
+         * alfanumerica
          * 
          * @return std::string con le coordinata alfanumerica ex:
-         *  00 diventa a1
+         * 00 diventa a1
          */
         std::string toNotation() const
         {
@@ -59,8 +56,7 @@ namespace chess
         }
 
         /**
-         * @brief Verifica se this si trova all'interno
-         * della scacchiera 8x8
+         * @brief Verifica se si trova all'interno della scacchiera 8x8
          * 
          * @return true se si trova all'interno della scacchiera
          * @return false altrimenti
