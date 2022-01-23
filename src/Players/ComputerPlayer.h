@@ -9,6 +9,10 @@
 #include "../Color.h"
 
 namespace chess {
+    /**
+     * @brief Rappresenta un player non umano
+     * 
+     */
     class ComputerPlayer : public Player {
         public:
             ComputerPlayer(unsigned int seed, Color color);

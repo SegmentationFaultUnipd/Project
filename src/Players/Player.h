@@ -8,7 +8,10 @@
 #include "../Color.h"
 #include "../Board.h"
 namespace chess {
-
+    /**
+     * @brief Rappresenta un player generico
+     * 
+     */
     class Player {
         public:
             /**

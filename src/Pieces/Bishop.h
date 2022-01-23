@@ -8,7 +8,7 @@
 #include "../Board.h"
 namespace chess {
     /**
-     * @brief Classe che rappresenta un pezzo di tipo alfiere
+     * @brief Rappresenta un pezzo di tipo alfiere
      * 
      */
     class Bishop : public Piece {

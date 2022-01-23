@@ -9,6 +9,10 @@
 #include "../Color.h"
 
 namespace chess {
+    /**
+     * @brief Rappresenta un player umano
+     * 
+     */
     class HumanPlayer : public Player {
         public:
             HumanPlayer(Color color) : Player{color} {};

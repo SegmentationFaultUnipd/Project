@@ -8,7 +8,7 @@
 #include "../Board.h"
 namespace chess {
     /**
-     * @brief Classe che rappresenta un pezzo di tipo torre
+     * @brief Rappresenta un pezzo di tipo torre
      * 
      */
     class Rook : public Piece {

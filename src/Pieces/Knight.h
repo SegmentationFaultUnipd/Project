@@ -11,7 +11,7 @@
 namespace chess {
 	class Board;
     /**
-     * @brief Classe che rappresenta un pezzo di tipo cavallo
+     * @brief Rappresenta un pezzo di tipo cavallo
      * 
      */
     class Knight : public Piece {

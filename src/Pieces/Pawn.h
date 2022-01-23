@@ -10,7 +10,7 @@
 namespace chess {
     class Board;
     /**
-     * @brief Classe che rappresenta un pezzo di tipo pedone
+     * @brief Rappresenta un pezzo di tipo pedone
      * 
      */
     class Pawn : public Piece {

@@ -10,7 +10,10 @@
 
 namespace chess {
 	class Board;
-
+    /**
+     * @brief Rappresenta un pezzo generico
+     * 
+     */
     class Piece {
         public:
             /**

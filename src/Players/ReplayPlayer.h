@@ -9,6 +9,10 @@
 #include "../Color.h"
 
 namespace chess {
+    /**
+     * @brief Rappresenta il player durante il replay
+     * 
+     */
     class ReplayPlayer : public Player {
         public:
             ReplayPlayer(Color color) : Player{color}, curr_index_moves_(0), curr_index_promotions_(0) {};

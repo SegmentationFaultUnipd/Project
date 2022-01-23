@@ -19,7 +19,10 @@
 #include "Coordinates.h"
 
 namespace chess {
-
+    /**
+     * @brief Classe che rappresenta la scacchiera
+     * 
+     */
     class Board {
         public:
             Board();

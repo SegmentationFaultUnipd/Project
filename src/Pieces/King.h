@@ -8,7 +8,7 @@
 
 namespace chess {
     /**
-     * @brief Classe che rappresenta un pezzo di tipo re
+     * @brief Rappresenta un pezzo di tipo re
      * 
      */
     class King : public Piece {
