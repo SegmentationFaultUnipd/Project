@@ -65,7 +65,7 @@ namespace chess {
 
             /**
              * @brief Metodo che ritorna il carattere ascii associato a this 
-             * @note
+             * @note Associazioni:
              * Re = r
              * Regina = d
              * Alfiere = a
