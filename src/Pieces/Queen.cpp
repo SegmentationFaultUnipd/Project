@@ -64,7 +64,7 @@ bool chess::Queen::canMove(Board& board) const {
         coords.rank = position_.rank + dir.rank;
         while(coords.inBounderies()) {
             if (canMoveAt(coords, board)
-                && board.isKingInCheckAfterMove(position_, coords)) {
+                && !board.isKingInCheckAfterMove(position_, coords)) {
                 return true;
             }
             coords.file += dir.file;
