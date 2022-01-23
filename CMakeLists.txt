@@ -1,11 +1,12 @@
-# AUTORE: Filippo Mazzarotto
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(CMAKE_CXX_FLAGS, "-O2")
 set(CMAKE_CXX_FLAGS_DEBUG, "-O2")
 set(CMAKE_CXX_FLAGS_RELEASE, "-O2")
+
 # set the project name
 project(VirtualChessboard)
 
@@ -31,21 +32,21 @@ add_library(
 
 # add the executable
 add_executable(
-    Scacchiera
+    scacchiera
     src/main.cpp
     src/Board.cpp
     src/GameManager.cpp
 )
 
 add_executable(
-    Replay
+    replay
     src/Replay.cpp
     src/Board.cpp
     src/ReplayManager.cpp
 )
 
-target_link_libraries(Scacchiera PUBLIC Pieces)
-target_link_libraries(Scacchiera PUBLIC Players)
+target_link_libraries(scacchiera PUBLIC Pieces)
+target_link_libraries(scacchiera PUBLIC Players)
 
-target_link_libraries(Replay PUBLIC Pieces)
-target_link_libraries(Replay PUBLIC Players)
+target_link_libraries(replay PUBLIC Pieces)
+target_link_libraries(replay PUBLIC Players)
