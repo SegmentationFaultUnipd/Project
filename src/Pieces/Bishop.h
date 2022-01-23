@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #ifndef BISHOP_H
 #define BISHOP_H
 

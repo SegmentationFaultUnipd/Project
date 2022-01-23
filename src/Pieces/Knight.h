@@ -1,3 +1,4 @@
+//AUTORE: Filippo Mazzarotto
 #ifndef KNIGHT_H
 #define KNIGHT_H
 

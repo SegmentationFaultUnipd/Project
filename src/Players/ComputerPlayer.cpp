@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #include "ComputerPlayer.h"
 #include <list>
 
