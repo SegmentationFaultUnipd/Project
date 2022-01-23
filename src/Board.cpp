@@ -78,12 +78,7 @@ chess::Piece &chess::Board::at(Coordinates coords)
 
 bool chess::Board::isKingInCheckAfterMove(Coordinates from, Coordinates to) {
     Board copy{*this};
-    Color move_color = at(from).color();
-
-    copy.handleMoveType_(from, to);
-
-    bool kingCheck = copy.isKingInCheck(move_color);
-    return kingCheck;
+    return copy.isKingInCheck( at(from).color());
 }
 
 // Move the piece
@@ -234,7 +229,7 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
     const std::unique_ptr<Piece> dummy_pieces[] = {
-       	//std::make_unique<King>(square, piece_color),
+       	std::make_unique<King>(square, piece_color),
         std::make_unique<Queen>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
         std::make_unique<Bishop>(square, piece_color),
@@ -269,9 +264,7 @@ chess::Piece &chess::Board::getKing(chess::Color king_color)
 
 bool chess::Board::isKingInCheck(chess::Color king_color)
 {
-    Coordinates king_coords = getKing(king_color).coordinates();
-
-    return isThreatened(king_coords, king_color);
+    return isThreatened(getKing(king_color).coordinates(), king_color);
 }
 
 void chess::Board::promote(Coordinates pawn_coords, char piece)
