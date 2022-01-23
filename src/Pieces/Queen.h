@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #ifndef QUEEN_H
 #define QUEEN_H
 

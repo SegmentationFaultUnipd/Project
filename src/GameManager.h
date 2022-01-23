@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 

@@ -1,3 +1,4 @@
+//AUTORE: Filippo Mazzarotto
 #include "Knight.h"
 
 int manhattanDistance(chess::Coordinates coords1, chess::Coordinates coords2) {

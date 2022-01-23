@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #ifndef KING_H
 #define KING_H
 

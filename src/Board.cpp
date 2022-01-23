@@ -1,3 +1,4 @@
+//AUTORE: Filippo Mazzarotto
 #include "Board.h"
 
 chess::Board::Board()
