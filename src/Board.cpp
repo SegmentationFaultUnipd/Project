@@ -15,6 +15,18 @@ chess::Board::Board()
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T', //h
     };
 
+    /*
+        //1   2    3    4    5    6    7    8
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T', //a
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C', //b
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A', //c
+        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D', //d
+        'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R', //e
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A', //f
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C', //g
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T', //h
+    */
+
     for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
             char ascii_piece{ascii_setup[f][r]};
@@ -150,6 +162,9 @@ bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
 
 bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 {
+    if (isEmpty(from))
+        return false;
+
     Color color = at(from).color();
 
     std::pair<Coordinates, Coordinates> candidate_move{from, to};

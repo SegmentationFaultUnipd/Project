@@ -12,7 +12,7 @@ namespace chess {
     class GameManager {
         public:
 			//Nota: current_player viene inizializzato a player1 nel costruttore, ma una volta che viene chiamato GameManager::play() viene corretto con il giocatore che ha il bianco
-            GameManager(Player &player1, Player &player2, int max_moves) : player1_(player1), player2_(player2), max_moves_(max_moves) {
+            GameManager(Player &player1, Player &player2) : player1_(player1), player2_(player2), max_moves_(-1) {
 				createLogFile();
 			}
 
@@ -32,6 +32,7 @@ namespace chess {
 			void logMove(int move_number, Coordinates from, Coordinates to);
 			void logPromotion(int move_number, char piece, Coordinates position);
 			
+			void setMaxMoves(int max) { max_moves_ = max; }
         private:
 			Player &player1_, &player2_;
 			Board board;
