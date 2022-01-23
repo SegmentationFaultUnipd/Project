@@ -61,11 +61,12 @@ void chess::GameManager::play() {
 		}
 
 		nextPlayer();
-		
 		//Check if player has available moves
+		//Assertion failed here:
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color_);
 		bool player_can_move = false;
 		for(auto piece : pieces) {
+			std::cerr << piece << ", ";
 			if(board.at(piece).canMove(board)) {
 				player_can_move = true;
 				break;

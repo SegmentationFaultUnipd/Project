@@ -27,8 +27,9 @@ bool chess::King::canMove(chess::Board& board) const {
 				continue;
 			Coordinates final_coords = {d_file + file(), d_rank + rank()};
 			if(final_coords.inBounderies()) {//file, rank in valid range
-				if (canMoveAt({d_file + file(), d_rank + rank()}, board)
-					&& !board.isKingInCheckAfterMove(position_, {d_file + file(), d_rank + rank()})) {
+				std::cerr << "-" << final_coords << "\n";
+				if (canMoveAt(final_coords, board)
+					&& !board.isKingInCheckAfterMove(position_, final_coords)) {
 					return true;
 				}
 			} 

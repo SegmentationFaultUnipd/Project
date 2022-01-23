@@ -41,7 +41,8 @@ bool chess::Bishop::canMove(Board& board) const {
         coords.file = position_.file + dir.file;
         coords.rank = position_.rank + dir.rank;
         while(coords.inBounderies()) {
-            if(canMoveAt(coords, board)) {
+            if(canMoveAt(coords, board)
+                && !board.isKingInCheckAfterMove(position_, coords)) {
                 return true;
             }
             coords.file += dir.file;
@@ -67,8 +68,7 @@ std::vector<chess::Coordinates> chess::Bishop::legalMoves(Board& board) const {
             //Can't move past an obstacle
             if(!board.isEmpty(coords)) {
                 //Can move to eat a piece of different color
-                if(board.isOppositeColor(coords, this->color())
-                    && !board.isKingInCheckAfterMove(position_, coords)) {
+                if(board.isOppositeColor(coords, this->color())) {
                     moves.push_back(coords);
                 }
                 break;
