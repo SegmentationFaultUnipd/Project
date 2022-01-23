@@ -15,7 +15,7 @@ void printUsage() {
 }
 
 chess::Color selectRandomColor() {
-	srand(time(NULL));
+	
 	if(rand() % 2 == 0) {
 		return chess::WHITE;
 	}else {
@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
 	}
 	chess::Player *player1, *player2;
 	int max_moves = -1;
+	srand(time(NULL));
 	if(args[1] == "pc") {
 		player1 = new chess::HumanPlayer(selectRandomColor());
 		player2 = new chess::ComputerPlayer(rand(), opposite(player1->getColor()));

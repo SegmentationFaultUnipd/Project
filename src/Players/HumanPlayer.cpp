@@ -11,7 +11,8 @@ void chess::HumanPlayer::nextTurn(Board& board, chess::Coordinates& from, chess:
 
     do {
         std::cout << "Prossima mossa: ";
-        std::cin >> input_from >> input_to;
+
+        std::cin >> input_from >>input_to;
 
         stringToLower(input_from);
         stringToLower(input_to);
@@ -22,7 +23,7 @@ void chess::HumanPlayer::nextTurn(Board& board, chess::Coordinates& from, chess:
             if (input_from == "xx" && input_to == "xx")
                 std::cout << board << "\n";
             else
-                "Notazione errata\n";
+				std::cout << "Notazione errata\n";
         }
         
     } while (!correct_notation);
@@ -42,14 +43,19 @@ bool chess::HumanPlayer::verifyNotation(std::string coords) const {
 }
 
 char chess::HumanPlayer::choosePromotion() {
-    char piece;
+    std::string s;
+	char piece;
     bool valid_input ;
     std::cout << "Promuovi in [D|T|A|C]: ";
     do {
-        std::cin >> piece;
-        piece = toupper(piece);
+        std::cin >> s;
+		valid_input = false;
+		if(s.size() == 1) {
+	        piece = toupper(piece);
+			valid_input = isValidPromotionPiece(piece);
+		}
 
-        valid_input = isValidPromotionPiece(piece);
+        
 
         if (valid_input)
             std::cout << "\nPromozione in " << piece << std::endl;

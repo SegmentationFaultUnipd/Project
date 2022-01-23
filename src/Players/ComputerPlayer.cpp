@@ -13,10 +13,19 @@ void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, che
 		Piece& my_piece = board.at(*it);
 		std::vector<Coordinates> moves = my_piece.legalMoves(board);
 		if(moves.size() > 0) {
-			int index_move = rand() % moves.size();
-			to = moves[index_move];
-			from = *it;
-			chosen = true;
+			//Rimuovi coordinate che non mettono in check il proprio re
+			std::vector<Coordinates> valid_moves;
+			for(Coordinates move: moves) {
+				if(!board.isKingInCheckAfterMove(*it, move)) {
+					valid_moves.push_back(move);
+				}
+			}
+			if(valid_moves.size() > 0) {
+				int index_move = rand() % valid_moves.size();
+				to = valid_moves[index_move];
+				from = *it;
+				chosen = true;
+			}
 		}
 	}
 }
