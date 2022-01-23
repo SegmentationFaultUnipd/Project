@@ -14,17 +14,6 @@ chess::Board::Board()
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T', //h
     };
 
-    /*
-        'r', 'p', ' ', ' ', ' ', ' ', ' ', ' ', //a
-        ' ', 't', ' ', ' ', ' ', ' ', ' ', ' ', //b
-        ' ', 'p', ' ', ' ', ' ', ' ', ' ', ' ', //c
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //d
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //e
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //f
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //g
-        ' ', ' ', 'T', ' ', ' ', ' ', ' ', 'R', //h
-    */
-
     for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
             char ascii_piece{ascii_setup[f][r]};
@@ -244,12 +233,12 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
     const std::unique_ptr<Piece> dummy_pieces[] = {
-        //std::make_unique<King>(square, piece_color),
+        std::make_unique<King>(square, piece_color),
+        std::make_unique<Queen>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
         std::make_unique<Bishop>(square, piece_color),
         std::make_unique<Knight>(square, piece_color),
         std::make_unique<Pawn>(square, piece_color),
-        std::make_unique<Queen>(square, piece_color),
     };
 
     for (const auto& dummy_piece : dummy_pieces) {
