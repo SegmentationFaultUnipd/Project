@@ -102,7 +102,7 @@ void chess::GameManager::play() {
 
 	}
 
-	if(current_move_ >= max_moves_) {
+	if(!infinite_game && current_move_ >= max_moves_) {
 		log_stream_<<"---"<<std::endl;
 		std::cout << "Numero di mosse previsto raggiunto. " << std::endl;
 		draw();
