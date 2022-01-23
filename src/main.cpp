@@ -11,6 +11,7 @@ void printUsage() {
 	std::cout << "Uso corretto: Scacchiera {pc|cc} "<< std::endl;
 	std::cout << "\targomento pc: inizia una partita giocatore vs computer" << std::endl;
 	std::cout << "\targomento cc: inizia una partita computer vs computer, con massimo 500 mosse" << std::endl;
+	std::cout << "\targomento pp: inizia una partita player vs player" << std::endl;
 }
 
 chess::Color selectRandomColor() {
@@ -30,15 +31,20 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	chess::Player *player1, *player2;
+	int max_moves = -1;
 	if(args[1] == "pc") {
 		player1 = new chess::HumanPlayer(selectRandomColor());
 		player2 = new chess::ComputerPlayer(rand(), opposite(player1->getColor()));
-	}else {
+	}else if(args[1] == "cc") {
 		player1 = new chess::ComputerPlayer(rand(), selectRandomColor());
 		player2 = new chess::ComputerPlayer(rand(), opposite(player1->getColor()));
+		max_moves = 500;
+	}else {
+		player1 = new chess::HumanPlayer(selectRandomColor());
+		player2 = new chess::HumanPlayer(opposite(player1->getColor()));
 	}
 
-    chess::GameManager game{*player1, *player2, 50};
+    chess::GameManager game{*player1, *player2, max_moves};
     game.play();
     
     return 0;
