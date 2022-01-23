@@ -35,6 +35,7 @@ namespace chess {
 			void logMove(int move_number, Coordinates from, Coordinates to);
 			void logPromotion(int move_number, char piece, Coordinates position);
 			
+			void setMaxMoves(int max) { max_moves_ = max; }
         private:
 			Player &player1_, &player2_;
 			Board board;

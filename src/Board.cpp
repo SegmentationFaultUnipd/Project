@@ -168,6 +168,9 @@ bool chess::Board::isCastlingMove(Coordinates from, Coordinates to)
 
 bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 {
+    if (isEmpty(from))
+        return false;
+
     Color color = at(from).color();
 
     std::pair<Coordinates, Coordinates> candidate_move{from, to};

@@ -79,11 +79,14 @@ void chess::GameManager::play() {
 			}
 		}
 
-		if(!player_can_move) {
-			if(board.isKingInCheck(current_color_)) {
+		if (board.isKingInCheck(current_color_)) {
+			if (player_can_move) {
+				// Scacco
+				std::cout << "Scacco al re!\n";
+			} else {
 				//Scacco matto
-				log_stream_<<"---"<<std::endl;
-				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re è sotto scacco" << std::endl;
+				log_stream_ << "---" << std::endl;
+
 				nextPlayer();
 				win(currentPlayer());
 				isGameEnded = true;
@@ -99,7 +102,6 @@ void chess::GameManager::play() {
 		if(!isGameEnded) {
 			current_move_++;
 		}
-
 	}
 
 	if(!infinite_game && current_move_ >= max_moves_) {
@@ -111,14 +113,15 @@ void chess::GameManager::play() {
 }
 
 void chess::GameManager::win(Player &winner) {
-	std::string win_message_part = (winner.getColor() == player1_.getColor())? "PLAYER 1": "PLAYER 2";
-	std::cout << win_message_part<<" vince!!!" << std::endl;
-	log_stream_ << win_message_part<<" vince!!!" << std::endl;
+	std::cout << "Scacco matto! Il re è in scacco e non ci sono mosse disponibili\n" << std::endl;
+	std::string win_message_part = (winner.getColor() == player1_.getColor())? "Il primo giocatore": "Il secondo giocatore";
+	std::cout << win_message_part <<" vince!!!" << std::endl;
+	log_stream_ << "Scacco matto: " << win_message_part <<" vince." << std::endl;
 }
 
 void chess::GameManager::draw() {
-	std::cout << "Patta! " <<std::endl;
-	log_stream_<<"Patta! "<<std::endl;
+	std::cout << "Stallo! Non ci sono mosse disponibili, ma il re non è in scacco...\n";
+	log_stream_ << "Stallo - Parità" <<std::endl;
 }
 
 void chess::GameManager::cleanUp() {

@@ -51,7 +51,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     }
 
     //The pawn is trying to en pass
-    if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
+    if(board.isEnPassantMove(position_, coords)) {
         return true;
     }
 
