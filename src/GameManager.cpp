@@ -93,6 +93,7 @@ void chess::GameManager::play() {
 				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re non è sotto scacco" << std::endl;
 				draw();
 			}
+			isGameEnded = true;
 		}
 
 		if(!isGameEnded) {
@@ -100,9 +101,9 @@ void chess::GameManager::play() {
 		}
 
 	}
-	log_stream_<<"---"<<std::endl;
 
 	if(current_move_ >= max_moves_) {
+		log_stream_<<"---"<<std::endl;
 		std::cout << "Numero di mosse previsto raggiunto. " << std::endl;
 		draw();
 	}
