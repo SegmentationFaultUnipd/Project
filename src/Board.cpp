@@ -4,15 +4,27 @@
 chess::Board::Board()
 {
     char ascii_setup[8][8] = {
-        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
-        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
-        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
-        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D',
-        'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R',
-        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
-        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
-        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
+        //1   2    3    4    5    6    7    8
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T', //a
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C', //b
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A', //c
+        'd', 'p', ' ', ' ', ' ', ' ', 'P', 'D', //d
+        'r', 'p', ' ', ' ', ' ', ' ', 'P', 'R', //e
+        'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A', //f
+        'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C', //g
+        't', 'p', ' ', ' ', ' ', ' ', 'P', 'T', //h
     };
+
+    /*
+        'r', 'p', ' ', ' ', ' ', ' ', ' ', ' ', //a
+        ' ', 't', ' ', ' ', ' ', ' ', ' ', ' ', //b
+        ' ', 'p', ' ', ' ', ' ', ' ', ' ', ' ', //c
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //d
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //e
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //f
+        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', //g
+        ' ', ' ', 'T', ' ', ' ', ' ', ' ', 'R', //h
+    */
 
     for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
@@ -77,10 +89,12 @@ chess::Piece &chess::Board::at(Coordinates coords)
 
 bool chess::Board::isKingInCheckAfterMove(Coordinates from, Coordinates to) {
     Board copy{*this};
+    Color move_color = at(from).color();
 
     copy.handleMoveType_(from, to);
 
-    return copy.isKingInCheck(at(from).color());
+    bool kingCheck = copy.isKingInCheck(move_color);
+    return kingCheck;
 }
 
 // Move the piece
@@ -97,10 +111,6 @@ bool chess::Board::move(Coordinates from, Coordinates to)
     if (is_valid_move) {
         handleMoveType_(from, to);
         clearEnPassants_(current_color);
-
-        if (isKingInCheck(current_color)) {
-            is_valid_move = false;
-        }
     }
 
     return is_valid_move;
@@ -245,18 +255,20 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 
     for (const auto& dummy_piece : dummy_pieces) {
         const std::vector<Piece*> &possible_threats = dummy_piece->takeablePieces(*this);
-        
+
         for (Piece *possible_threat : possible_threats) {
-            if (dummy_piece->ascii() == possible_threat->ascii())
+            if (dummy_piece->ascii() == possible_threat->ascii()) {
                 return true;
+            }
         }
     }
 
     //Exception: en passants
     for (std::pair<Coordinates, Coordinates> en_passant : available_en_passants_) {
         Coordinates& landing_square = en_passant.second;
-        if (landing_square == square)
+        if (landing_square == square) {
             return true;
+        }
     }
     return false;
 }
@@ -268,7 +280,9 @@ chess::Piece &chess::Board::getKing(chess::Color king_color)
 
 bool chess::Board::isKingInCheck(chess::Color king_color)
 {
-    return isThreatened(getKing(king_color).coordinates(), king_color);
+    Coordinates king_coords = getKing(king_color).coordinates();
+
+    return isThreatened(king_coords, king_color);
 }
 
 void chess::Board::promote(Coordinates pawn_coords, char piece)

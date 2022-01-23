@@ -62,11 +62,12 @@ void chess::GameManager::play() {
 		}
 
 		nextPlayer();
-		
 		//Check if player has available moves
+		//Assertion failed here:
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color_);
 		bool player_can_move = false;
 		for(auto piece : pieces) {
+			std::cerr << piece << ", ";
 			if(board.at(piece).canMove(board)) {
 				player_can_move = true;
 				break;
@@ -86,16 +87,18 @@ void chess::GameManager::play() {
 				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re non è sotto scacco";
 				draw();
 			}
+			isGameEnded = true;
 		}
 
-		if(!infinite_game) {
+		if(!infinite_game && !isGameEnded) {
 			current_move_++;
 		}
 
 	}
-	log_stream_<<"---"<<std::endl;
 
+	
 	if(current_move_ >= max_moves_) {
+		log_stream_<<"---"<<std::endl;
 		std::cout << "Numero di mosse previsto raggiunto. " << std::endl;
 		draw();
 	}
