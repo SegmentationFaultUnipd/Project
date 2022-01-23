@@ -229,7 +229,7 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
     const std::unique_ptr<Piece> dummy_pieces[] = {
-       	std::make_unique<King>(square, piece_color),
+       	//std::make_unique<King>(square, piece_color),
         std::make_unique<Queen>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
         std::make_unique<Bishop>(square, piece_color),

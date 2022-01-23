@@ -86,16 +86,16 @@ bool chess::Pawn::canMove(Board& board) const {
     }
     //Single move up
 	Coordinates single_up {position_.file, position_.rank + delta_rank};
-	if(single_up.inBounderies() && canMoveAt(single_up, board)) {
+	if(single_up.inBounderies() && canMoveAt(single_up, board) && !board.isKingInCheckAfterMove(coordinates(), single_up)) {
 		return true;
 	}
 	//Diagonal eating moves
 	Coordinates diag_right {position_.file + 1, position_.rank + delta_rank};
-	if(diag_right.inBounderies() && canMoveAt(diag_right, board)) {
+	if(diag_right.inBounderies() && canMoveAt(diag_right, board) && !board.isKingInCheckAfterMove(coordinates(), diag_right)) {
 		return true;
 	}
 	Coordinates diag_left {position_.file - 1, position_.rank + delta_rank};
-	if(diag_left.inBounderies() && canMoveAt(diag_left, board)) {
+	if(diag_left.inBounderies() && canMoveAt(diag_left, board) && !board.isKingInCheckAfterMove(coordinates(), diag_left)) {
 		return true;
 	}
 

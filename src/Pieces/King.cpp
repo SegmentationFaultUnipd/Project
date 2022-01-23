@@ -112,19 +112,15 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 		return false;
 	}
 	//Check that the squares in between are empty and that the king is not in check for each position
-	if(castlingKingSide) {
-		checkEmptyAndNotInCheck(board, 2, castlingKingSide);
-	}else {
-		checkEmptyAndNotInCheck(board, 3, castlingKingSide);
-	}
-	
-	return true;
+	int squares_to_check = (castlingKingSide)?2:3;
+	return checkEmptyAndNotInCheck(board, squares_to_check, castlingKingSide);
 }
 
 bool chess::King::checkEmptyAndNotInCheck(chess::Board& board, int range, bool isKingSide) const {
 	int mul = (isKingSide)?1:-1;
 	for(int i = 1; i <= range; i++) {
-		if(board.isEmpty({file() + i * mul,rank()}) || board.isThreatened({file() + i * mul, rank()}, color())) {
+		chess::Coordinates to_test = {file() + i * mul,rank()};
+		if(!board.isEmpty(to_test) || board.isThreatened(to_test, color())) {
 			return false;
 		}
 	}
