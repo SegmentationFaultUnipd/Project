@@ -8,10 +8,9 @@ bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
     short delta_rank = abs(coords.rank - rank());
 
 	//King can move at maximum 1 square in all the directions
-    if(delta_file > 1 || delta_rank > 1 || (coords.rank == file() && coords.file == rank())) {
+    if(delta_file > 1 || delta_rank > 1 || (coords.rank == rank() && coords.file == file())) {
 		return false;
 	}
-
 
 	if (board.isEmpty(coords) || board.at(coords).color() != this->color())
 		return true;
@@ -35,15 +34,19 @@ bool chess::King::canMove(chess::Board& board) const {
 			} 
     	}
     }
+	std::cerr << "Fine posizioni normali" << std::endl;
 	int castling_rank = (color() == WHITE)?0:7;
 
-	if(canCastle({2 ,castling_rank}, board) && !board.isKingInCheckAfterMove(position_, {2, castling_rank})) {
+	if(canCastle({2 ,castling_rank}, board)) {
 		return true;
 	}
+	std::cerr << "Fine canCastl1" << std::endl;
 	
-	if(canCastle({6 ,castling_rank}, board) && !board.isKingInCheckAfterMove(position_, {2, castling_rank})) {
+	if(canCastle({6 ,castling_rank}, board)) {
 		return true;
 	}
+	std::cerr << "Fine canCastl2" << std::endl;
+
     return false;
 };
 
@@ -55,9 +58,9 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 			if (d_file == 0 && d_rank == 0)
 				continue;
 			Coordinates coords = {d_file + file(), d_rank + rank()};
-			if(coords.inBounderies() && !board.isEmpty(coords)) {//file, rank in valid range
-				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
-					moves.push_back({d_file + file(),  d_rank + rank()});
+			if(coords.inBounderies()) {//file, rank in valid range
+				if(canMoveAt(coords, board)) {
+					moves.push_back(coords);
 				}
 			} 
     	}

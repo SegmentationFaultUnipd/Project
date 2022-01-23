@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	}
 	chess::Player *player1, *player2;
 	int max_moves = -1;
-	srand(time(NULL));
+	//srand(time(NULL));
 	if(args[1] == "pc") {
 		player1 = new chess::HumanPlayer(selectRandomColor());
 		player2 = new chess::ComputerPlayer(rand(), opposite(player1->getColor()));

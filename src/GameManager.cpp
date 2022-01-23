@@ -60,18 +60,25 @@ void chess::GameManager::play() {
 			board.promote(to, chosen);
 			logPromotion(current_move_, chosen, to);
 		}
+		std::cerr << "Promozione passata" <<std::endl;
+
 
 		nextPlayer();
+		std::cerr << "Next player passato" <<std::endl;
+
 		//Check if player has available moves
 		//Assertion failed here:
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color_);
 		bool player_can_move = false;
 		for(auto piece : pieces) {
+			std::cerr << "Loop infame" << std::endl;
+			std::cerr << "Coordinate pezzo corrente "<<piece.toNotation() <<" "<<board.at(piece).ascii()<<std::endl;
 			if(board.at(piece).canMove(board)) {
 				player_can_move = true;
 				break;
 			}
 		}
+		std::cerr << "Controllo che il giocatore abbia delle mosse valide passato" <<std::endl;
 
 		if(!player_can_move) {
 			if(board.isKingInCheck(current_color_)) {
