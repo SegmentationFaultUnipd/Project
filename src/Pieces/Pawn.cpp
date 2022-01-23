@@ -42,7 +42,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
         return false;
     }
     //The pawn is trying to en pass
-    if(board.isEnPassantMove(position_, coords)) {
+    if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
         return true;
     }
 
@@ -54,7 +54,6 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     else {
         delta_rank = -1;
     }
-
     //The pawn is moving two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * delta_rank));
     if(two_up && !has_moved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * delta_rank)})) {
@@ -106,8 +105,7 @@ bool chess::Pawn::canMove(Board& board) const {
 std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     std::vector<chess::Coordinates> moves = {};
     //Check the pawn color
-    short delta_rank = (color_ == WHITE) ? 1 : -1;
-
+    short delta_rank = (color() == WHITE)?1:-1;
     //Double move up
     Coordinates double_up {position_.file, position_.rank + (2 * delta_rank)};
     if(double_up.inBounderies() && canMoveAt(double_up, board)) {
@@ -119,7 +117,6 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
 	if(single_up.inBounderies() && canMoveAt(single_up, board)) {
 		moves.push_back(single_up);
 	}
-
 	//Diagonal eating moves
 	Coordinates diag_right {position_.file + 1, position_.rank + delta_rank};
 	if(diag_right.inBounderies() && canMoveAt(diag_right, board)) {
