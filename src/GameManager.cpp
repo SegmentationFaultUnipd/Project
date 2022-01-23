@@ -62,15 +62,15 @@ void chess::GameManager::play() {
 		
 		//Check if player has available moves
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color);
-		bool player_has_at_least_1_move = false;
+		bool player_can_move = false;
 		for(auto piece : pieces) {
-			if(board.legalMovesOf(board.at(piece)).size() > 0) {
-				player_has_at_least_1_move = true;
+			if(board.at(piece).canMove(board)) {
+				player_can_move = true;
 				break;
 			}
 		}
 
-		if(!player_has_at_least_1_move) {
+		if(!player_can_move) {
 			if(board.isKingInCheck(current_color)) {
 				//Scacco matto
 				log_stream<<"---"<<std::endl;

@@ -22,6 +22,7 @@ namespace chess {
     class Board {
         public:
             Board();
+            Board(const Board& to_copy);
 
             bool isEmpty(Coordinates coords) const;
             const Piece& at(Coordinates coords) const;
@@ -33,13 +34,13 @@ namespace chess {
            
             bool move(Coordinates from, Coordinates to);
 
+            bool isKingInCheckAfterMove(Coordinates from, Coordinates to);
             bool isThreatened(Coordinates piece_coords, Color piece_color);
             bool isKingInCheck(Color king_color);
 
             bool isEmptyOrOppositeColor(Coordinates landing_square, Color piece_color) const;
             bool isOppositeColor(Coordinates landing_square, Color piece_color) const;
 
-            // Special moves ---------------------------------------------
             void addAvailableEnPassant(Coordinates from, Coordinates to);
             
 			void promote(Coordinates pawn, char piece);
@@ -51,6 +52,7 @@ namespace chess {
             void doEnPassantMove(Coordinates from, Coordinates to);
 
         private:
+            void handleMoveType_(Coordinates from, Coordinates to);
             void addPiece_(char piece_ascii, Coordinates coords, Color color);
             void addPieceToMatrix_(std::unique_ptr<Piece>& attacking_piece_color, Coordinates coords);
             void addPieceCoords_(Coordinates coords);
@@ -66,19 +68,8 @@ namespace chess {
 
             std::list<Coordinates> white_coords_;
             std::list<Coordinates> black_coords_;
-
             std::list<std::pair<Coordinates, Coordinates>> available_en_passants_;
-
             std::unique_ptr<Piece> board_[8][8];
-
-            struct State {
-                std::unique_ptr<Piece> board[8][8];
-                std::list<Coordinates> white_coords;
-                std::list<Coordinates> black_coords;
-            };
-            State getCurrentState_();
-            void restoreState_(State& state);
-            std::unique_ptr<Piece>** copyPieceMatrix_(std::unique_ptr<Piece> to_copy[8][8]);
     };
 
     std::ostream& operator<<(std::ostream& os, const Board& board);

@@ -15,7 +15,8 @@ bool chess::Knight::canMoveAt(Coordinates landing_square, chess::Board &board) c
 bool chess::Knight::canMove(chess::Board &board) const
 {
     for (const Coordinates &landing_square : candidateMoves_())
-        if (board.isEmptyOrOppositeColor(landing_square, this->color_))
+        if (board.isEmptyOrOppositeColor(landing_square, this->color_)
+            && !board.isKingInCheckAfterMove(position_, landing_square))
         {
             return true;
         }
