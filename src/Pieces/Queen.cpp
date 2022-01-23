@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #include "Queen.h"
 
 bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {

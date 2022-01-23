@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #include "ReplayPlayer.h"
 
 void chess::ReplayPlayer::nextTurn(Board& board, chess::Coordinates& from, chess::Coordinates& to) {

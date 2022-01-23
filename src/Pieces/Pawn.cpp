@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #include "Pawn.h"
 
 void chess::Pawn::move(Coordinates new_position, Board& board) {

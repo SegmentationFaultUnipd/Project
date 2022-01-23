@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #ifndef ROOK_H
 #define ROOK_H
 

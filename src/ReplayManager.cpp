@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #include <thread>         
 #include <chrono>  
 #include <fstream>
