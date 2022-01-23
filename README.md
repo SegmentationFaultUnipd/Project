@@ -9,7 +9,8 @@ Il progetto è diviso in 3 cartelle:
 - src: contiene i file sorgene e le intestazioni, al suo interno troviamo le cartelle:
     - Pieces: contiene i file sorgente e le intestazioni per i diversi pezzi
     - Players: contiene i file sorgente e le intestazioni per i diversi tipi di giocatori
-- tests: contiene file di testo con un esempio di partita PCvsPC ("Stockfish vs Alpha Zero") e una partita generica ("general_game")
+- tests: contiene file di testo con un esempio di partita PCvsPC ("Stockfish_vs_Alpha_Zero.txt"), una partita PvP ("general_game.txt")
+         e una partita PvPC ("Humans_vs_Computer.txt")
 - html: contiene la documentazione del progetto realizzata con il programma "Doxygen" in formato html
 
 INSTALLAZIONE E ESECUZIONE
@@ -21,5 +22,3 @@ Da VSCode installa le estensioni CMake e CMake Tools.
 Per buildare:
 posizionati in /build e esegui il comando
     cmake --build .
-
-
