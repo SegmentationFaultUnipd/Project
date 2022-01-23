@@ -91,7 +91,7 @@ bool chess::Board::move(Coordinates from, Coordinates to)
 
     Color current_color = at(from).color();
 
-    bool is_valid_move = at(from).canMoveAt(to, *this) && isKingInCheckAfterMove(from, to);
+    bool is_valid_move = at(from).canMoveAt(to, *this) && !isKingInCheckAfterMove(from, to);
 
     if (is_valid_move) {
         handleMoveType_(from, to);
