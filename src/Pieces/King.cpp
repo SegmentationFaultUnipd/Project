@@ -25,7 +25,6 @@ bool chess::King::canMove(chess::Board& board) const {
        	for (short d_rank = -1; d_rank <= 1; d_rank++) {
 			if (d_file == 0 && d_rank == 0)
 				continue;
-
 			Coordinates final_coords = {d_file + file(), d_rank + rank()};
 			if(final_coords.inBounderies()) {//file, rank in valid range
 				if (canMoveAt({d_file + file(), d_rank + rank()}, board)

@@ -38,6 +38,19 @@ chess::Board::Board()
     }
 }
 
+chess::Board::Board(const Board& to_copy) {
+    for (int file = 0; file < 8; ++file) {
+        for (int rank = 0; rank < 8; ++rank) {
+            if (!to_copy.isEmpty({file, rank}))
+                board_[file][rank] = clonePiece_(to_copy.at({file, rank}));
+        }
+    }
+
+    this->black_coords_ = to_copy.black_coords_;
+    this->white_coords_ = to_copy.white_coords_;
+    this->available_en_passants_ = to_copy.available_en_passants_;
+}
+
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
     std::unique_ptr<Piece> pieceToAdd = makePiece_(asciiPiece, coords, color);
     addPieceToMatrix_(pieceToAdd, coords);
@@ -75,23 +88,11 @@ chess::Piece &chess::Board::at(Coordinates coords)
 }
 
 bool chess::Board::isKingInCheckAfterMove(Coordinates from, Coordinates to) {
-    Color current_color = at(from).color();
-    State before_move_state = getCurrentState_();
+    Board copy{*this};
 
-    if (isEnPassantMove(from, to))
-        doEnPassantMove(from, to);
-    else if (isCastlingMove(from, to))
-        doCastlingMove(from, to);
-    else
-        updatePosition_(from, to);
+    copy.handleMoveType_(from, to);
 
-    clearEnPassants_(current_color);
-
-    bool king_in_check = isKingInCheck(current_color);
-
-    restoreState_(before_move_state);
-
-    return king_in_check;
+    return copy.isKingInCheck(at(from).color());
 }
 
 // Move the piece
@@ -101,25 +102,15 @@ bool chess::Board::move(Coordinates from, Coordinates to)
     assert(from.inBounderies());
     assert(to.inBounderies());
 
-    State before_move_state;
     Color current_color = at(from).color();
 
     bool is_valid_move = at(from).canMoveAt(to, *this);
 
     if (is_valid_move) {
-        before_move_state = getCurrentState_();
-
-        if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to);
-        else if (isCastlingMove(from, to))
-            doCastlingMove(from, to);
-        else
-            updatePosition_(from, to);
-
+        handleMoveType_(from, to);
         clearEnPassants_(current_color);
 
         if (isKingInCheck(current_color)) {
-            restoreState_(before_move_state);
             is_valid_move = false;
         }
     }
@@ -127,33 +118,13 @@ bool chess::Board::move(Coordinates from, Coordinates to)
     return is_valid_move;
 }
 
-chess::Board::State chess::Board::getCurrentState_() {
-    State current_state;
-    
-    for (int rank = LOWER_RANK; rank <= UPPER_RANK; rank++) {
-        for (int file = LEFT_FILE; file <= RIGHT_FILE; file++) {
-            if (!isEmpty({file, rank}))
-                current_state.board[file][rank] = clonePiece_(*this->board_[file][rank]);
-        }
-    }
-
-    current_state.white_coords = this->white_coords_;
-    current_state.black_coords = this->black_coords_;
-    current_state.available_en_passants = this->available_en_passants_;
-
-    return current_state;
-}
-
-void chess::Board::restoreState_(State& state) {
-    
-    for (int rank = LOWER_RANK; rank <= UPPER_RANK; rank++) {
-        for (int file = LEFT_FILE; file <= RIGHT_FILE; file++) {
-            board_[file][rank] = std::move(state.board[file][rank]);
-        }
-    }
-    white_coords_ = state.white_coords;
-    black_coords_ = state.black_coords;
-    available_en_passants_ = state.available_en_passants;
+void chess::Board::handleMoveType_(Coordinates from, Coordinates to) {
+    if (isEnPassantMove(from, to))
+        doEnPassantMove(from, to);
+    else if (isCastlingMove(from, to))
+        doCastlingMove(from, to);
+    else
+        updatePosition_(from, to);
 }
 
 void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
