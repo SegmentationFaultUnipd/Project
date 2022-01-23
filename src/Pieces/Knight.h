@@ -10,6 +10,10 @@
 
 namespace chess {
 	class Board;
+    /**
+     * @brief Classe che rappresenta un pezzo di tipo cavallo
+     * 
+     */
     class Knight : public Piece {
         public:
             Knight(Coordinates pos, Color color) : Piece{pos, color} {};

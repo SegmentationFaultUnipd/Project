@@ -9,6 +9,10 @@
 
 namespace chess {
     class Board;
+    /**
+     * @brief Classe che rappresenta un pezzo di tipo pedone
+     * 
+     */
     class Pawn : public Piece {
         public:
             Pawn(Coordinates pos, Color color) : Piece{pos, color}, has_moved{false} {};

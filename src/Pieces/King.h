@@ -7,7 +7,10 @@
 #include <vector>
 
 namespace chess {
-
+    /**
+     * @brief Classe che rappresenta un pezzo di tipo re
+     * 
+     */
     class King : public Piece {
 		private:
 			bool has_moved;

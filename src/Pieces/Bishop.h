@@ -7,6 +7,10 @@
 #include "Piece.h"
 #include "../Board.h"
 namespace chess {
+    /**
+     * @brief Classe che rappresenta un pezzo di tipo alfiere
+     * 
+     */
     class Bishop : public Piece {
         public:
             Bishop(Coordinates coords, Color color) : Piece{coords, color} {};
