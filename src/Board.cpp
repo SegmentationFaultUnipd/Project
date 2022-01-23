@@ -207,11 +207,6 @@ void chess::Board::updatePosition_(Coordinates from, Coordinates to)
     board_[from.file][from.rank] = nullptr;
 }
 
-const std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece &piece)
-{
-    return piece.legalMoves(*this);
-}
-
 std::list<chess::Coordinates> &chess::Board::getPiecesCoords(chess::Color color)
 {
     if (color == WHITE)
