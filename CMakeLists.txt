@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
+set(CMAKE_CXX_FLAGS, "-O2")
+set(CMAKE_CXX_FLAGS_DEBUG, "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE, "-O2")
 # set the project name
 project(VirtualChessboard)
 
@@ -23,6 +25,7 @@ add_library(
     Players
     src/Players/HumanPlayer.cpp
     src/Players/ComputerPlayer.cpp
+	src/Players/ReplayPlayer.cpp
 )
 
 # add the executable
@@ -33,5 +36,15 @@ add_executable(
     src/GameManager.cpp
 )
 
+add_executable(
+    Replay
+    src/Replay.cpp
+    src/Board.cpp
+    src/ReplayManager.cpp
+)
+
 target_link_libraries(Scacchiera PUBLIC Pieces)
 target_link_libraries(Scacchiera PUBLIC Players)
+
+target_link_libraries(Replay PUBLIC Pieces)
+target_link_libraries(Replay PUBLIC Players)

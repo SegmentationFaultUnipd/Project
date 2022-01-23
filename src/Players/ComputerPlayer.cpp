@@ -1,7 +1,7 @@
 #include "ComputerPlayer.h"
 #include <list>
 
-void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, chess::Coordinates &to) const {
+void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, chess::Coordinates &to) {
 	std::list<Coordinates> my_pieces = board.getPiecesCoords(color_);
 
 	bool chosen = false;
@@ -21,7 +21,7 @@ void chess::ComputerPlayer::nextTurn(Board &board, chess::Coordinates &from, che
 	}
 }
 
-char chess::ComputerPlayer::choosePromotion() const {
+char chess::ComputerPlayer::choosePromotion() {
 	char available[] = {'T','D', 'C', 'A'};
 	return available[rand()%4];
 }
