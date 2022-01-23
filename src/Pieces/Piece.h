@@ -34,7 +34,8 @@ namespace chess {
             virtual bool canMoveAt(Coordinates pos, chess::Board& board) const = 0;
             
             /**
-             * @brief Metodo che verifica se this ha almeno una mossa disponibile
+             * @brief Metodo che verifica se this ha almeno una mossa disponibile sulla 
+             * scacchiera board
              * @note Questo metodo potrebbe essere sostituito da una verifica sulla
              * grandezza del vettore ritornato da legalMoves ma sarebbe meno efficiente
              * @param board la schacchiera
@@ -44,7 +45,8 @@ namespace chess {
             virtual bool canMove(chess::Board& board) const = 0;
 
             /**
-             * @brief Metodo che ritorna tutte le mosse che this può fare
+             * @brief Metodo che ritorna tutte le mosse che this può fare sulla schacchiera
+             * board
              * @note Le mosse ritornate potrebbero causare scacco
              * @param board la schacchiera
              * @return std::vector<Coordinates> contenente del coordinate di arrivo
@@ -53,7 +55,8 @@ namespace chess {
             virtual std::vector<Coordinates> legalMoves(chess::Board& board) const = 0;
 
             /**
-             * @brief Metodo che ritorna tutti i pezzi catturabili da this
+             * @brief Metodo che ritorna tutti i pezzi catturabili da this sulla schacchiera
+             * board
              * @note Le mosse ritornate potrebbero causare scacco
              * @param board la schacchiera
              * @return std::vector<Piece*> contenente tutti i puntatori ai pezzi catturabili 
