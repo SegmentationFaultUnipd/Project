@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #include "King.h"
 bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
 	if(canCastle(coords, board)) {

@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #include "Bishop.h"
 
 bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {

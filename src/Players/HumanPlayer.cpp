@@ -1,3 +1,4 @@
+//AUTORE: Filippo Mazzarotto
 #include "HumanPlayer.h"
 
 void chess::HumanPlayer::stringToLower(std::string &string) {

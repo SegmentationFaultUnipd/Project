@@ -1,3 +1,4 @@
+//AUTORE: Filippo Mazzarotto
 #include <iostream>
 
 #include "GameManager.h"

@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 

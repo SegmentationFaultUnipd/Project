@@ -1,3 +1,4 @@
+//AUTORE: Tommaso Leoni
 #include "Rook.h"
 
 bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {

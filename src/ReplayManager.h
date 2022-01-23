@@ -1,3 +1,4 @@
+//AUTORE: Filippo Niero
 #ifndef REPLAYMANAGER_H
 #define REPLAYMANAGER_H
 
