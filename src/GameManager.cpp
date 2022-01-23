@@ -48,7 +48,7 @@ void chess::GameManager::play() {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color_ && board.move(from, to);
 			if (!isValid)
-				std::cout << "Mossa non consentita" << std::endl;
+				std::cout << "Mossa " << from.toNotation() << " " << to.toNotation() <<" non consentita" << std::endl;
 		} while (!isValid);
 
 		std::cout << "Mossa eseguita: "<< from.toNotation() << " " << to.toNotation() << std::endl;
@@ -67,7 +67,6 @@ void chess::GameManager::play() {
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color_);
 		bool player_can_move = false;
 		for(auto piece : pieces) {
-			std::cerr << piece << ", ";
 			if(board.at(piece).canMove(board)) {
 				player_can_move = true;
 				break;
@@ -78,27 +77,25 @@ void chess::GameManager::play() {
 			if(board.isKingInCheck(current_color_)) {
 				//Scacco matto
 				log_stream_<<"---"<<std::endl;
-				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re è sotto scacco";
+				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re è sotto scacco" << std::endl;
 				nextPlayer();
 				win(currentPlayer());
 			}else {
 				//Parità
 				log_stream_<<"---"<<std::endl;
-				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re non è sotto scacco";
+				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re non è sotto scacco" << std::endl;
 				draw();
 			}
-			isGameEnded = true;
 		}
 
-		if(!infinite_game && !isGameEnded) {
+		if(!isGameEnded) {
 			current_move_++;
 		}
 
 	}
+	log_stream_<<"---"<<std::endl;
 
-	
 	if(current_move_ >= max_moves_) {
-		log_stream_<<"---"<<std::endl;
 		std::cout << "Numero di mosse previsto raggiunto. " << std::endl;
 		draw();
 	}
