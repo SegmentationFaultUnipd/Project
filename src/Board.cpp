@@ -78,6 +78,9 @@ chess::Piece &chess::Board::at(Coordinates coords)
 
 bool chess::Board::isKingInCheckAfterMove(Coordinates from, Coordinates to) {
     Board copy{*this};
+
+    copy.handleMoveType_(from, to);
+
     return copy.isKingInCheck( at(from).color());
 }
 
