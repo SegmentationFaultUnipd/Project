@@ -42,7 +42,7 @@ void chess::GameManager::play() {
 		Coordinates from, to;
 		bool isValid = false;
 
-		std::cout << "Tocca al " << ColorNames[WHITE] << std::endl;
+		std::cout << "Tocca al " << ColorNames[current_color_] << std::endl;
 		do {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color_ && board.move(from, to);
