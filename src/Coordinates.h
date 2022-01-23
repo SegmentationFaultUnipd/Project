@@ -44,6 +44,13 @@ namespace chess
 
         Coordinates() : Coordinates{0, 0} {}
 
+        /**
+         * @brief Metodo che ritorna una stringa con la coordinata
+         * in notazione alfanumerica
+         * 
+         * @return std::string con le coordinata alfanumerica ex:
+         *  00 diventa a1
+         */
         std::string toNotation() const
         {
             std::ostringstream oss;
@@ -51,6 +58,13 @@ namespace chess
             return oss.str();
         }
 
+        /**
+         * @brief Metodo che verifica se this si trova all'interno
+         * della scacchiera 8x8
+         * 
+         * @return true se si trova all'interno della scacchiera
+         * @return false altrimenti
+         */
         bool inBounderies() const
         {
             return file >= LEFT_FILE && file <= RIGHT_FILE
