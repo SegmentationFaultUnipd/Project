@@ -63,7 +63,7 @@ void chess::GameManager::play() {
 		nextPlayer();
 		
 		//Check if player has available moves
-		std::list<Coordinates> pieces = board.getPiecesCoords(current_color);
+		std::list<Coordinates> pieces = board.getPiecesCoords(current_color_);
 		bool player_can_move = false;
 		for(auto piece : pieces) {
 			if(board.at(piece).canMove(board)) {
@@ -73,7 +73,7 @@ void chess::GameManager::play() {
 		}
 
 		if(!player_can_move) {
-			if(board.isKingInCheck(current_color)) {
+			if(board.isKingInCheck(current_color_)) {
 				//Scacco matto
 				log_stream_<<"---"<<std::endl;
 				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re è sotto scacco";
