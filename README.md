@@ -1,6 +1,6 @@
 # Project
 PROGETTO DI LABORATORIO DI PROGRAMMAZIONE sviluppato dal gruppo SEGMENTATION FAULT
-SCHACCHIERA VIRTUALE
+SCACCHIERA VIRTUALE
 Il progetto supporta diverse modalità di gioco (PvsP, PvsAI, AIvsAI) che si possono impostare all'inizio.
 
 TABELLA DEI CONTENUTI
