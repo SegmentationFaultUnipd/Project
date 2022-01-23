@@ -1,11 +1,11 @@
 #include "HumanPlayer.h"
 
-void stringToLower(std::string &string) {
+void chess::HumanPlayer::stringToLower(std::string &string) {
     for(char& c : string)
         c = tolower(c);
 }
 
-void chess::HumanPlayer::nextTurn(Board& board, chess::Coordinates& from, chess::Coordinates& to) const {
+void chess::HumanPlayer::nextTurn(Board& board, chess::Coordinates& from, chess::Coordinates& to) {
     bool correct_notation = false;
     std::string input_from, input_to;
 
@@ -41,7 +41,7 @@ bool chess::HumanPlayer::verifyNotation(std::string coords) const {
     return Coordinates{f,r}.inBounderies();
 }
 
-char chess::HumanPlayer::choosePromotion() const {
+char chess::HumanPlayer::choosePromotion() {
     char piece;
     bool valid_input ;
     std::cout << "Promuovi in [D|T|A|C]: ";

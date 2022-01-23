@@ -3,18 +3,6 @@
 chess::Board::Board()
 {
     char ascii_setup[8][8] = {
-        ' ', ' ', ' ', 'c', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', 'a', ' ', ' ', ' ', 'p', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', 'p', 'D', ' ', ' ', ' ', 'r',
-        ' ', ' ', 'p', ' ', ' ', ' ', ' ', ' ',
-        ' ', ' ', ' ', ' ', ' ', 'T', ' ', ' ',
-        'R', ' ', ' ', 'c', ' ', ' ', ' ', ' ',
-    };
-
-    /*
-    char ascii_setup[8][8] = {
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         'a', 'p', ' ', ' ', ' ', ' ', 'P', 'A',
@@ -24,7 +12,6 @@ chess::Board::Board()
         'c', 'p', ' ', ' ', ' ', ' ', 'P', 'C',
         't', 'p', ' ', ' ', ' ', ' ', 'P', 'T',
     };
-    */
 
     for (short r = 0; r < 8; r++) {
         for (short f = 0; f < 8; f++) {
@@ -36,10 +23,10 @@ chess::Board::Board()
         }
     }
 
-    std::cout << "Takeable from queen: ";
+    std::cerr << "Takeable from queen: ";
     for (const Piece* piece : at({4,3}).takeablePieces(*this))
-        std::cout << piece->coordinates() << ", ";
-    std::cout << "\n";
+        std::cerr << piece->coordinates() << ", ";
+    std::cerr << "\n";
 }
 
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
@@ -92,7 +79,7 @@ bool chess::Board::move(Coordinates from, Coordinates to)
 
     if (!isEmpty(from) && at(from).canMoveAt(to, *this))
     {
-        std::cout << moveCauseSelfCheck(from, to, true) << std::endl;
+        std::cerr << moveCauseSelfCheck(from, to, true) << std::endl;
 
         // State before_move = getCurrentState();
 
@@ -213,7 +200,7 @@ void chess::Board::updatePosition_(Coordinates from, Coordinates to)
 bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool debug /*= false*/)
 {
     assert(!isEmpty(from));
-    std::cout << "CauseSelfCheck " << from << to << ": \"from\" is indeed empty, ";
+    std::cerr << "CauseSelfCheck " << from << to << ": \"from\" is indeed empty, ";
 
     bool kingInCheck;
     std::unique_ptr<Piece> moving_piece, landing_piece;
@@ -222,21 +209,21 @@ bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool deb
     moving_piece = copyPiece_(at(from));
     if (!isEmpty(to))
         landing_piece = copyPiece_(at(to));
-    std::cout << "state saved, ";
+    std::cerr << "state saved, ";
 
     // Movement in matrix
     board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
     board_[from.file][from.rank] = nullptr;
-    std::cout << "move applied, ";
+    std::cerr << "move applied, ";
 
     // Check move validity
     kingInCheck = isKingInCheck(moving_piece->color());
-    std::cout << "validity checked, " << "\n";
+    std::cerr << "validity checked, " << "\n";
 
     // Reset
     board_[from.file][from.rank] = std::move(moving_piece);
     board_[to.file][to.rank] = std::move(landing_piece);
-    std::cout << "and reset completed.\n" << "\n";
+    std::cerr << "and reset completed.\n" << "\n";
 
     return kingInCheck;
 }
