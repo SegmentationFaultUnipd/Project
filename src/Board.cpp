@@ -19,29 +19,33 @@ chess::Board::Board()
             Coordinates coords{f, r};
             Color color = islower(ascii_piece) ? WHITE : BLACK;
 
-            addPiece_(ascii_piece, coords, color);
+            if (ascii_piece != ' ')
+                addPiece_(ascii_piece, coords, color);
+        }
+    }
+}
+
+chess::Board::Board(const Board& to_copy) {
+    for (int file = 0; file < 8; ++file) {
+        for (int rank = 0; rank < 8; ++rank) {
+            if (!to_copy.isEmpty({file, rank}))
+                board_[file][rank] = clonePiece_(to_copy.at({file, rank}));
         }
     }
 
-    std::cerr << "Takeable from queen: ";
-    for (const Piece* piece : at({4,3}).takeablePieces(*this))
-        std::cerr << piece->coordinates() << ", ";
-    std::cerr << "\n";
+    this->black_coords_ = to_copy.black_coords_;
+    this->white_coords_ = to_copy.white_coords_;
+    this->available_en_passants_ = to_copy.available_en_passants_;
 }
 
 void chess::Board::addPiece_(char asciiPiece, Coordinates coords, Color color) {
     std::unique_ptr<Piece> pieceToAdd = makePiece_(asciiPiece, coords, color);
-
     addPieceToMatrix_(pieceToAdd, coords);
-    if (!isEmpty(coords))
-        addPieceCoords_(coords);
+    addPieceCoords_(coords);
 }
 
 void chess::Board::addPieceToMatrix_(std::unique_ptr<Piece>& pieceToAdd, Coordinates coords) {
-    if (pieceToAdd == nullptr)
-        board_[coords.file][coords.rank] = nullptr;
-    else
-        board_[coords.file][coords.rank] = std::move(pieceToAdd);
+    board_[coords.file][coords.rank] = std::move(pieceToAdd);
 }
 
 void chess::Board::addPieceCoords_(Coordinates coords) {
@@ -52,7 +56,6 @@ void chess::Board::addPieceCoords_(Coordinates coords) {
     else
         getPiecesCoords(pieceColor).push_back(coords);
 }
-
 
 bool chess::Board::isEmpty(chess::Coordinates coords) const
 {
@@ -71,33 +74,44 @@ chess::Piece &chess::Board::at(Coordinates coords)
     return *board_[coords.file][coords.rank];
 }
 
+bool chess::Board::isKingInCheckAfterMove(Coordinates from, Coordinates to) {
+    Board copy{*this};
+
+    copy.handleMoveType_(from, to);
+
+    return copy.isKingInCheck(at(from).color());
+}
+
 // Move the piece
 bool chess::Board::move(Coordinates from, Coordinates to)
 {
+    assert(!isEmpty(from));
     assert(from.inBounderies());
     assert(to.inBounderies());
 
-    if (!isEmpty(from) && at(from).canMoveAt(to, *this))
-    {
-        std::cerr << moveCauseSelfCheck(from, to, true) << std::endl;
+    Color current_color = at(from).color();
 
-        // State before_move = getCurrentState();
+    bool is_valid_move = at(from).canMoveAt(to, *this);
 
-        if (isEnPassantMove(from, to))
-            doEnPassantMove(from, to);
-        else if (isCastlingMove(from, to))
-            doCastlingMove(from, to);
-        else
-            updatePosition_(from, to);
+    if (is_valid_move) {
+        handleMoveType_(from, to);
+        clearEnPassants_(current_color);
 
-        clearEnPassants_(at(to).color());
-
-        // if king in check
-        // restore (before_move);
-
-        return true;
+        if (isKingInCheck(current_color)) {
+            is_valid_move = false;
+        }
     }
-    return false;
+
+    return is_valid_move;
+}
+
+void chess::Board::handleMoveType_(Coordinates from, Coordinates to) {
+    if (isEnPassantMove(from, to))
+        doEnPassantMove(from, to);
+    else if (isCastlingMove(from, to))
+        doCastlingMove(from, to);
+    else
+        updatePosition_(from, to);
 }
 
 void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
@@ -108,10 +122,10 @@ void chess::Board::doCastlingMove(Coordinates from, Coordinates to)
 
     Coordinates rook_old_coords, rook_new_coords;
     if (castle_queenside) {
-        rook_old_coords = {BOARD_LEFT_FILE, to.rank};
+        rook_old_coords = {LEFT_FILE, to.rank};
         rook_new_coords = {to.file + 1, to.rank};
     } else {
-        rook_old_coords = {BOARD_RIGHT_FILE, to.rank};
+        rook_old_coords = {RIGHT_FILE, to.rank};
         rook_new_coords = {to.file - 1, to.rank};
     }
 
@@ -142,7 +156,7 @@ bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 
     std::pair<Coordinates, Coordinates> candidate_move{from, to};
 
-    for (auto available_en_passant : availableEnPassantsFor(color))
+    for (auto available_en_passant : available_en_passants_)
         if (candidate_move == available_en_passant)
             return true;
 
@@ -151,18 +165,16 @@ bool chess::Board::isEnPassantMove(Coordinates from, Coordinates to)
 
 void chess::Board::addAvailableEnPassant(Coordinates from, Coordinates to)
 {
-    availableEnPassantsFor(at(from).color()).push_back({from, to});
-}
-
-std::list<std::pair<chess::Coordinates, chess::Coordinates>>& chess::Board::availableEnPassantsFor(Color color) {
-    if (color == WHITE)
-        return available_en_passants_for_white_;
-    return available_en_passants_for_black_;
+    available_en_passants_.push_back({from, to});
 }
 
 void chess::Board::clearEnPassants_(Color of_color)
 {
-    availableEnPassantsFor(of_color) = {};
+    available_en_passants_.remove_if([this, of_color](std::pair<Coordinates, Coordinates> move) {
+        if (isEmpty(move.first))
+            return at(move.second).color() == of_color;
+        return at(move.first).color() == of_color;
+    });
 }
 
 void chess::Board::removePiece_(Coordinates coords) {
@@ -197,37 +209,6 @@ void chess::Board::updatePosition_(Coordinates from, Coordinates to)
     board_[from.file][from.rank] = nullptr;
 }
 
-bool chess::Board::moveCauseSelfCheck(Coordinates from, Coordinates to, bool debug /*= false*/)
-{
-    assert(!isEmpty(from));
-    std::cerr << "CauseSelfCheck " << from << to << ": \"from\" is indeed empty, ";
-
-    bool kingInCheck;
-    std::unique_ptr<Piece> moving_piece, landing_piece;
-
-    // Save old state
-    moving_piece = copyPiece_(at(from));
-    if (!isEmpty(to))
-        landing_piece = copyPiece_(at(to));
-    std::cerr << "state saved, ";
-
-    // Movement in matrix
-    board_[to.file][to.rank] = std::move(board_[from.file][from.rank]);
-    board_[from.file][from.rank] = nullptr;
-    std::cerr << "move applied, ";
-
-    // Check move validity
-    kingInCheck = isKingInCheck(moving_piece->color());
-    std::cerr << "validity checked, " << "\n";
-
-    // Reset
-    board_[from.file][from.rank] = std::move(moving_piece);
-    board_[to.file][to.rank] = std::move(landing_piece);
-    std::cerr << "and reset completed.\n" << "\n";
-
-    return kingInCheck;
-}
-
 const std::vector<chess::Coordinates> chess::Board::legalMovesOf(chess::Piece &piece)
 {
     return piece.legalMoves(*this);
@@ -252,7 +233,6 @@ bool chess::Board::isOppositeColor(Coordinates landing_square, Color piece_color
 // Only exception: en passant
 bool chess::Board::isThreatened(Coordinates square, Color piece_color)
 {
-    std::cerr << "{isThreatened " << square << "? ";
     const std::unique_ptr<Piece> dummy_pieces[] = {
         //std::make_unique<King>(square, piece_color),
         std::make_unique<Rook>(square, piece_color),
@@ -263,31 +243,25 @@ bool chess::Board::isThreatened(Coordinates square, Color piece_color)
     };
 
     for (const auto& dummy_piece : dummy_pieces) {
-        std::cerr << "checking " << dummy_piece->ascii() << " ";
         const std::vector<Piece*> &possible_threats = dummy_piece->takeablePieces(*this);
         
         for (Piece *possible_threat : possible_threats) {
-            std::cerr << possible_threat->coordinates() << " ";
             if (dummy_piece->ascii() == possible_threat->ascii())
-                std::cerr << " YES}";
                 return true;
         }
-        std::cerr << " }";
     }
 
-    /*Exception: en passants
-    for (std::pair<Coordinates, Coordinates> en_passant : availableEnPassantsFor(opposite(piece_color))) {
+    //Exception: en passants
+    for (std::pair<Coordinates, Coordinates> en_passant : available_en_passants_) {
         Coordinates& landing_square = en_passant.second;
         if (landing_square == square)
             return true;
-    }*/
+    }
     return false;
 }
 
 chess::Piece &chess::Board::getKing(chess::Color king_color)
 {
-    std::cerr << "!" << getPiecesCoords(king_color).front() << "\n";
-    std::cerr << board_[7][0]->ascii() << "\n";
     return at(getPiecesCoords(king_color).front());
 }
 
@@ -323,9 +297,25 @@ std::unique_ptr<chess::Piece> chess::Board::makePiece_(char c, Coordinates coord
     return nullptr;
 }
 
-std::unique_ptr<chess::Piece> chess::Board::copyPiece_(const Piece &piece) const
+std::unique_ptr<chess::Piece> chess::Board::clonePiece_(const Piece &piece) const
 {
-    return makePiece_(piece.ascii(), piece.coordinates(), piece.color());
+    Piece& to_copy = const_cast<Piece&>(piece);
+    switch(piece.ascii())
+    {
+    case 'R':
+        return std::make_unique<King>(static_cast<King&>(to_copy));
+    case 'D':
+        return std::make_unique<Queen>(static_cast<Queen&>(to_copy));
+    case 'T':
+        return std::make_unique<Rook>(static_cast<Rook&>(to_copy));
+    case 'A':
+        return std::make_unique<Bishop>(static_cast<Bishop&>(to_copy));
+    case 'C':
+        return std::make_unique<Knight>(static_cast<Knight&>(to_copy));
+    case 'P':
+        return std::make_unique<Pawn>(static_cast<Pawn&>(to_copy));
+    }
+    return nullptr;
 }
 
 std::ostream &chess::operator<<(std::ostream &os, const Board &board)

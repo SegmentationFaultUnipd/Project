@@ -25,22 +25,22 @@ bool chess::King::canMove(chess::Board& board) const {
        	for (short d_rank = -1; d_rank <= 1; d_rank++) {
 			if (d_file == 0 && d_rank == 0)
 				continue;
-
 			Coordinates final_coords = {d_file + file(), d_rank + rank()};
 			if(final_coords.inBounderies()) {//file, rank in valid range
-				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
+				if (canMoveAt({d_file + file(), d_rank + rank()}, board)
+					&& !board.isKingInCheckAfterMove(position_, {d_file + file(), d_rank + rank()})) {
 					return true;
 				}
 			} 
     	}
     }
-	int right_rank = (color() == WHITE)?0:7;
+	int castling_rank = (color() == WHITE)?0:7;
 
-	if(canCastle({2 ,right_rank}, board)) {
+	if(canCastle({2 ,castling_rank}, board) && !board.isKingInCheckAfterMove(position_, {2, castling_rank})) {
 		return true;
 	}
 	
-	if(canCastle({6 ,right_rank}, board)) {
+	if(canCastle({6 ,castling_rank}, board) && !board.isKingInCheckAfterMove(position_, {2, castling_rank})) {
 		return true;
 	}
     return false;
@@ -61,14 +61,14 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 			} 
     	}
     }
-	int right_rank = (color() == WHITE)?0:7;
+	int castling_rank = (color() == WHITE)?0:7;
 
-	if(canCastle({2 ,right_rank}, board)) {
-		moves.push_back({2, right_rank});
+	if(canCastle({2 ,castling_rank}, board)) {
+		moves.push_back({2, castling_rank});
 	}
 	
-	if(canCastle({6 ,right_rank}, board)) {
-		moves.push_back({6, right_rank});
+	if(canCastle({6 ,castling_rank}, board)) {
+		moves.push_back({6, castling_rank});
 	}
 
     return moves;
@@ -81,13 +81,13 @@ bool chess::King::canCastle(Coordinates to_coords, chess::Board& board) const {
 		return false;
 	}
 	//Check that the target position is valid. 
-	if(to_coords.rank != rank() || (to_coords.file != BOARD_TARGET_KINGSIDE_CASTLE_FILE && to_coords.file != BOARD_TARGET_QUEENSIDE_CASTLE_FILE)) {
+	if(to_coords.rank != rank() || (to_coords.file != TARGET_KINGSIDE_CASTLE_FILE && to_coords.file != TARGET_QUEENSIDE_CASTLE_FILE)) {
 		return false;
 	}
 
-	bool castlingKingSide = to_coords.file == BOARD_TARGET_KINGSIDE_CASTLE_FILE;
+	bool castlingKingSide = to_coords.file == TARGET_KINGSIDE_CASTLE_FILE;
 	//Getting the rook
-	Coordinates rook_coords = {(castlingKingSide)?BOARD_RIGHT_FILE:BOARD_LEFT_FILE, rank()};
+	Coordinates rook_coords = {(castlingKingSide)?RIGHT_FILE:LEFT_FILE, rank()};
 	// Check that the rook_coords are actually the positions of a rook, also check for the right color
 	if(board.isEmpty(rook_coords)) {
 		return false;

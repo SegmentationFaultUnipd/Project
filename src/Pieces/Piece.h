@@ -35,7 +35,6 @@ namespace chess {
             short file() const { return position_.file; }
             short rank() const { return position_.rank; }
             Coordinates coordinates() const { return position_; }
-            Piece(const Piece &obj) : Piece{obj.position_, obj.color_} {};
             
             Piece& operator=(const Piece& obj) {
                 position_ = obj.position_;
@@ -46,6 +45,7 @@ namespace chess {
                 position_ = pos;
                 color_ = color;
             };
+            Piece(const Piece &obj) : Piece{obj.position_, obj.color_} {};
 
 
             Coordinates position_;

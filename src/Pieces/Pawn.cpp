@@ -1,8 +1,32 @@
 #include "Pawn.h"
 
-void chess::Pawn::move(Coordinates new_position, Board &board) {
-    position_ = new_position;
+void chess::Pawn::move(Coordinates new_position, Board& board) {
     has_moved = true;
+    short color_n;
+    if(this->color() == WHITE) {
+        color_n = 1;
+    }
+    else {
+        color_n = -1;
+    }
+
+    bool two_up = new_position.file == position_.file && new_position.rank == (position_.rank + (2 * color_n));
+    if(two_up) {
+        Coordinates from, to;
+        to = {position_.file, position_.rank + (1 * color_n)};
+        //If there is a pawn on the right it can then en pass
+        from = {position_.file + 1, position_.rank + (2 * color_n)};
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P') {
+            board.addAvailableEnPassant(from, to);
+        }
+        //If there is a pawn on the left it can then en pass
+        from = {position_.file - 1, position_.rank + (2 * color_n)};
+        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P'){
+            board.addAvailableEnPassant(from, to);
+        }
+    }
+
+    position_ = new_position;
 }
 
 bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
@@ -20,7 +44,7 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     if(board.isEnPassantMove({position_.file, position_.rank}, coords)) {
         return true;
     }
-    
+
     //Check the pawn color
     short color_n;
     if(this->color() == WHITE) {
@@ -32,21 +56,9 @@ bool chess::Pawn::canMoveAt(Coordinates coords, Board& board) const {
     //The pawn is moving two steps forward (if it hasn't yet moved)
     bool two_up = coords.file == position_.file && coords.rank == (position_.rank + (2 * color_n));
     if(two_up && !has_moved && board.isEmpty(coords) && board.isEmpty({coords.file, position_.rank + (1 * color_n)})) {
-        Coordinates from, to;
-        to = {position_.file, position_.rank + (1 * color_n)};
-        //If there is a pawn on the right it can then en pass
-        from = {position_.file + 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P') {
-            board.addAvailableEnPassant(from, to);
-        }
-        //If there is a pawn on the left it can then en pass
-        from = {position_.file - 1, position_.rank + (2 * color_n)};
-        if(from.inBounderies() && board.isOppositeColor(from, this->color()) && board.at(from).ascii() == 'P'){
-            board.addAvailableEnPassant(from, to);
-        }
         return true;
     }
-    
+
     //The pawn is moving one step forward (if the tile is free)
     bool one_up = coords.file == position_.file && coords.rank == (position_.rank + (1 * color_n));
     if(one_up && board.isEmpty(coords)) {
@@ -74,7 +86,7 @@ bool chess::Pawn::canMove(Board& board) const {
     }
     //The pawn can move two steps forward
     Coordinates double_up {position_.file, position_.rank + (2 * color_n)};
-    if(double_up.inBounderies() && canMoveAt(double_up, board)) {
+    if(double_up.inBounderies() && canMoveAt(double_up, board) && !board.isKingInCheckAfterMove(position_, double_up)) {
             return true;
     }
     if(position_.rank - 1 >= 0) {
@@ -86,7 +98,9 @@ bool chess::Pawn::canMove(Board& board) const {
         bool eat_right = diag_right.inBounderies() && canMoveAt(diag_right, board);
         Coordinates diag_left {position_.file - 1, position_.rank + (1 * color_n)};
         bool eat_left = diag_left.inBounderies() && canMoveAt(diag_left, board);
-        if(one_step || eat_right || eat_left) {
+        if (one_step && !board.isKingInCheckAfterMove(position_, single_up)
+            || eat_right && !board.isKingInCheckAfterMove(position_, diag_right)
+            || eat_left && !board.isKingInCheckAfterMove(position_, diag_left)) {
             return true;
         }
     }
@@ -108,7 +122,6 @@ std::vector<chess::Coordinates> chess::Pawn::legalMoves(Board& board) const {
     Coordinates double_up {position_.file, position_.rank + (2 * color_n)};
     if(position_.rank - 2 >= 0 && double_up.inBounderies() && canMoveAt(double_up, board)) {
         moves.push_back(double_up);
-        std::cerr << double_up << ", ";
     }
 
     if(position_.rank - 1 >= 0) {
