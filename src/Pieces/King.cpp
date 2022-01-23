@@ -145,7 +145,7 @@ std::vector<chess::Piece*> chess::King::takeablePieces(Board &board) const
 	
 	std::vector<Piece*> takeable_pieces;
 
-	 for (short d_file = -1; d_file <= 1; d_file++) {
+	for (short d_file = -1; d_file <= 1; d_file++) {
        	for (short d_rank = -1; d_rank <= 1; d_rank++) {
 			if (d_file == 0 && d_rank == 0)
 				continue;
