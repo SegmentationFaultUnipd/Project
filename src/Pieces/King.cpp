@@ -55,9 +55,9 @@ std::vector<chess::Coordinates> chess::King::legalMoves(chess::Board& board) con
 			if (d_file == 0 && d_rank == 0)
 				continue;
 			Coordinates coords = {d_file + file(), d_rank + rank()};
-			if(coords.inBounderies() && !board.isEmpty(coords)) {//file, rank in valid range
-				if(canMoveAt({d_file + file(), d_rank + rank()}, board)) {
-					moves.push_back({d_file + file(),  d_rank + rank()});
+			if(coords.inBounderies()) {//file, rank in valid range
+				if(canMoveAt(coords, board)) {
+					moves.push_back(coords);
 				}
 			} 
     	}
