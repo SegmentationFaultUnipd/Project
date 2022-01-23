@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file ReplayPlayer.h
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #ifndef REPLAYPLAYER_H
 #define REPLAYPLAYER_H
 

@@ -1,4 +1,8 @@
-//AUTORE: Filippo Niero
+/**
+ * @file GameManager.h
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
 #ifndef GAMEMANAGER_H
 #define GAMEMANAGER_H
 
@@ -11,23 +15,22 @@ namespace chess {
 
     class GameManager {
         public:
-			//Nota: current_player viene inizializzato a player1 nel costruttore, ma una volta che viene chiamato GameManager::play() viene corretto con il giocatore che ha il bianco
-            GameManager(Player &player1, Player &player2, int max_moves) : player1_(player1), player2_(player2), max_moves_(max_moves) {
+            GameManager(Player &player1, Player &player2)
+			: player1_(player1), player2_(player2), max_moves_(-1) {
 				createLogFile();
 			}
 
 			/**
-			 * @brief Metodo che inizia la partita
-			 * 
+			 * @brief Inizia il ciclo di gioco.
 			 */
            	void play();
 
 			/**
-			 * @brief Metodo che salva la mossa indicata nei parametri nel log
+			 * @brief Salva la mossa indicata nel log.
 			 * 
-			 * @param move_number numero della mossa (la prima mossa è 0)
-			 * @param from coordinate di partenza
-			 * @param to coordinate di arrivo
+			 * @param move_number Numero della mossa (la prima mossa è 0).
+			 * @param from Coordinate di partenza.
+			 * @param to Coordinate di arrivo.
 			 */
 			void logMove(int move_number, Coordinates from, Coordinates to);
 			void logPromotion(int move_number, char piece, Coordinates position);
@@ -35,7 +38,7 @@ namespace chess {
         private:
 			Player &player1_, &player2_;
 			Board board;
-			int max_moves_;//If max_moves is -1, go on forever
+			int max_moves_; //Per max_moves = -1, va avanti indefinitivamente
 			int current_move_ = 0;
 			Color current_color_;
 			std::string file_name_;
@@ -49,8 +52,8 @@ namespace chess {
 			std::string padTime(int x);
 			void cleanUp();
 
-			static Player& selectStartingPlayer(Player& player1, Player& player2) {
-				return (player1.getColor()== WHITE)?player1: player2;
+			Player& selectStartingPlayer(Player& player1, Player& player2) {
+				return (player1.getColor()== WHITE) ? player1 : player2;
 			}
 		
     };

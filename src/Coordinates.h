@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Coordinates.h
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #ifndef COORDINATES_H
 #define COORDINATES_H
 
@@ -14,17 +19,26 @@ namespace chess
     constexpr int UPPER_RANK{7};
     constexpr int LEFT_FILE{0};
     constexpr int RIGHT_FILE{7};
+
     constexpr int TARGET_QUEENSIDE_CASTLE_FILE{2};
     constexpr int TARGET_KINGSIDE_CASTLE_FILE{6};
 
     /**
-     * @brief Contiene le coordinate di una casa nella scacchiera
-     * file è la colonna, contiene un indice da 0 a 7 per le file da a a h
-     * rank è la riga, contiene un indice da 0 a 7 per le righe da 1 a 8
+     * @brief Contiene le coordinate di una casa nella scacchiera.
+     * Occasionalmente può servire per rappresentare degli spostamenti nella scacchiera,
+     * solo in questo caso contiene numeri negativi.
      */
     struct Coordinates
     {
+        /**
+         * @brief Rappresenta la colonna. Contiene un indice 0-7, per rappresentare
+         * le colonne a-h
+         */
         int file;
+        /**
+         * @brief Rappresenta la riga. Contiene un indice 0-7, per rappresentare
+         * le righe 1-8
+         */
         int rank;
 
         Coordinates(int _file, int _rank)
@@ -43,10 +57,9 @@ namespace chess
 
         /**
          * @brief Ritorna una stringa con la coordinata in notazione
-         * alfanumerica
+         * alfanumerica.
          * 
-         * @return std::string con le coordinata alfanumerica ex:
-         * 00 diventa a1
+         * @return std::string con le coordinata alfanumerica.
          */
         std::string toNotation() const
         {
@@ -56,10 +69,7 @@ namespace chess
         }
 
         /**
-         * @brief Verifica se si trova all'interno della scacchiera 8x8
-         * 
-         * @return true se si trova all'interno della scacchiera
-         * @return false altrimenti
+         * @brief Verifica se si trova all'interno della scacchiera 8x8.
          */
         bool inBounderies() const
         {

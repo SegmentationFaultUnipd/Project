@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file HumanPlayer.cpp
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #include "HumanPlayer.h"
 
 void chess::HumanPlayer::stringToLower(std::string &string) {

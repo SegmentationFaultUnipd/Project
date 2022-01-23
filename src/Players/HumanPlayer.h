@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file HumanPlayer.h
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #ifndef HUMANPLAYER_H
 #define HUMANPLAYER_H
 

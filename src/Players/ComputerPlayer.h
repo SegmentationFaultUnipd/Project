@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file ComputerPlayer.h
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 

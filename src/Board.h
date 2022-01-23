@@ -1,4 +1,8 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Board.h
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
 #ifndef BOARD_H
 #define BOARD_H
 
@@ -34,40 +38,43 @@ namespace chess {
             Piece& getKing(Color king_color);
 
             /**
-             * @brief Ritorna la lista delle coordinate dei pezzi del colore specificato
+             * @brief Ritorna la lista delle coordinate dei pezzi del colore specificato.
              * 
-             * @param color
-             * @return Reference alla std::list<Coordinates> dei pezzi di color
+             * @param color Colore dei pezzi da ottenere.
+             * @return Reference alla std::list<Coordinates>
              */
             std::list<Coordinates>& getPiecesCoords(Color color);
 
             /**
-             * @brief Prova ad eseguire la mossa from-to.
+             * @brief Prova ad eseguire la mossa specificata.
              * 
-             * @note Assume che in from ci sia
+             * @note Assume che in from ci sia un pezzo.
              * 
-             * @param from coordinate di inizio
-             * @param to coordinate di spostamento
-             * @return true se la mossa è stata eseguita
-             * @return false se la mossa è illegale
+             * @param from Coordinate di inizio.
+             * @param to Coordinate di fine.
+             * 
+             * @return true, se la mossa è stata eseguita,
+             * @return false, se la mossa è illegale,
              */
             bool move(Coordinates from, Coordinates to);
 
             /**
-             * @brief Verifica che dopo la mossa from-to il re del giocatore che ha mosso
-             * non sia in scacco. Sarebbe una mossa illegale
+             * @brief Verifica se dopo la mossa specificata il re del giocatore che ha mosso
+             * è in scacco.
              * @note Non effettua modifica alla board.
              * 
-             * @param from coordinate di inizio
-             * @param to coordinate di spostamento
+             * @param from Coordinate di inizio.
+             * @param to Coordinate di fine.
              */
             bool isKingInCheckAfterMove(Coordinates from, Coordinates to);
 
             /**
              * @brief Verifica se le coordinate specificate sono minacciate da pezzi avversari.
              * 
-             * @param piece_coords coordinate della casa da controllare.
-             * @param piece_color colore del pezzo (reale o no) della casa. I pezzi avversari
+             * @note Le coordinate possono puntare a una casa vuota.
+             * 
+             * @param piece_coords Coordinate della casa da controllare.
+             * @param piece_color Colore del pezzo presente nella casa. I pezzi avversari
              * sono del colore opposto.
              */
             bool isThreatened(Coordinates piece_coords, Color piece_color);
@@ -78,21 +85,21 @@ namespace chess {
             bool isOppositeColor(Coordinates landing_square, Color piece_color) const;
 
             /**
-             * @brief Aggiunge la mossa from-to alla lista delle possibili mosse en-passants
+             * @brief Aggiunge la mossa specificata alla lista delle possibili mosse en passant.
              * 
-             * @param from la casa del pezzo che può effettuare la mossa.
-             * @param to la casa in cui si posiziona il pezzo dopo aver effettuato la mossa.
+             * @param from La casa del pezzo che può effettuare la mossa.
+             * @param to La casa in cui si posiziona il pezzo dopo aver preso en passant.
              */
             void addAvailableEnPassant(Coordinates from, Coordinates to);
             
             /**
-             * @brief Rimuovi il pedone delle coordinate specificati e crea al suo posto un
-             * nuovo pezzo di tipo definito da piece.
+             * @brief Rimuove il pedone dalle coordinate specificate e crea al suo posto un
+             * nuovo pezzo del tipo specificato.
              * 
-             * @param pawn coordinate del pedone da promuovere
-             * @param piece il carattere ascii maiuscolo del tipo del pezzo.
+             * @param pawn_coords coordinate del pedone da promuovere
+             * @param piece_ascii il carattere ascii maiuscolo del tipo del pezzo in cui promuovere.
              */
-			void promote(Coordinates pawn, char piece);
+			void promote(Coordinates pawn_coords, char piece_ascii);
 
             bool isCastlingMove(Coordinates from, Coordinates to);
             void doCastlingMove(Coordinates from, Coordinates to);
@@ -102,38 +109,38 @@ namespace chess {
 
         private:
             /**
-             * @brief Esegui la mossa specificata, comprende i comportamenti delle mosse
-             * di arrocco e di en passant
+             * @brief Esegui la mossa specificata. Comprende i comportamenti delle mosse
+             * di arrocco e di en passant.
              */
             void handleMoveType_(Coordinates from, Coordinates to);
 
             /**
-             * @brief Crea un nuovo pezzo con le caratteristiche specificate
+             * @brief Aggiunge alla scacchiera un nuovo pezzo con le caratteristiche specificate.
              * 
-             * @param piece_ascii carattere ascii maiuscolo del tipo del pezzo
-             * @param coords coordinate del pezzo
-             * @param color colore del pezzo
+             * @param piece_ascii Carattere ascii maiuscolo del tipo del pezzo.
+             * @param coords Coordinate del pezzo.
+             * @param color Colore del pezzo.
              */
             void addPiece_(char piece_ascii, Coordinates coords, Color color);
             void addPieceToMatrix_(std::unique_ptr<Piece>& attacking_piece_color, Coordinates coords);
             void addPieceCoords_(Coordinates coords);
 
             /**
-             * @brief rimuove tutti gli en passants possibili del colore specificato.
+             * @brief Rimuove tutti gli en passants disponibili al colore specificato.
              */
             void clearEnPassants_(Color piece_color);
 
             /**
-             * @brief rimuove il pezzo delle coordinate specificate
+             * @brief Rimuobe il pezzo delle coordinate specificate.
              */
             void removePiece_(Coordinates coords);
 
             /**
              * @brief Factory: crea uno unique pointer al pezzo con le caratteristiche specificate.
              * 
-             * @param c carattere ascii maiuscolo del tipo del pezzo
-             * @param coords coordinate del pezzo
-             * @param color colore del pezzo
+             * @param c Carattere ascii maiuscolo del tipo del pezzo
+             * @param coords Coordinate del pezzo
+             * @param color Colore del pezzo
              * @return std::unique_ptr<Piece> 
              */
             std::unique_ptr<Piece> makePiece_(char c, Coordinates coords, Color color) const;
@@ -143,31 +150,33 @@ namespace chess {
              * 
              * @note Il clone si trova in una differente area di memoria.
              * 
-             * @param p reference const pezzo da clonare
+             * @param to_clone Reference const pezzo da clonare
              * @return std::unique_ptr<Piece> 
              */
-            std::unique_ptr<Piece> clonePiece_(const Piece& p) const;
+            std::unique_ptr<Piece> clonePiece_(const Piece& to_clone) const;
 
             /**
-             * @brief Aggiorna la posizione nei membri del pezzo, nella matrice e nelle liste dei pezzi,
-             * da from a to.
+             * @brief Aggiorna la posizione del pezzo nei suoi membri privati, nella matrice e nelle liste dei pezzi.
              * 
-             * @note Non gestisce situazione di arrocco ed en passant
+             * @param from Coordinate del pezzo da aggiornare.
+             * @param to Coordinate in cui aggiornare.
+             * 
+             * @note Non gestisce situazione di arrocco ed en passant.
              */
             void updatePosition_(Coordinates from, Coordinates to);
 
             /**
-             * @brief lista delle coordinate di tutti i pezzi bianchi.
+             * @brief Lista delle coordinate di tutti i pezzi bianchi.
              */
             std::list<Coordinates> white_coords_;
 
             /**
-             * @brief lista delle coordinate di tutti i pezzi bianchi.
+             * @brief Lista delle coordinate di tutti i pezzi bianchi.
              */
             std::list<Coordinates> black_coords_;
 
             /**
-             * @brief lista delle mosse en passant possibili, attraverso std::pair di coordinate.
+             * @brief Lista delle mosse en passant possibili, attraverso std::pair di coordinate.
              */
             std::list<std::pair<Coordinates, Coordinates>> available_en_passants_;
 

@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Knight.cpp
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #include "Knight.h"
 
 int manhattanDistance(chess::Coordinates coords1, chess::Coordinates coords2) {

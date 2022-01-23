@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Queen.cpp
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #include "Queen.h"
 
 bool chess::Queen::canMoveAt(Coordinates coords, Board& board) const {

@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Queen.h
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #ifndef QUEEN_H
 #define QUEEN_H
 

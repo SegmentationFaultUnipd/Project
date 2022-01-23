@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file ReplayPlayer.cpp
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #include "ReplayPlayer.h"
 
 void chess::ReplayPlayer::nextTurn(Board& board, chess::Coordinates& from, chess::Coordinates& to) {

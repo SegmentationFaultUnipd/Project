@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file ReplayManager.cpp
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #include <thread>         
 #include <chrono>  
 #include <fstream>
@@ -8,8 +13,8 @@
 
 chess::ReplayManager::ReplayManager(std::string input_file, std::ifstream& input, std::ostream &output, bool need_to_pause, ReplayPlayer &player1, ReplayPlayer &player2) : need_to_pause_(need_to_pause), player1_(player1), player2_(player2) {	
 	output << "Replay della partita "<<input_file << std::endl;
-	output << "Player1: " << ColorNames[player1_.getColor()] << std::endl;
-	output << "Player2: " << ColorNames[player2_.getColor()] << std::endl;
+	output << "Player1: " << COLOR_NAMES[player1_.getColor()] << std::endl;
+	output << "Player2: " << COLOR_NAMES[player2_.getColor()] << std::endl;
 	int prec_move_number = -1;
 	std::string s;
 	while(getline(input, s)) {

@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Bishop.cpp
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #include "Bishop.h"
 
 bool chess::Bishop::canMoveAt(Coordinates coords, Board& board) const {

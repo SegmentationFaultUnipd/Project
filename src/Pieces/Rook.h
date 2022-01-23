@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Rook.h
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #ifndef ROOK_H
 #define ROOK_H
 

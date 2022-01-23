@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Color.h
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #ifndef COLOR_H
 #define COLOR_H
 
@@ -7,7 +12,8 @@ namespace chess {
         WHITE,
         BLACK
     };
-	static const char* ColorNames[] = { "BIANCO", "NERO" };
+
+	static const std::string COLOR_NAMES[] = { "BIANCO", "NERO" };
 
     inline Color opposite(Color color) {
         return color == WHITE ? BLACK : WHITE;

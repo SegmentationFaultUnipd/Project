@@ -1,6 +1,10 @@
-//AUTORE: Filippo Niero
-#include "GameManager.h"
+/**
+ * @file GameManager.cpp
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
 
+#include "GameManager.h"
 
 void chess::GameManager::createLogFile() {
 	time_t now = time(NULL);
@@ -33,8 +37,8 @@ void chess::GameManager::nextPlayer() {
 }
 
 void chess::GameManager::play() {
-	std::cout << "Player1 colore "<<  ColorNames[player1_.getColor()] << std::endl;
-	std::cout << "Player2 colore "<<  ColorNames[player2_.getColor()] << std::endl;
+	std::cout << "Player1 colore "<<  COLOR_NAMES[player1_.getColor()] << std::endl;
+	std::cout << "Player2 colore "<<  COLOR_NAMES[player2_.getColor()] << std::endl;
 	current_move_ = 0;//Contatore delle mosse: serve per le partite tra due PC, perché devono finire dopo max_moves mosse
 	current_color_ = WHITE; //Seleziona il giocatore iniziale
 	bool infinite_game = (max_moves_ == -1);
@@ -43,7 +47,7 @@ void chess::GameManager::play() {
 		Coordinates from, to;
 		bool isValid = false;
 
-		std::cout << "Tocca al " << ColorNames[current_color_] << std::endl;
+		std::cout << "Tocca al " << COLOR_NAMES[current_color_] << std::endl;
 		do {
 			currentPlayer().nextTurn(board, from, to);
 			isValid = !board.isEmpty(from) && board.at(from).color() == current_color_ && board.move(from, to);
@@ -82,12 +86,13 @@ void chess::GameManager::play() {
 				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re è sotto scacco" << std::endl;
 				nextPlayer();
 				win(currentPlayer());
-			}else {
-				//Parità
-				log_stream_<<"---"<<std::endl;
-				std::cout<<((current_color_ == player1_.getColor())?"Player1":"Player2")<<" non ha mosse valide e il suo re non è sotto scacco" << std::endl;
-				draw();
+				isGameEnded = true;
 			}
+		}
+		else if (!player_can_move) {
+			//Parità
+			log_stream_ << "---" << std::endl;
+			draw();
 			isGameEnded = true;
 		}
 

@@ -1,13 +1,12 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Piece.cpp
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #include "Piece.h"
 #include "../Board.h"
-/**
- * @brief Metodo che ritorna i pezzi che sono catturabili da this
- * @note Sarebbe più efficiente riscrivere il metodo per ogni pezzo, così da salvarsi un "doppio controllo" sulla board. Il codice risulterebbe molto simile a
- * legalMoves(), abbiamo deciso di sacrificare un po' di efficienza per ridurre la duplicazione del codice
- * @param board la scacchiera
- * @return std::vector<chess::Coordinates> le coordinate dei pezzi catturabili
- */
+
 std::vector<chess::Piece*> chess::Piece::takeablePieces(Board &board) const
 {
 	std::vector<Coordinates> moves = legalMoves(board);

@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Knight.h
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #ifndef KNIGHT_H
 #define KNIGHT_H
 

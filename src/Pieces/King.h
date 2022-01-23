@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file King.h
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #ifndef KING_H
 #define KING_H
 

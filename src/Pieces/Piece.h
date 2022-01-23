@@ -1,4 +1,9 @@
-//AUTORE: Filippo Mazzarotto
+/**
+ * @file Piece.h
+ * @author Filippo Mazzarotto
+ * @date 2022-01-23
+ */
+
 #ifndef PIECE_H
 #define PIECE_H
 
@@ -17,56 +22,67 @@ namespace chess {
     class Piece {
         public:
             /**
-             * @brief Aggiorna le coordinate di this
+             * @brief Aggiorna i membri privati.
              * 
-             * @param new_position le coordinate della nuova posizione
-             * @param board la scacchiera
+             * @param new_position Le nuove coordinate.
+             * @param board La scacchiera in cui si muove. Utile per aggiungere
+             * possibilità di en passant.
              */
             virtual void move (Coordinates new_position, Board &board) {
                 position_ = new_position;
             }
             
             /**
-             * @brief Verifica se this può muoversi nella posizione
-             * coords usando la scacchiera board
-             * @param coords le coordinate di arrivo da verificare
-             * @param board la scacchiera
-             * @return true se this può eseguire la mossa
-             * @return false altrimenti
+             * @brief Verifica se può muoversi nella posizione specificata.
+             * @param coords Le coordinate per cui verificare.
+             * @param board La scacchiera in cui si muove.
+             * @return true, se la mossa è valida.
+             * @return false, se è una mossa illegale.
+             * 
+             * @note Non viene controllato che dopo la mossa il proprio re non sia in scacco.
+             * Questo controllo viene gestito dalla scacchiera.
              */
             virtual bool canMoveAt(Coordinates coords, chess::Board& board) const = 0;
             
             /**
-             * @brief Verifica se this ha almeno una mossa disponibile sulla 
-             * scacchiera board
+             * @brief Verifica se ha almeno una mossa disponibile.
+             * 
              * @note Questo metodo potrebbe essere sostituito da una verifica sulla
-             * grandezza del vettore ritornato da legalMoves ma sarebbe meno efficiente
-             * @param board la scacchiera
-             * @return true se this ha almeno una mossa disponibile
-             * @return false altrimenti
+             * grandezza del vettore ritornato da legalMoves ma sarebbe meno efficiente.
+             * 
+             * @param board La scacchiera in cui si muove.
+             * @return true, se ha almeno una mossa disponibile.
+             * @return false, altrimenti.
              */
             virtual bool canMove(chess::Board& board) const = 0;
 
             /**
-             * @brief Ritorna tutte le mosse che this può fare sulla scacchiera
-             * board
-             * @note Le mosse ritornate potrebbero causare scacco
-             * @param board la scacchiera
-             * @return std::vector<Coordinates> contenente del coordinate di arrivo
-             * delle mosse disponibili 
+             * @brief Ritorna tutte le coordinate in cui il pezzo può muovere.
+             * 
+             * @note Non viene controllato che dopo la mossa il proprio re non sia in scacco.
+             * Questo controllo viene gestito dalla scacchiera.
+             * 
+             * @param board La scacchiera in cui si muove.
+             * @return std::vector<Coordinates> contenente le coordinate di arrivo
+             * delle mosse disponibili.
              */
             virtual std::vector<Coordinates> legalMoves(chess::Board& board) const = 0;
             
             /**
-             * @brief Ritorna i pezzi catturabili da this sulla scacchiera board
-             * @note Le mosse ritornate potrebbero causare scacco
-             * @param board la scacchiera
-             * @return std::vector<Piece*> contenente tutti i puntatori ai pezzi catturabili 
+             * @brief Ritorna i puntatori catturabili da this sulla scacchiera board.
+             * 
+             * @note Le mosse ritornate potrebbero causare scacco.
+             * 
+             * @note I puntatori puntano a un'area posseduta da uno unique_ptr. L'uso di questo
+             * metodo deve essere usato raramente e in scope limitati.
+             * 
+             * @param board La scacchiera in cui si muove.
+             * @return std::vector<Piece*> contenente tutti i puntatori ai pezzi catturabili.
              */
             virtual std::vector<Piece*> takeablePieces(chess::Board& board) const;
 
             /**
-             * @brief Ritorna il carattere maiuscolo ascii associato a this 
+             * @brief Ritorna il carattere maiuscolo ascii associato a questo pezzo.
              * @note Associazioni:
              * Re = R
              * Regina = D
@@ -74,7 +90,7 @@ namespace chess {
              * Cavallo = C
              * Torre = T
              * Pedone = P
-             * @return char carattere che individua uno specifico pezzo
+             * @return Il carattere che individua lo specifico pezzo.
              */
             char virtual ascii() const = 0;
 

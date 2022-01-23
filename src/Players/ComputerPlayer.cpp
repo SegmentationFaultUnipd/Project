@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file ComputerPlayer.cpp
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #include "ComputerPlayer.h"
 #include <list>
 

@@ -1,4 +1,9 @@
-//AUTORE: Filippo Niero
+/**
+ * @file King.cpp
+ * @author Filippo Niero
+ * @date 2022-01-23
+ */
+
 #include "King.h"
 bool chess::King::canMoveAt(Coordinates coords, chess::Board& board) const {
 	if(canCastle(coords, board)) {

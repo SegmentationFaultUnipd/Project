@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Bishop.h
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #ifndef BISHOP_H
 #define BISHOP_H
 

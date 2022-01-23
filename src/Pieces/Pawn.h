@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Pawn.h
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #ifndef PAWN_H
 #define PAWN_H
 

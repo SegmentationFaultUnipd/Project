@@ -1,4 +1,9 @@
-//AUTORE: Tommaso Leoni
+/**
+ * @file Rook.cpp
+ * @author Tommaso Leoni
+ * @date 2022-01-23
+ */
+
 #include "Rook.h"
 
 bool chess::Rook::canMoveAt(Coordinates coords, Board& board) const {
