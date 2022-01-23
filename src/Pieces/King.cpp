@@ -34,18 +34,15 @@ bool chess::King::canMove(chess::Board& board) const {
 			} 
     	}
     }
-	std::cerr << "Fine posizioni normali" << std::endl;
 	int castling_rank = (color() == WHITE)?0:7;
 
 	if(canCastle({2 ,castling_rank}, board)) {
 		return true;
 	}
-	std::cerr << "Fine canCastl1" << std::endl;
 	
 	if(canCastle({6 ,castling_rank}, board)) {
 		return true;
 	}
-	std::cerr << "Fine canCastl2" << std::endl;
 
     return false;
 };
