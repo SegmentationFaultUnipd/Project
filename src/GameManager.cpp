@@ -6,15 +6,12 @@ void chess::GameManager::createLogFile() {
 	time_t now = time(NULL);
 	tm *now_localtime = localtime(&now);
 	std::string year =  std::to_string(1900 + now_localtime->tm_year);
-
 	//Formato: chesslog_DDMMYYYY_HHmm.txt
 	file_name_ = "chesslog_" + padTime(now_localtime->tm_mday)  + padTime(now_localtime->tm_mon + 1) + year + "_" + padTime(now_localtime->tm_hour) +""+ padTime(now_localtime->tm_min) + ".txt";
-	
 	//Save stream, overwrite file if it already exists
 	log_stream_.open(file_name_, std::ofstream::trunc);
-
-	log_stream_ << "Player1:" << ColorNames[player1_.getColor()] << std::endl;
-	log_stream_ << "Player2:" << ColorNames[player2_.getColor()] << std::endl;
+	log_stream_<<"Player1:"<<player1_.getColor()<<std::endl;
+	log_stream_<<"Player2:"<<player2_.getColor()<<std::endl;
 }
 
 std::string chess::GameManager::padTime(int x) {
@@ -38,13 +35,10 @@ void chess::GameManager::nextPlayer() {
 void chess::GameManager::play() {
 	std::cout << "Player1 colore "<<  ColorNames[player1_.getColor()] << std::endl;
 	std::cout << "Player2 colore "<<  ColorNames[player2_.getColor()] << std::endl;
-
-	current_move_ = 0;
-	current_color_ = WHITE;
-
+	current_move_ = 0;//Contatore delle mosse: serve per le partite tra due PC, perché devono finire dopo max_moves mosse
+	current_color_ = WHITE; //Seleziona il giocatore iniziale
 	bool infinite_game = (max_moves_ == -1);
 	bool isGameEnded = false;
-
 	while(!isGameEnded && (infinite_game || current_move_ < max_moves_)) {
 		Coordinates from, to;
 		bool isValid = false;
@@ -66,20 +60,25 @@ void chess::GameManager::play() {
 			board.promote(to, chosen);
 			logPromotion(current_move_, chosen, to);
 		}
+		std::cerr << "Promozione passata" <<std::endl;
 
 
 		nextPlayer();
+		std::cerr << "Next player passato" <<std::endl;
 
 		//Check if player has available moves
 		//Assertion failed here:
 		std::list<Coordinates> pieces = board.getPiecesCoords(current_color_);
 		bool player_can_move = false;
 		for(auto piece : pieces) {
+			std::cerr << "Loop infame" << std::endl;
+			std::cerr << "Coordinate pezzo corrente "<<piece.toNotation() <<" "<<board.at(piece).ascii()<<std::endl;
 			if(board.at(piece).canMove(board)) {
 				player_can_move = true;
 				break;
 			}
 		}
+		std::cerr << "Controllo che il giocatore abbia delle mosse valide passato" <<std::endl;
 
 		if(!player_can_move) {
 			if(board.isKingInCheck(current_color_)) {
